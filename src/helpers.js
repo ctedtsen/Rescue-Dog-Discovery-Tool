@@ -156,8 +156,10 @@ module.exports = {
 
     if (typeof weightValue !== "number" || Number.isNaN(weightValue))
       throw "Error: weight value is not a number";
+
     if(weightValue <= 0 || weightValue>300)
       throw "Error: weight is out of range"
+
     if (`${weightValue}${weightTxt}` !== weight.toLowerCase())
       throw "Error: weight argument is invalid";
 
