@@ -41,7 +41,7 @@ module.exports = {
   },
 
   checkName(name) {
-    this.checkString(name);
+    this.checkString(name, "name");
     name = name.trim();
     if (name.length < 3) throw "Error: name cannot be less than 3 characters";
     return name;
@@ -113,7 +113,7 @@ module.exports = {
   },
 
   checkHeight(height) {
-    this.checkString(height);
+    this.checkString(height, "height for recue pet");
     height = height.trim();
 
     let heightFormat = height.split("t");
@@ -156,7 +156,8 @@ module.exports = {
 
     if (typeof weightValue !== "number" || Number.isNaN(weightValue))
       throw "Error: weight value is not a number";
-
+    if(weightValue <= 0 || weightValue>300)
+      throw "Error: weight is out of range"
     if (`${weightValue}${weightTxt}` !== weight.toLowerCase())
       throw "Error: weight argument is invalid";
 
@@ -166,11 +167,11 @@ module.exports = {
   checkSexInput(input) {
     this.checkString(input, "sex of rescue pet");
     input = input.trim();
-    if (input.length < 4) throw "Error: sex input is not valid1";
+    if (input.length < 4) throw "Error: sex input is not valid";
 
     input = input.toLowerCase();
     if (input !== "male" && input !== "female")
-      throw "Error: sex input is not valid;";
+      throw "Error: sex input is not valid";
 
     return input;
   },
