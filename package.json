@@ -1,0 +1,25 @@
+{
+  "name": "final-proj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctedtsen/Rescue-Dog-Discovery-Tool.git"
+  },
+  "author": "Group 55",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ctedtsen/Rescue-Dog-Discovery-Tool/issues"
+  },
+  "homepage": "https://github.com/ctedtsen/Rescue-Dog-Discovery-Tool#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "mongodb": "^4.12.0"
+  }
+}
