@@ -140,9 +140,8 @@ module.exports = {
   checkWeight(weight) {
     this.checkString(weight, "weight for rescue pet");
     weight = weight.trim();
-    if (weight.length < 3) {
+    if (weight.length < 3)
       throw "Error: weight argument is not valid";
-    }
 
     let weightValue;
     let weightTxt;
@@ -155,12 +154,12 @@ module.exports = {
       weightTxt = "lbs";
     }
 
-    if (typeof weightValue !== "number" || Number.isNaN(weightValue)) {
+    if (typeof weightValue !== "number" || Number.isNaN(weightValue))
       throw "Error: weight value is not a number";
-    }
 
     if (`${weightValue}${weightTxt}` !== weight.toLowerCase())
       throw "Error: weight argument is invalid";
+
     return `${weightValue}${weightTxt}`;
   },
 
@@ -177,7 +176,6 @@ module.exports = {
   },
 
   checkSpecialNeeds(needs) {
-    //check if its array, non-empty , length > 3
     if (!needs) {
       throw "Error: you must enter an array that lists special needs of rescue pet";
     }
