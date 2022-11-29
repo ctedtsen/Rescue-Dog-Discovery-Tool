@@ -29,15 +29,15 @@ module.exports = {
     if (str.length === 0) {
       throw "Error: " + varName + " cannot be an empty string or just spaces";
     }
+
+    return str;
   },
 
   checkBool(bool, varName) {
-    if (!bool) {
-      throw "Error: you must provide a " + varName;
-    }
     if (typeof bool !== "boolean") {
       throw "Error " + varName + " must be of type boolean";
     }
+    return bool;
   },
 
   checkName(name) {
