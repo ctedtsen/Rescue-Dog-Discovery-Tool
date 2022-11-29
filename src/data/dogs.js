@@ -3,7 +3,7 @@ const dogs = mongoCollections.dogs;
 const helper = require("../helpers");
 const { ObjectId } = require("mongodb");
 
-let getDogById = async (id) => {
+const getDogById = async (id) => {
   id = helper.checkId(id, "id");
   const dogCollection = await dogs();
   const dog = await dogCollection.findOne({ _id: ObjectId(id) });
@@ -18,7 +18,7 @@ let getAllDogs = async () => {
   return dogList;
 };
 
-let addDog = async (
+const addDog = async (
   name,
   birthday,
   breed,
@@ -61,4 +61,29 @@ let addDog = async (
   return dog;
 };
 
-module.exports = { getDogById, getAllDogs, addDog};
+const removeDog = async (dogId) => {
+  dogId = helper.checkId(dogId, "id for rescue dog");
+  const dogCollection = await dogs();
+  let dog;
+ 
+  const dogList = await dogCollection.find({}).toArray();
+  for (let doggo of dogList) {
+    if (doggo._id.toString() === dogId.toString()) {
+      dog = doggo;
+      break;
+    }
+  }
+  if (!dog){
+    throw `Error: dog was not found`;
+  }
+  const deletionInfo = await dogCollection.deleteOne({
+    _id: ObjectId(dogId),
+  });
+
+  if (deletionInfo.deletedCount === 0) {
+    throw `Error: could not remove dog with id of ${dogId.toString()}`;
+  }
+  return `${dog.name.trim()} has been successfully deleted!`;
+};
+
+module.exports = { getDogById, getAllDogs, addDog, removeDog};
