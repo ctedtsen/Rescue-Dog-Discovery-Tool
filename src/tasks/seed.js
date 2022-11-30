@@ -1,6 +1,7 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data')
 const shelters = data.shelters;
+const cats = data.cats;
 
 const main = async () => {
 const db = await dbConnection.dbConnection();
