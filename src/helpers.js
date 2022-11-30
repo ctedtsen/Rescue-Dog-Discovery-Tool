@@ -1,6 +1,8 @@
 const { objectId } = require("mongodb");
 const fs = require("fs");
 const numbers = ["0", "1", "2,", "3", "4", "5", "6", "7", "8", "9"];
+const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
+                  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const path = require("path");
 
 module.exports = {
@@ -44,6 +46,11 @@ module.exports = {
     this.checkString(name, "name");
     name = name.trim();
     if (name.length < 3) throw "Error: name cannot be less than 3 characters";
+    for(let char of name){
+      if(!alphabet.includes(char.toLowerCase())){
+        throw "Error: name must contain only letters"
+      }
+    }
     return name;
   },
 
