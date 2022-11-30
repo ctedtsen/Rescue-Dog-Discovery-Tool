@@ -1,6 +1,8 @@
 const mongoCollections = require('../config/mongoCollections');
 const shelters = mongoCollections.shelters;
 const {ObjectId} = require('mongodb');
+const dogs = require("./dogs");
+const cats = require("./cats");
 const helpers = require('../helpers');
 
 const exportedMethods = {
@@ -115,6 +117,71 @@ const exportedMethods = {
         });
 
         return shelterList;
+    },
+
+    async addRescueDog(shelterId, dogId) {
+        helpers.checkId(shelterId, "id for shelter")
+        helpers.checkId(dogId, "id for rescue dog");
+        const shelter = await this.getShelterById(shelterId);
+        const dog = await dogs.getDogById(dogId);
+
+        for(let petId of shelter.pets) {
+            if(petId === dog._id.toString()) {
+                throw "Error: pet with provided id is already added"
+            }
+        }
+
+        const newPetList = [...shelter.pets, dogId];
+        const numberOfPets = newPetList.length;
+      
+        const shelterCollection = await shelters();
+        const updatedInfo = await shelterCollection.updateOne(
+            { _id: ObjectId(shelterId) },
+            {
+                $set: {
+                    pets: newPetList,
+                    numberPets: numberOfPets
+                }
+            }
+        );
+        if(updatedInfo.modifiedCount === 0) {
+            throw "Error: could not update shelter successfully";
+        }
+
+        const updatedShelter = await this.getShelterById(shelterId);
+        return updatedShelter;
+    },
+    async addRescueCat(shelterId, catId) {
+        helpers.checkId(shelterId, "id for shelter")
+        helpers.checkId(catId, "id for rescue cat");
+        const shelter = await this.getShelterById(shelterId);
+        const cat = await cats.getCatById(catId);
+
+        for(let petId of shelter.pets) {
+            if(petId === cat._id.toString()) {
+                throw "Error: pet with provided id is already added"
+            }
+        }
+
+        const newPetList = [...shelter.pets, catId];
+        const numberOfPets = newPetList.length;
+      
+        const shelterCollection = await shelters();
+        const updatedInfo = await shelterCollection.updateOne(
+            { _id: ObjectId(shelterId) },
+            {
+                $set: {
+                    pets: newPetList,
+                    numberPets: numberOfPets
+                }
+            }
+        );
+        if(updatedInfo.modifiedCount === 0) {
+            throw "Error: could not update shelter successfully";
+        }
+
+        const updatedShelter = await this.getShelterById(shelterId);
+        return updatedShelter;
     }
 }
 
