@@ -47,7 +47,7 @@ const addCat = async (
     specialNeeds: specialNeeds,
     picture: picture,
     likes: 0,
-    comments: []
+    comments: [],
   };
 
   const insertInfo = await catCollection.insertOne(newCat);
@@ -58,5 +58,29 @@ const addCat = async (
   return cat;
 };
 
-module.exports = { getCatById, getAllcats, addCat};
+const removeCat = async (catId) => {
+  catId = helper.checkId(catId, "id for rescue cat");
+  const catCollection = await cats();
+  let cat;
 
+  const catList = await catCollection.find({}).toArray();
+  for (let currentCat of catList) {
+    if (currentCat._id.toString() === catId.toString()) {
+      cat = currentCat;
+      break;
+    }
+  }
+  if (!cat) {
+    throw `Error: cat was not found`;
+  }
+  const deletionInfo = await catCollection.deleteOne({
+    _id: ObjectId(catId),
+  });
+
+  if (deletionInfo.deletedCount === 0) {
+    throw `Error: could not remove cat with id of ${catId.toString()}`;
+  }
+  return `${cat.name.trim()} has been successfully deleted!`;
+};
+
+module.exports = { getCatById, getAllcats, addCat, removeCat };
