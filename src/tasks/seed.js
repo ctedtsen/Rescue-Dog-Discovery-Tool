@@ -84,7 +84,6 @@ await db.dropDatabase();
             "ME",
             true
         );
-        console.log(harvestHillsMaine);
     } catch(e) {
         console.log(e);
     }
