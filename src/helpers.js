@@ -330,5 +330,18 @@ module.exports = {
     }
 
     return state;
+  }, 
+
+  checkAnimalType(animalType){
+    animalType = this.checkString(animalType, "animalType");
+    animalType = animalType.toLowerCase();
+
+    if(animalType === "dog"){
+      return "dog";
+    } else if (animalType === "cat"){
+      return "cat";
+    } else {
+      throw "Error: animalType must be dog or cat";
+    }
   }
 };
