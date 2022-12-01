@@ -12,7 +12,7 @@ const exportedMethods = {
     ){
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
-        state = helpers.checkString(state, "state");
+        state = helpers.checkState(state);
         killShelter = helpers.checkBool(killShelter, "killShelter");
 
         const shelterCollection = await shelters();

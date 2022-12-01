@@ -81,9 +81,10 @@ await db.dropDatabase();
         harvestHillsMaine = await shelters.addShelter(
             "Harvest Hills Animal Shelter",
             "Fryeburg",
-            "Maine",
+            "ME",
             true
         );
+        console.log(harvestHillsMaine);
     } catch(e) {
         console.log(e);
     }
