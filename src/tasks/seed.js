@@ -1,6 +1,8 @@
 const dbConnection = require('../config/mongoConnection');
 const data = require('../data')
 const shelters = data.shelters;
+const dogs = data.dogs;
+const cats = data.cats;
 
 const main = async () => {
 const db = await dbConnection.dbConnection();
@@ -32,6 +34,27 @@ await db.dropDatabase();
             "CA",
             false
         );
+        const shelterId = centralCali._id.toString();
+        const dogWhiskey = await dogs.addDog("Whiskey", "02/28/2021", "siberian husky", "1ft10in", "50lbs", "male", [], "src/images/husky-whiskey.jpg");
+        let addDog = await shelters.addRescueDog(shelterId, dogWhiskey._id.toString());
+        const catFifi = await cats.addCat("Fifi", "07/05/2020", "0ft9in", "9lbs", "male", [], "src/images/norwegian-forest-1.jpeg");
+        let addCat = await shelters.addRescueCat(shelterId, catFifi._id.toString());
+        const dogFido = await dogs.addDog("Fido", "10/13/2019", "beagle", "1ft3in", "32lbs", "male", ["Needs heart medication"], "src/images/beagle-fido.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogFido._id.toString());
+        const catSimba = await cats.addCat("Simba", "05/22/2021", "0ft9in", "10lbs", "female", [], "src/images/simba-cat-1.jpeg");
+        addCat = await shelters.addRescueCat(shelterId, catSimba._id.toString());
+        const dogBella = await dogs.addDog("Bella", "08/12/2021", "mudi", "1ft3in", "22lbs", "female", [], "src/images/mudi-bella.jpeg");
+        addDog = await shelters.addRescueDog(shelterId, dogBella._id.toString());
+        const catButterscotch = await cats.addCat("Butterscotch", "06/03/2021", "0ft8in", "9lbs", "male", [], "src/images/catButterscotch.jpeg");
+        addCat = await shelters.addRescueCat(shelterId, catButterscotch._id.toString());
+        const dogHenry = await dogs.addDog("Henry", "04/11/2018", "miniature schnauzer", "0ft11in", "11lbs", "male", ["food allergies"], "src/images/mini-schnauzer-henry.jpeg");
+        addDog = await shelters.addRescueDog(shelterId, dogHenry._id.toString());
+        const catVera = await cats.addCat("Vera", "11/12/2021", "0ft9in", "9lbs", "female", [], "src/images/cat-vera.jpeg");
+        addCat = await shelters.addRescueCat(shelterId, catVera._id.toString());
+        const dogRiley = await dogs.addDog("Riley", "05/21/2020", "beauceron", "2ft2in", "70lbs", "male", [], "src/images/beauceron-riley.jpeg");
+        addDog = await shelters.addRescueDog(shelterId, dogRiley._id.toString());
+        const catMilo = await cats.addCat("Milo", "08/01/2022", "0ft6in", "5lbs", "male", [], "src/images/cat-milo.jpeg");
+        addCat = await shelters.addRescueCat(shelterId, catMilo._id.toString());
     } catch(e) {
         console.log(e);
     }
