@@ -70,10 +70,11 @@ module.exports = {
     let dayDifference = validDays[index] - dateArray[1];
     if (dayDifference < 0 || dayDifference > validDays[0])
       throw `Error: birthdate argument is invalid`;
-    let currentYear = new Date().getFullYear();
-    if (dateArray[2] > currentYear || dateArray[2] < currentYear - 30)
+    let birthday = new Date(birthdate);
+    let currentDay = new Date();
+    if (birthday > currentDay || birthday.getFullYear() < currentDay.getFullYear() - 30)
       throw `Error: birthdate argument is invalid`;
-
+      
     return birthdate;
   },
 
