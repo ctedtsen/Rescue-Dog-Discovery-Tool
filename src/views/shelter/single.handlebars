@@ -1,0 +1,27 @@
+<h1>Shelter Name: {{shelter.shelterName}}</h1>
+<div>
+    <a href="/about">Home</a>
+    <a href="/shelters">Shelters</a>
+</div>
+<p>City: {{shelter.city}}</p>
+<p>State: {{shelter.state}}</p>
+<p>Number of Pets: {{shelter.numberPets}}</p>
+<p>Rating: {{shelter.rating}}</p>
+{{#if shelter.reviews.length}}
+    <h3>Reviews</h3>
+    <ul>
+        {{#each shelter.reviews}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No reviews yet</p>
+{{/if}}
+{{#if shelter.pets.length}}
+    <h3>Pets</h3>
+    <ul>
+        {{#each shelter.pets}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
+{{/if}}

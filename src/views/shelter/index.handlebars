@@ -1,0 +1,10 @@
+<h1>Shelters</h1>
+<div>
+    <a href="/about">Home</a>
+</div>
+{{#each shelters}}
+    <h4><a href="/shelters/{{_id}}">{{this.shelterName}}</a></h4>
+    <p>City: {{this.city}}</p>
+    <p>State: {{this.state}}</p>
+    <p>Number of Pets: {{this.numberPets}}</p>
+{{/each}}
