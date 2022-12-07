@@ -1,38 +1,32 @@
 <h1>{{title}}</h1>
 <h3>Add a Shelter</h3>
-<form action="/shelters" method="POST">
-    <div>
-        <label>
-            Shelter Name
-            <input type="text" name="shelterName" placeholder="Shelter Name"/>
-        </label>
-    </div>
-    <div>
-        <label>
-            City
-            <input type="text" name="shelterCity" placeholder="City"/>
-        </label>
-    </div>
-    <div>
-        <label>
-            State
-            <input type="text" name="shelterState" placeholder="State"/>
-        </label>
-    </div>
-    <div>
-        <label>
-            Kill Shelter
-            <input type="checkbox" name="killShelter"/> 
-        </label>
-    </div>
+<div id="error" class="error" hidden>I'm an error</div>
+<form action="/shelters" id="addShelter" method="POST">
+    <label id="nameFormLabel">
+        Shelter Name
+        <input type="text" id="shelterName" name="shelterName" placeholder="Shelter Name"/>
+    </label>
+    <label id="cityFormLabel">
+        City
+        <input type="text" id="shelterCity" name="shelterCity" placeholder="City"/>
+    </label>
+    <label id="stateFormLabel">
+        State
+        <input type="text" id="shelterState" name="shelterState" placeholder="State"/>
+    </label>
+    <label id="killShelterFormLabel">
+        Kill Shelter
+        <input type="checkbox" id="killShelter" name="killShelter"/> 
+    </label>
     <button type="submit">Add Shelter</button>
+    <script src=".../public/js/main.js"></script>
 </form>
 <h3>Remove a Shelter</h3>
 <form action="/shelters" method="POST">
     <div>
         <label>
             Shelter Id
-            <input typ="text" name="shelterId" placeholder="Shelter ID"/>
+            <input type="text" name="shelterId" placeholder="Shelter ID"/>
         </label>
     </div>
     <button type="submit">Delete Shelter</button>

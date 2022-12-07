@@ -1,12 +1,19 @@
-<h1>Shelter Name: {{shelter.shelterName}}</h1>
+<h1>{{title}}: {{shelter.shelterName}}</h1>
 <div>
     <a href="/about">Home</a>
     <a href="/shelters">Shelters</a>
 </div>
-<p>City: {{shelter.city}}</p>
-<p>State: {{shelter.state}}</p>
-<p>Number of Pets: {{shelter.numberPets}}</p>
-<p>Rating: {{shelter.rating}}</p>
+<dl>
+        <dt>City</dt>
+        <dd>{{this.city}}</dd>
+        <dt>State</dt>
+        <dd>{{this.state}}</dd>
+        <dt>Number of Pets</dt>
+        <dd>{{this.numberPets}}</dd>
+        <dt>Rating</dt>
+        <dd>{{this.rating}}</dd>
+    </dl>
+
 {{#if shelter.reviews.length}}
     <h3>Reviews</h3>
     <ul>
@@ -17,6 +24,7 @@
 {{else}}
     <p>No reviews yet</p>
 {{/if}}
+
 {{#if shelter.pets.length}}
     <h3>Pets</h3>
     <ul>
