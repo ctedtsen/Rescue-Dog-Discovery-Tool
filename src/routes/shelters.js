@@ -9,13 +9,13 @@ router.get('/edit', async (req, res) => {
 
 router.get('/', async (req, res) => {
     const shelters = await sheltersData.getAllShelters();
-    res.render('shelter/index', {shelters: shelters});
+    res.render('shelter/index', {title: "Shelters", shelters: shelters});
 })
 
 router.get('/:id', async (req, res) => {
     try{
         const shelter = await sheltersData.getShelterById(req.params.id);
-        res.render('shelter/single', {shelter: shelter});
+        res.render('shelter/single', {title: "Name of Shelter: ", shelter: shelter});
     } catch(e){
         res.status(500).json({error: e});
     }
