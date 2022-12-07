@@ -1,8 +1,8 @@
 const { objectId } = require("mongodb");
 const fs = require("fs");
 const numbers = ["0", "1", "2,", "3", "4", "5", "6", "7", "8", "9"];
-const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
-                  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 const path = require("path");
 
 module.exports = {
@@ -46,8 +46,8 @@ module.exports = {
     this.checkString(name, "name");
     name = name.trim();
     if (name.length < 3) throw "Error: name cannot be less than 3 characters";
-    for(let char of name){
-      if(!alphabet.includes(char.toLowerCase())){
+    for (let char of name) {
+      if (!alphabet.includes(char.toLowerCase())) {
         throw "Error: name must contain only letters"
       }
     }
@@ -61,9 +61,9 @@ module.exports = {
     if (dateArray.length != 3) throw `Error: birthdate argument is invalid`;
 
     const validMonths = ["01", "02", "03", "04", "05", "06",
-                         "07", "08", "09", "10", "11", "12"];
-    const validDays = ["31", "28", "31", "30", "31", "30", 
-                       "31", "31", "30", "31", "30", "31"];
+      "07", "08", "09", "10", "11", "12"];
+    const validDays = ["31", "28", "31", "30", "31", "30",
+      "31", "31", "30", "31", "30", "31"];
 
     let index = validMonths.indexOf(dateArray[0]);
     if (index < 0) throw `Error: birthdate argument is invalid`;
@@ -165,7 +165,7 @@ module.exports = {
     if (typeof weightValue !== "number" || Number.isNaN(weightValue))
       throw "Error: weight value is not a number";
 
-    if(weightValue <= 0 || weightValue>300)
+    if (weightValue <= 0 || weightValue > 300)
       throw "Error: weight is out of range"
 
     if (`${weightValue}${weightTxt}` !== weight.toLowerCase())
@@ -223,126 +223,145 @@ module.exports = {
     return picturePath;
   },
 
-  checkState(state){
+  checkState(state) {
     state = this.checkString(state, "state");
 
     state = state.toLowerCase();
 
-    if(state === "alabama" || state === "al"){
+    if (state === "alabama" || state === "al") {
       state = "AL";
-    } else if(state === "alaska" || state === "ak"){
+    } else if (state === "alaska" || state === "ak") {
       state = "AK";
-    } else if(state === "arkansas" || state == "ar"){
+    } else if (state === "arkansas" || state == "ar") {
       state = "AR";
-    } else if(state === "california" || state == "ca"){
+    } else if (state === "california" || state == "ca") {
       state = "CA";
-    } else if(state === "colorado" || state == "co"){
+    } else if (state === "colorado" || state == "co") {
       state = "CO";
-    } else if(state === "connecticut" || state == "ct"){
+    } else if (state === "connecticut" || state == "ct") {
       state = "CT";
-    } else if(state === "deleware" || state == "de"){
+    } else if (state === "deleware" || state == "de") {
       state = "DE";
-    } else if(state === "district of columbia" || state == "dc"){
+    } else if (state === "district of columbia" || state == "dc") {
       state = "DC";
-    } else if(state === "florida" || state == "fl"){
+    } else if (state === "florida" || state == "fl") {
       state = "FL";
-    } else if(state === "georgia" || state == "ga"){
+    } else if (state === "georgia" || state == "ga") {
       state = "GA";
-    } else if(state === "hawaii" || state == "hi"){
+    } else if (state === "hawaii" || state == "hi") {
       state = "HI";
-    } else if(state === "idaho" || state == "id"){
+    } else if (state === "idaho" || state == "id") {
       state = "ID";
-    } else if(state === "illinois" || state == "il"){
+    } else if (state === "illinois" || state == "il") {
       state = "IL";
-    } else if(state === "iowa" || state == "ia"){
+    } else if (state === "iowa" || state == "ia") {
       state = "IA";
-    } else if(state === "kansas" || state == "ks"){
+    } else if (state === "kansas" || state == "ks") {
       state = "KS";
-    } else if(state === "kentucky" || state == "ky"){
+    } else if (state === "kentucky" || state == "ky") {
       state = "KY";
-    } else if(state === "louisiana" || state == "la"){
+    } else if (state === "louisiana" || state == "la") {
       state = "LA";
-    } else if(state === "maine" || state == "me"){
+    } else if (state === "maine" || state == "me") {
       state = "ME";
-    } else if(state === "maryland" || state == "md"){
+    } else if (state === "maryland" || state == "md") {
       state = "MD";
-    } else if(state === "massachusetts" || state == "ma"){
+    } else if (state === "massachusetts" || state == "ma") {
       state = "MA";
-    } else if(state === "michigan" || state == "mi"){
+    } else if (state === "michigan" || state == "mi") {
       state = "MI";
-    } else if(state === "minnesota" || state == "mn"){
+    } else if (state === "minnesota" || state == "mn") {
       state = "MN";
-    } else if(state === "mississippi" || state == "ms"){
+    } else if (state === "mississippi" || state == "ms") {
       state = "MS";
-    } else if(state === "missouri" || state == "mo"){
+    } else if (state === "missouri" || state == "mo") {
       state = "MO";
-    } else if(state === "montana" || state == "mt"){
+    } else if (state === "montana" || state == "mt") {
       state = "MT";
-    } else if(state === "nebraska" || state == "ne"){
+    } else if (state === "nebraska" || state == "ne") {
       state = "NE";
-    } else if(state === "nevada" || state == "nv"){
+    } else if (state === "nevada" || state == "nv") {
       state = "NV";
-    } else if(state === "new hampshire" || state == "nh"){
+    } else if (state === "new hampshire" || state == "nh") {
       state = "NH";
-    } else if(state === "new jersey" || state == "nj"){
+    } else if (state === "new jersey" || state == "nj") {
       state = "NJ";
-    } else if(state === "new mexico" || state == "nm"){
+    } else if (state === "new mexico" || state == "nm") {
       state = "NM";
-    } else if(state === "new york" || state == "ny"){
+    } else if (state === "new york" || state == "ny") {
       state = "NY";
-    } else if(state === "north carolina" || state == "nc"){
+    } else if (state === "north carolina" || state == "nc") {
       state = "NC";
-    } else if(state === "north dakota" || state == "nd"){
+    } else if (state === "north dakota" || state == "nd") {
       state = "ND";
-    } else if(state === "ohio" || state == "oh"){
+    } else if (state === "ohio" || state == "oh") {
       state = "OH";
-    } else if(state === "oklahoma" || state == "ok"){
+    } else if (state === "oklahoma" || state == "ok") {
       state = "OK";
-    } else if(state === "oregon" || state == "or"){
+    } else if (state === "oregon" || state == "or") {
       state = "OR";
-    } else if(state === "pennsylvania" || state == "pa"){
+    } else if (state === "pennsylvania" || state == "pa") {
       state = "PA";
-    } else if(state === "rhode island" || state == "ri"){
+    } else if (state === "rhode island" || state == "ri") {
       state = "RI";
-    } else if(state === "sout carolina" || state == "sc"){
+    } else if (state === "sout carolina" || state == "sc") {
       state = "SC";
-    } else if(state === "south dakota" || state == "sd"){
+    } else if (state === "south dakota" || state == "sd") {
       state = "SD";
-    } else if(state === "tennessee" || state == "tn"){
+    } else if (state === "tennessee" || state == "tn") {
       state = "TN";
-    } else if(state === "texas" || state == "tx"){
+    } else if (state === "texas" || state == "tx") {
       state = "TX";
-    } else if(state === "utah" || state == "ut"){
+    } else if (state === "utah" || state == "ut") {
       state = "UT";
-    } else if(state === "vermont" || state == "vt"){
+    } else if (state === "vermont" || state == "vt") {
       state = "VT";
-    } else if(state === "virginia" || state == "va"){
+    } else if (state === "virginia" || state == "va") {
       state = "VA";
-    } else if(state === "washington" || state == "wa"){
+    } else if (state === "washington" || state == "wa") {
       state = "WA";
-    } else if(state === "west virginia" || state == "wv"){
+    } else if (state === "west virginia" || state == "wv") {
       state = "WV";
-    } else if(state === "wisconsin" || state == "wi"){
+    } else if (state === "wisconsin" || state == "wi") {
       state = "WI";
-    } else if(state === "wyoming" || state == "wy"){
+    } else if (state === "wyoming" || state == "wy") {
       state = "WY";
-    } else{
+    } else {
       throw "Error: invalid state input";
     }
 
     return state;
-  }, 
+  },
 
-  checkAnimalType(animalType){
+  checkAnimalType(animalType) {
     animalType = this.checkString(animalType, "animalType");
     animalType = animalType.toLowerCase();
 
-    if(animalType === "dog"){
+    if (animalType === "dog") {
       return "dog";
-    } else if (animalType === "cat"){
+    } else if (animalType === "cat") {
       return "cat";
     } else {
       throw "Error: animalType must be dog or cat";
     }
+  },
+  getHashedPassword: (myPlaintextPassword) => {
+    const saltRounds = 10;
+    return new Promise((resolve, reject) => {
+      bcrypt.hash(myPlaintextPassword, saltRounds, function (err, hash) {
+        if (err) reject(err);
+        resolve(hash);
+      });
+    })
+
+
+  },
+  comparePassword: (myPlaintextPassword, hash) => {
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(myPlaintextPassword, hash, function (err, result) {
+        if (err) reject(err);
+        resolve(result);
+      });
+    });
   }
 };
