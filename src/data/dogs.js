@@ -86,4 +86,63 @@ const removeDog = async (dogId) => {
   return `${dog.name.trim()} has been successfully deleted!`;
 };
 
-module.exports = { getDogById, getAllDogs, addDog, removeDog};
+const updateDog = async (
+  dogId,
+  name,
+  birthday,
+  breed,
+  height,
+  weight,
+  sex,
+  specialNeeds,
+  picture
+) => {
+  //Input checking
+  dogId = helper.checkId(dogId, "id for rescue dog");
+  name = helper.checkName(name);
+  birthday = helper.checkBirthday(birthday);
+  breed = helper.checkBreed(breed);
+  age = helper.calcAge(birthday);
+  height = helper.checkHeight(height);
+  weight = helper.checkWeight(weight);
+  sex = helper.checkSexInput(sex);
+  specialNeeds = helper.checkSpecialNeeds(specialNeeds);
+  picture = helper.checkPicture(picture);
+  const dogCollection = await dogs();
+
+  oldDog = {}
+  try{
+    oldDog = await getDogById(dogId);
+  }catch(e){
+    throw e;
+  }
+
+  let updatedDog = {
+    name: name,
+    birthday: birthday,
+    breed: breed,
+    height: height,
+    weight: weight,
+    sex: sex,
+    specialNeeds: specialNeeds,
+    picture: picture,
+    likes: oldDog.likes,
+    comments: oldDog.comments
+  };
+
+  if ((updatedDog.name === oldDog.name) && (updatedDog.birthday === oldDog.birthday) && (updatedDog.breed === oldDog.breed)
+  && (updatedDog.height === oldDog.height) && (updatedDog.weight === oldDog.weight) &&
+  (updatedDog.sex === oldDog.sex) && (updatedDog.specialNeeds === oldDog.specialNeeds) &&
+  (updatedDog.picture === oldDog.picture)){
+    throw "No changes to dog were made."
+  }
+
+  let id = new ObjectId(dogId);
+
+  const updatedInfo = await dogCollection.updateOne({_id: id}, {$set: updatedDog});
+
+  return await getDogById(dogId);
+
+};
+
+module.exports = { getDogById, getAllDogs, addDog, removeDog, updateDog};

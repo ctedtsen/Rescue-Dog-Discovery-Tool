@@ -83,4 +83,60 @@ const removeCat = async (catId) => {
   return `${cat.name.trim()} has been successfully deleted!`;
 };
 
-module.exports = { getCatById, getAllcats, addCat, removeCat };
+const updateCat = async (
+  catId,
+  name,
+  birthday,
+  height,
+  weight,
+  sex,
+  specialNeeds,
+  picture
+) => {
+  //Input checking
+  catId = helper.checkId(catId, "id for rescue cat");
+  name = helper.checkName(name);
+  birthday = helper.checkBirthday(birthday);
+  age = helper.calcAge(birthday);
+  height = helper.checkHeight(height);
+  weight = helper.checkWeight(weight);
+  sex = helper.checkSexInput(sex);
+  specialNeeds = helper.checkSpecialNeeds(specialNeeds);
+  picture = helper.checkPicture(picture);
+  const catCollection = await cats();
+
+  oldCat = {}
+  try{
+    oldCat = await getCatById(catId);
+  }catch(e){
+    throw e;
+  }
+
+  let updatedCat = {
+    name: name,
+    birthday: birthday,
+    height: height,
+    weight: weight,
+    sex: sex,
+    specialNeeds: specialNeeds,
+    picture: picture,
+    likes: oldCat.likes,
+    comments: oldCat.comments
+  };
+
+  if ((updatedCat.name === oldCat.name) && (updatedCat.birthday === oldCat.birthday) && 
+  (updatedCat.height === oldCat.height) && (updatedCat.weight === oldCat.weight) &&
+  (updatedCat.sex === oldCat.sex) && (updatedCat.specialNeeds === oldCat.specialNeeds) &&
+  (updatedCat.picture === oldCat.picture)){
+    throw "No changes to cat were made."
+  }
+
+  let id = new ObjectId(catId);
+
+  const updatedInfo = await catCollection.updateOne({_id: id}, {$set: updatedCat});
+
+  return await getCatById(catId);
+
+};
+
+module.exports = { getCatById, getAllcats, addCat, removeCat, updateCat};
