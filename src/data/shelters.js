@@ -10,7 +10,7 @@ const exportedMethods = {
         shelterName,
         city,
         state,
-        killShelter
+        killShelter,
     ){
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
