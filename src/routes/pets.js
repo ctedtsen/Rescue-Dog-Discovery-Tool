@@ -32,13 +32,4 @@ router.get('/:petid', async (req, res) => {
     return res.render('pet/index', {title: "Pet", pet: pet, petType: petType})
 })
 
-router.get('/:id', async (req, res) => {
-    try{
-        const shelter = await sheltersData.getShelterById(req.params.id);
-        res.render('shelter/single', {title: "Name of Shelter: ", shelter: shelter});
-    } catch(e){
-        res.status(500).json({error: e});
-    }
-});
-
 module.exports = router;
