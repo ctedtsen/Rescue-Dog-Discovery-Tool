@@ -2,6 +2,8 @@ const mongoCollections = require("../config/mongoCollections");
 const reviews = mongoCollections.reviews;
 const shelters = mongoCollections.shelters;
 const sheltersFunctions = require('./shelters');
+const users = mongoCollections.users;
+const usersFunctions = require('./users');
 const {ObjectId} = require('mongodb');
 const helpers = require('../helpers');
 
@@ -11,25 +13,30 @@ const exportedMethods = {
         review,
         rating,
         shelterId,
-        //reviewerId (users)
+        username
     ) {
         reviewerName = helpers.checkPersonName(reviewerName);
         review = helpers.checkString(review, "review");
         rating = helpers.checkRating(rating);
         shelterId = helpers.checkId(shelterId, "shelterId");
-        //reviewerId = helpers.checkId(reviewerId, "reviewerId"); (users)
-
-        //check reviewer does not already have a review (users)
 
         const reviewCollection = await reviews();
 
         const newReview = {
             reviewerName: reviewerName,
             review: review,
-            rating: rating
+            rating: rating,
+            username: username
         };
 
         let shelter = await sheltersFunctions.getShelterById(shelterId);
+
+        let temp = shelter.reviews;
+        temp.forEach(element => {
+            if(element.username === username){
+                throw "Error: user already has a review for this shelter";
+            }
+        });
 
         let reviews_list = [...shelter.reviews, newReview];
         
@@ -47,12 +54,25 @@ const exportedMethods = {
                 reviews: reviews_list,
                 rating: currentRating
             }}
-        )
-
-        //add review to users list of reviews
+        );
 
         if(updatedShelters.modifiedCount === 0){
             throw "Error: not able to update movie (add review) successfully";
+        };
+
+        const userCollection = await users();
+        let user = await usersFunctions.findByUsername(username);
+    
+        let user_reviews_list = [...user.shelterReviews, newReview];
+        const updatedUsers = await userCollection.updateOne(
+            {username: username},
+            {$set: {
+                shelterReviews: user_reviews_list
+            }}
+        );
+
+        if(updatedUsers.modifiedCount === 0){
+            throw "Error: not able to update user (add review) successfully"
         }
 
         const newInsertInformation = await reviewCollection.insertOne(newReview);
@@ -78,7 +98,8 @@ const exportedMethods = {
         const reviewCollection = await reviews();
 
         const review = await this.getReviewById(reviewId);
-        
+        let username = review.username;
+
         if(!review){
             throw "Error: no review with that id (delete review)";
         }
@@ -90,8 +111,8 @@ const exportedMethods = {
 
         const shelter_list = await sheltersFunctions.getAllShelters();
 
-        contains_review = false;
-        the_shelter = undefined;
+        let contains_review = false;
+        let the_shelter = undefined;
         
         shelter_list.forEach(shelter => {
             let temp = shelter.reviews
@@ -138,7 +159,40 @@ const exportedMethods = {
             throw "Error: not able to update shelter successfully (deletReview)"
         }
 
-        //remove review from users list of reviews
+        const userCollection = await users();
+        let user = await usersFunctions.findByUsername(username);
+
+        let user_reviews_list = user.shelterReviews;
+
+        let user_contains_review = false;
+
+        let index = 0;
+        let review_index = 0;
+        
+        user_reviews_list.forEach(review => {
+            if(review.username === username){
+                user_contains_review = true;
+                review_index = index;
+            }
+            index = index + 1;
+        });
+
+        if(user_contains_review === false){
+            throw "Error: review not found";
+        }
+        
+        user_reviews_list.splice(reviewIndex, 1);
+
+        const updatedUsers = await userCollection.updateOne(
+            {username: username},
+            {$set: {
+                shelterReviews: user_reviews_list
+            }}
+        );
+
+        if(updatedUsers.modifiedCount === 0){
+            throw "Error: not able to update user successfully (deletReview)"
+        }
 
         return await sheltersFunctions.getShelterById(the_shelter._id);
     },

@@ -396,6 +396,11 @@ module.exports = {
     if(!rating){
       throw "Error: rating must be provided";
     }
+    rating = this.checkString(rating);
+    rating = Number(rating);
+    if(isNaN(rating)){
+      throw "Error: rating is not a number";
+    }
     if(typeof rating !== "number"){
       throw "Error: rating must be of type number";
     }
