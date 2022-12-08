@@ -1,8 +1,10 @@
 const sheltersRoutes = require('./shelters');
+const petRoutes = require('./pets');
 const path = require("path");
 
 const constructorMethod = (app) => {
   app.use('/shelters', sheltersRoutes);
+  app.use('/petdetails', petRoutes);
   app.use('/', (req, res) => {
     res.sendFile(path.resolve("static/about.html"));
   });
