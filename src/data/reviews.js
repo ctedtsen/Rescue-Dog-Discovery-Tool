@@ -157,7 +157,7 @@ const exportedMethods = {
         )
 
         if(updatedShelters.modifiedCount === 0){
-            throw "Error: not able to update shelter successfully (deletReview)"
+            throw "Error: not able to update shelter successfully (deleteReview)"
         }
 
         const userCollection = await users();
