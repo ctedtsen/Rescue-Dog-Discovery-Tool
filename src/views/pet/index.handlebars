@@ -1,0 +1,34 @@
+<h1>Meet: {{pet.name}}!</h1>
+<div class="pet-img-div">
+    <img class="pet-img" src="../../{{pet.picture}}" alt="{{pet.name}}, a rescue {{petType}} at this shelter.">
+</div>
+<div class="pet-info-div">
+<dl class="pet-info">
+        <dt>Birthday</dt>
+        <dd>{{pet.birthday}}</dd>
+        <dt>Age</dt>
+        <dd>{{pet.age}}</dd>
+        {{#if pet.breed}}
+        <dt>Breed</dt>
+        <dd>{{pet.breed}}</dd>
+        {{/if}}
+        <dt>Height</dt>
+        <dd>{{pet.height}}</dd>
+        <dt>Weight</dt>
+        <dd>{{pet.weight}}</dd>
+        <dt>Sex</dt>
+        <dd>{{pet.sex}}</dd>
+        {{#if pet.specialNeeds.length}}
+        <dt>Special Needs</dt>
+        <dd>{{pet.specialNeeds}}</dd>
+        {{/if}}
+        <dt>Likes</dt>
+        <dd>{{pet.likes}}</dd>
+         <dt>Comments</dt>
+        {{#if pet.comments.length}}
+        <dd>{{pet.comments}}</dd>
+        {{else}}
+        <dd>No comments yet</dd>
+        {{/if}}
+    </dl>
+</div>
