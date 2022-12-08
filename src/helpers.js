@@ -345,6 +345,7 @@ module.exports = {
       throw "Error: animalType must be dog or cat";
     }
   },
+
   getHashedPassword: (myPlaintextPassword) => {
     const saltRounds = 10;
     return new Promise((resolve, reject) => {
@@ -353,9 +354,8 @@ module.exports = {
         resolve(hash);
       });
     })
-
-
   },
+
   comparePassword: (myPlaintextPassword, hash) => {
     return new Promise((resolve, reject) => {
       bcrypt.compare(myPlaintextPassword, hash, function (err, result) {
@@ -363,5 +363,46 @@ module.exports = {
         resolve(result);
       });
     });
+  },
+
+  checkPersonName(personName){
+    personName = this.checkString(personName, "personName");
+
+    let numSpaces = 0;
+    for(let i = 0; i < personName.length; i++){
+      if(personName[i] === ' '){
+        numSpaces = numSpaces + 1;
+      }
+    }
+
+    if(numSpaces !== 1){
+      throw "Error: incorrect format for name";
+    }
+
+    let name = personName.split(' ');
+    let firstName = name[0];
+    let lastName = name[1];
+
+    firstName = this.checkName(firstName);
+    lastName = this.checkName(lastName);
+
+    let fullName = firstName + " " + lastName
+
+    return fullName;
+  }, 
+
+  checkRating(rating){
+    if(!rating){
+      throw "Error: rating must be provided";
+    }
+    if(typeof rating !== "number"){
+      throw "Error: rating must be of type number";
+    }
+    if(rating < 1 || rating > 5){
+      throw "Error: rating must be a number 1 to 5";
+    }
+
+    return rating;
   }
+
 };

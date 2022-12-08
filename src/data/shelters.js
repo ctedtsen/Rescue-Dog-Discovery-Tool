@@ -10,7 +10,7 @@ const exportedMethods = {
         shelterName,
         city,
         state,
-        killShelter
+        killShelter,
     ){
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
@@ -130,7 +130,7 @@ const exportedMethods = {
                 throw "Error: pet with provided id is already added"
             }
         }
-
+        
         const newPetList = [...shelter.pets, dogId];
         const numberOfPets = newPetList.length;
       
