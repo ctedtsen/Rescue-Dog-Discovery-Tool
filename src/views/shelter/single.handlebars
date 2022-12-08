@@ -1,35 +1,33 @@
-<h1>{{title}}: {{shelter.shelterName}}</h1>
-<div>
-    <a href="/about">Home</a>
-    <a href="/shelters">Shelters</a>
-</div>
-<dl>
-        <dt>City</dt>
-        <dd>{{this.city}}</dd>
-        <dt>State</dt>
-        <dd>{{this.state}}</dd>
-        <dt>Number of Pets</dt>
-        <dd>{{this.numberPets}}</dd>
-        <dt>Rating</dt>
-        <dd>{{this.rating}}</dd>
-    </dl>
+<h1>{{title}} {{shelter.shelterName}}</h1>
+<div class="shelters-info">
+  <dl>
+    <dt>City</dt>
+    <dd>{{shelter.city}}</dd>
+    <dt>State</dt>
+    <dd>{{shelter.state}}</dd>
+    <dt>Number of Pets</dt>
+    <dd>{{shelter.numberPets}}</dd>
+    <dt>Rating</dt>
+    <dd>{{shelter.rating}}</dd>
+  </dl>
 
-{{#if shelter.reviews.length}}
+  {{#if shelter.reviews.length}}
     <h3>Reviews</h3>
     <ul>
-        {{#each shelter.reviews}}
-            <li>{{this}}</li>
-        {{/each}}
+      {{#each shelter.reviews}}
+        <li>{{this}}</li>
+      {{/each}}
     </ul>
-{{else}}
+  {{else}}
     <p>No reviews yet</p>
-{{/if}}
+  {{/if}}
 
-{{#if shelter.pets.length}}
+  {{#if shelter.pets.length}}
     <h3>Pets</h3>
     <ul>
-        {{#each shelter.pets}}
-            <li>{{this}}</li>
-        {{/each}}
+      {{#each shelter.pets}}
+        <li><a href="/petdetails/{{this.id}}">{{this.name}}</a></li>
+      {{/each}}
     </ul>
-{{/if}}
+  {{/if}}
+</div>

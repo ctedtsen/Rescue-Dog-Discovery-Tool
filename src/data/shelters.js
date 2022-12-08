@@ -130,8 +130,8 @@ const exportedMethods = {
                 throw "Error: pet with provided id is already added"
             }
         }
-        
-        const newPetList = [...shelter.pets, dogId];
+
+        const newPetList = [...shelter.pets, {id: dogId, name: dog.name}];
         const numberOfPets = newPetList.length;
       
         const shelterCollection = await shelters();
@@ -163,7 +163,7 @@ const exportedMethods = {
             }
         }
 
-        const newPetList = [...shelter.pets, catId];
+        const newPetList = [...shelter.pets, {id: catId, name: cat.name}];
         const numberOfPets = newPetList.length;
       
         const shelterCollection = await shelters();
