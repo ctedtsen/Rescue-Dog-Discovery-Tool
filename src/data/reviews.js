@@ -98,11 +98,12 @@ const exportedMethods = {
         const reviewCollection = await reviews();
 
         const review = await this.getReviewById(reviewId);
-        let username = review.username;
 
         if(!review){
             throw "Error: no review with that id (delete review)";
         }
+
+        let username = review.username;
 
         const deletionInfo = await reviewCollection.deleteOne({_id: ObjectId(reviewId)});
         if(deletionInfo.deletedCount === 0){

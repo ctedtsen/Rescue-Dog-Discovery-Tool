@@ -407,6 +407,9 @@ module.exports = {
     if(rating < 1 || rating > 5){
       throw "Error: rating must be a number 1 to 5";
     }
+    if(rating % 1 !== 0){
+      throw "Error: rating must be an integer";
+    }
 
     return rating;
   }
