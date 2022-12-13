@@ -42,7 +42,7 @@ const exportedMethods = {
     },
 
     async getShelterById (id){
-        id = helpers.checkId(id, "id");
+        id = helpers.checkId(id, "shelterId");
     
         const shelterCollection = await shelters();
         const shelter = await shelterCollection.findOne({_id: ObjectId(id)});
@@ -55,7 +55,7 @@ const exportedMethods = {
     },
 
     async removeShelter (id) {
-        id = helpers.checkId(id);
+        id = helpers.checkId(id, "shelterId");
 
         const shelter = await this.getShelterById(id);
 
@@ -76,7 +76,7 @@ const exportedMethods = {
         state,
         killShelter
     ){
-        id = helpers.checkId(id, "id");
+        id = helpers.checkId(id, "shelterId");
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
         state = helpers.checkString(state, "state");
