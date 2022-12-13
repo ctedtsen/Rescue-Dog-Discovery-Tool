@@ -13,7 +13,7 @@ const exportedMethods = {
         petId,
         animalType
     ){
-        commenterName = helpers.checkName(commenterName);
+        commenterName = helpers.checkPersonName(commenterName);
         comment = helpers.checkString(comment, "comment");
         petId = helpers.checkId(petId, "petId");
         animalType = helpers.checkAnimalType(animalType);
