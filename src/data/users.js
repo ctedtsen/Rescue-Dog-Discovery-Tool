@@ -29,10 +29,32 @@ const createUser = async (
     if (result.length > 0) {
         throw { message: "Already a user with the name.", errorCode: 400 }
     }
-    return await userCollection.insertOne({
-        username: String(username).toLowerCase(),
-        hashedPassword, city, state: helper.checkState(state), admin, savedPets, shelterReviews, comments
-    });
+    let newUser = {
+        username: username, 
+        password: hashedPassword,
+        city: city, 
+        state: state, 
+        admin: false, 
+        savedPets: [], 
+        shelterReviews: [],
+        comments: []
+    }
+    const insertInfo = await userCollection.insertOne(newUser);
+    if(!insertInfo.acknowledged || !insertInfo.insertedId){
+        throw "Error: could not add user";
+    }
+    let user = findByUsername(username);
+    return user;
+};
+
+const findByUsername = async (username) => {
+    const userCollection = await users();
+    const user = await userCollection.findOne({username: username});
+    //console.log("find by username" + await user)
+    if(!user){
+        throw "Error: user not found";
+    }
+    return user;
 };
 
 const addUserComment = async (userId, commentId) => {
@@ -101,7 +123,8 @@ module.exports = {
     createUser,
     checkUser,
     addShelterReview,
-    addUserComment
+    addUserComment,
+    findByUsername
 
 };
 
