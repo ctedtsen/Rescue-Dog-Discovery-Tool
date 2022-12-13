@@ -56,9 +56,9 @@ if(removeShelterForm){
         if(id.trim()){
         errorDiv.innerHTML = "";
 
-        addShelterForm.submit();
-        addShelterForm.reset();
-        addShelterForm.focus();
+        removeShelterForm.submit();
+        removeShelterForm.reset();
+        removeShelterForm.focus();
         } else{
         errorDiv.innerHTML = "";
         if(!id.trim()){

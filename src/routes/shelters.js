@@ -9,15 +9,15 @@ router.get('/add', async (req, res) => {
 
 router.post('/add', async(req, res) => {
     let shelterName = req.body.shelterName;
-    let state = req.body.shelterCity;
-    let city = req.body.shelterState;
+    let state = req.body.shelterState;
+    let city = req.body.shelterCity;
     let killShelter = req.body.killShelter
 
     try{
         if(killShelter === "on"){
-            await sheltersData.addShelter(shelterName, state, city, true);
+            await sheltersData.addShelter(shelterName, city, state, true);
         } else{
-            await sheltersData.addShelter(shelterName, state, city, false);
+            await sheltersData.addShelter(shelterName, city, state, false);
         }
     } catch(e) {
         res.render('shelter/add', {title: "Add a Shelter error"});
