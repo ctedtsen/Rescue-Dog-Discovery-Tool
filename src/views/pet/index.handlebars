@@ -32,3 +32,21 @@
         {{/if}}
     </dl>
 </div>
+
+<h1>Add a Comment!</h1>
+<div id="error" class="error" hidden>I'm an error</div>
+<form method="post" id="addComment">
+    <label id="nameLabel">
+        Commenter Name
+        <input type="text" id="commenterName" name="commenterName" placeholder="Commenter Name"/>
+    </label>
+    <label id="commentLabel">
+        City
+        <input type="text" id="comment" name="comment" placeholder="Comment"/>
+    </label>
+    <label id="animalTypeLabel">
+        Dog or Cat?
+        <input type="text" id="animalType" name="Animal Type" placeholder="Dog/Cat"/> 
+    </label>
+    <button type="submit">Add Comment</button>
+</form>
