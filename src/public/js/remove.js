@@ -28,7 +28,6 @@ let errorFound = (error, shelterVarInput, shelterVarLabel, errorDiv) => {
 const removeShelterForm = document.getElementById('removeShelter');
 
 if(removeShelterForm){
-    console.log("hi");
     const idElement = document.getElementById('shelterID');
     const idLabel = document.getElementById('idFormLabel');
     const errorDiv = document.getElementById("removeerror");
@@ -39,31 +38,31 @@ if(removeShelterForm){
         let id = undefined;
         
         try{
-        id = idElement.value;
+          id = idElement.value;
         } catch(e){
-        errorDiv.hidden = false;
-        let errMsg = document.createElement("p");
-        errMsg.className = "error-msg";
-        errMsg.innerHTML = `${error}`;
-        errorDiv.appendChild("error");
+          errorDiv.hidden = false;
+          let errMsg = document.createElement("p");
+          errMsg.className = "error-msg";
+          errMsg.innerHTML = `${error}`;
+          errorDiv.appendChild("error");
         }
         try{
-        id = checkId(id, "shelterId");
+          id = checkId(id, "shelterId");
         } catch(e){
-        errorDiv.innerHTML = "";
-        errorFound(e, idElement, idLabel, errorDiv);
+          errorDiv.innerHTML = "";
+          errorFound(e, idElement, idLabel, errorDiv);
+          return;
         }
         if(id.trim()){
-        errorDiv.innerHTML = "";
+          errorDiv.innerHTML = "";
 
-        removeShelterForm.submit();
-        removeShelterForm.reset();
-        removeShelterForm.focus();
+          removeShelterForm.submit();
         } else{
-        errorDiv.innerHTML = "";
-        if(!id.trim()){
-            errorFound("Shelter ID cannot be empty", idElement, idLabel, errorDiv);
-        }
+          errorDiv.innerHTML = "";
+          if(!id.trim()){
+              errorFound("Shelter ID cannot be empty", idElement, idLabel, errorDiv);
+              return;
+          }
         }
     });
 }
