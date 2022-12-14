@@ -1,8 +1,8 @@
 <h1>{{title}}</h1>
 <h3>Add a Shelter</h3>
 <div id="error" class="error" hidden>I'm an error</div>
-<form action="/shelters" id="addShelter" method="POST">
-    <label id="nameFormLabel">
+<form method="post" id="addShelter">
+    <label id="shelterNameLabel">
         Shelter Name
         <input type="text" id="shelterName" name="shelterName" placeholder="Shelter Name"/>
     </label>
@@ -19,13 +19,4 @@
         <input type="checkbox" id="killShelter" name="killShelter"/> 
     </label>
     <button type="submit">Add Shelter</button>
-    <script src=".../public/js/main.js"></script>
-</form>
-<h3>Remove a Shelter</h3>
-<form action="/shelters" method="POST">
-    <label>
-        Shelter Id
-        <input type="text" name="shelterId" placeholder="Shelter ID"/>
-    </label>
-    <button type="submit">Delete Shelter</button>
 </form>
