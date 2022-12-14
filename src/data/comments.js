@@ -64,6 +64,21 @@ const exportedMethods = {
         return this.getComment(id, animalType);
     },
 
+    async getAllComments(petId, animalType){
+        petId = helpers.checkId(petId, "petId");
+        animalType = helpers.checkAnimalType(animalType);
+
+        if (animalType === "dog"){
+            const dog = await dogsFunctions.getDogById(petId);
+            const comment_array = dog.comments;
+            return comment_array;
+        } else {
+            const cat = await catsFunctions.getCatById(petId);
+            const comment_array = cat.comments;
+            return comment_array;
+        }
+    },
+
     async getComment (commentId, animalType){
         commentId = helpers.checkId(commentId, "commentId");
         animalType = helpers.checkAnimalType(animalType);
@@ -111,7 +126,7 @@ const exportedMethods = {
         return comment;
     },
 
-    async removeComment(commentId, animalType){
+    async removeComment(commentId, animalType, petId){
         commentId = helpers.checkId(commentId, "commentId");
         animalType = helpers.checkAnimalType(animalType);
 
@@ -134,7 +149,7 @@ const exportedMethods = {
                         wanted_comment_list = comment_list;
                     }
                 })
-            });
+            }); 
 
             if(wanted_comment === undefined){
                 throw "Error: no comment in dogs with that id"

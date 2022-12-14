@@ -1,4 +1,5 @@
 <h1>Meet: {{pet.name}}!</h1>
+<h1>{{title}}</h1>
 <div class="pet-img-div">
     <img class="pet-img" src="../../{{pet.picture}}" alt="{{pet.name}}, a rescue {{petType}} at this shelter.">
 </div>
@@ -24,29 +25,32 @@
         {{/if}}
         <dt>Likes</dt>
         <dd>{{pet.likes}}</dd>
-         <dt>Comments</dt>
-        {{#if pet.comments.length}}
-        <dd>{{pet.comments}}</dd>
-        {{else}}
-        <dd>No comments yet</dd>
-        {{/if}}
     </dl>
 </div>
 
-<h1>Add a Comment!</h1>
-<div id="error" class="error" hidden>I'm an error</div>
+<div id="comment-area"></div>
+    {{#if pet.comments.length}}
+        <h3>Comments</h3>
+        <ul>
+        {{#each pet.comments}}
+            <p>{{this.name}}: {{this.comment}}</p>
+        {{/each}}
+        </ul>
+    {{else}}
+        <p>No comments yet</p>
+    {{/if}}
+</div>
+<div id="diverror"></div>
 <form method="post" id="addComment">
     <label id="nameLabel">
         Commenter Name
         <input type="text" id="commenterName" name="commenterName" placeholder="Commenter Name"/>
     </label>
     <label id="commentLabel">
-        City
+        Comment
         <input type="text" id="comment" name="comment" placeholder="Comment"/>
-    </label>
-    <label id="animalTypeLabel">
-        Dog or Cat?
-        <input type="text" id="animalType" name="Animal Type" placeholder="Dog/Cat"/> 
     </label>
     <button type="submit">Add Comment</button>
 </form>
+
+<a href="/petdetails/{{pet._id}}/delete_comment">Delete comment here</a>
