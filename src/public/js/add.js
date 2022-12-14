@@ -172,34 +172,38 @@ if(addShelterForm){
     } catch(e){
       errorDiv.innerHTML = "";
       errorFoundAdd(e, nameElement, nameLabel, errorDiv);
+      return;
     }
     try{
       checkStringAdd(city, "City");
     } catch(e){
       errorDiv.innerHTML = "";
       errorFoundAdd(e, cityElement, cityLabel, errorDiv);
+      return;
     }
     try{
       checkState(state, "State");
     } catch(e){
       errorDiv.innerHTML = "";
       errorFoundAdd(e, stateElement, stateLabel, errorDiv);
+      return;
     }
 
     if(name.trim() && city.trim() && state.trim()){
       errorDiv.innerHTML = "";
 
       addShelterForm.submit();
-      addShelterForm.reset();
-      addShelterForm.focus()
     } else{
       errorDiv.innerHTML = "";
       if(!name.trim()){
         errorFoundAdd("Shelter Name cannot be empty", nameElement, nameLabel, errorDiv);
+        return;
       } else if(!city.trim()){
         errorFoundAdd("City cannot be empty", cityElement, cityLabel, errorDiv);
+        return;
       } else if(!state.trim()){
         errorFoundAdd("State cannot be empty", stateElement, stateLabel, errorDiv);
+        return;
       }
     }
   });
