@@ -1,9 +1,7 @@
 (function ($) {
-    var newCommentForm = $('#addComment');
+    var newCommentForm = $('#addComment'),
         newNameInput = $('#commenterName'),
-        newCommentInput = $('#comment'),
-        errorDiv = $('#error')
-        commentArea = $('#comment-area');
+        newCommentInput = $('#comment');
 
     newCommentForm.submit(function (event) {
         event.preventDefault();
@@ -13,7 +11,8 @@
         try{
             newName = checkPersonName(newName);
         } catch(e) {
-            $("#diverror").html("Error: Commenter Name must be provided");
+            $("#diverror").html(e);
+            return;
         }
 
         var newComment = newCommentInput.val();
@@ -21,6 +20,7 @@
             newComment = checkString(newComment, "comment");
         } catch(e) {
             $("#diverror").html(e);
+            return;
         }
 
         if(newName.trim() && newComment.trim()){
@@ -41,14 +41,14 @@
                 }
             }
 
-            console.log(requestConfig);
-
             $.ajax(requestConfig);
         } else {
             if(!newName.trim()){
                 $("#diverror").html("Error: Name cannot be empty");
+                return;
             } else if(!newComment.trim()){
                 $("#diverror").html("Error: Comment cannot be empty");
+                return;
             }
         }
     })

@@ -27,18 +27,16 @@
         <dd>{{pet.likes}}</dd>
     </dl>
 </div>
-
-<div id="comment-area"></div>
-    {{#if pet.comments.length}}
-        <h3>Comments</h3>
-        <ul>
-        {{#each pet.comments}}
-            <p>{{this.name}}: {{this.comment}}</p>
-        {{/each}}
-        </ul>
-    {{else}}
-        <p>No comments yet</p>
-    {{/if}}
+{{#if pet.comments.length}}
+    <h3>Comments</h3>
+    <ul>
+    {{#each pet.comments}}
+        <p>{{this.name}}: {{this.comment}}</p>
+    {{/each}}
+    </ul>
+{{else}}
+    <p>No comments yet</p>
+{{/if}}
 </div>
 <div id="diverror"></div>
 <form method="post" id="addComment">
