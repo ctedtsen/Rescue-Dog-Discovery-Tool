@@ -99,10 +99,9 @@ router.post('/:id', async (req, res) => {
     try{
         await reviewsData.addReview(xss(req.body.reviewerName), xss(req.body.review), 
             (xss(req.body.rating)), shelterId, xss(req.body.username));
-            return res.render('shelter/single', {title: "Name of Shelter: ", shelter: shelter});
+            return res.status(200).render('shelter/single', {title: "Name of Shelter: ", shelter: shelter});
     } catch(e) {
-        console.log(e);
-        res.render('shelter/single', {title: "Name of Shelter: ", error: "User already has review"});
+        res.json({error: e});
         return;
     }
 });
