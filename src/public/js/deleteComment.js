@@ -1,11 +1,11 @@
-const removeShelterForm = document.getElementById('removeShelter');
+const deleteCommentForm = document.getElementById('removeComment');
 
-if(removeShelterForm){
-    const idElement = document.getElementById('shelterID');
-    const idLabel = document.getElementById('idFormLabel');
-    const errorDiv = document.getElementById("removeerror");
+if(deleteCommentForm){
+    const idElement = document.getElementById('commentID');
+    const idLabel = document.getElementById('commentIdFormLabel');
+    const errorDiv = document.getElementById("error");
 
-    removeShelterForm.addEventListener('submit', (event) => {
+    deleteCommentForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         let id = undefined;
@@ -29,11 +29,11 @@ if(removeShelterForm){
         if(id.trim()){
           errorDiv.innerHTML = "";
 
-          removeShelterForm.submit();
+          deleteCommentForm.submit();
         } else{
           errorDiv.innerHTML = "";
           if(!id.trim()){
-              errorFound("Shelter ID cannot be empty", idElement, idLabel, errorDiv);
+              errorFound("Comment ID cannot be empty", idElement, idLabel, errorDiv);
               return;
           }
         }
