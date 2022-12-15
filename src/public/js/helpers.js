@@ -161,9 +161,9 @@ let checkPersonName = (personName) => {
         numSpaces = numSpaces + 1;
       }
     }
-
+ 
     if(numSpaces !== 1){
-      throw "Error: incorrect format for name";
+      throw "Error: incorrect format for name?";
     }
 
     let name = personName.split(' ');
@@ -198,7 +198,7 @@ let errorFound = (error, varInput, varLabel, errorDiv) => {
   errMsg.className = "error-msg";
   errMsg.innerHTML = `${error}`;
   errorDiv.appendChild(errMsg);
-  //varLabel.className = "error";
+  varLabel.className = "error";
   varInput.focus();
   varInput.className = "inputClass";
   return;
