@@ -11,7 +11,7 @@
         try{
             newName = checkPersonName(newName);
         } catch(e) {
-            $("#diverror").html("Error: Commenter Name must be provided");
+            $("#diverror").html(e);
             return;
         }
 
@@ -19,7 +19,7 @@
         try{
             newComment = checkString(newComment, "comment");
         } catch(e) {
-            $("#diverror").html("Error: " + e);
+            $("#diverror").html(e);
             return;
         }
 
