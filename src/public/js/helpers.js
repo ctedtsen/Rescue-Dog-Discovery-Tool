@@ -163,7 +163,7 @@ let checkPersonName = (personName) => {
     }
  
     if(numSpaces !== 1){
-      throw "Error: incorrect format for name?";
+      throw "Error: incorrect format for name";
     }
 
     let name = personName.split(' ');
