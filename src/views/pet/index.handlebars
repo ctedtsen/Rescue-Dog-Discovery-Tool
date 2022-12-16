@@ -1,0 +1,52 @@
+<h1>Meet: {{pet.name}}!</h1>
+<div class="pet-img-div">
+    <img class="pet-img" src="../../{{pet.picture}}" alt="{{pet.name}}, a rescue {{petType}} at this shelter.">
+</div>
+<div class="pet-info-div">
+<dl class="pet-info">
+        <dt>Birthday</dt>
+        <dd>{{pet.birthday}}</dd>
+        <dt>Age</dt>
+        <dd>{{pet.age}}</dd>
+        {{#if pet.breed}}
+        <dt>Breed</dt>
+        <dd>{{pet.breed}}</dd>
+        {{/if}}
+        <dt>Height</dt>
+        <dd>{{pet.height}}</dd>
+        <dt>Weight</dt>
+        <dd>{{pet.weight}}</dd>
+        <dt>Sex</dt>
+        <dd>{{pet.sex}}</dd>
+        {{#if pet.specialNeeds.length}}
+        <dt>Special Needs</dt>
+        <dd>{{pet.specialNeeds}}</dd>
+        {{/if}}
+        <dt>Likes</dt>
+        <dd>{{pet.likes}}</dd>
+    </dl>
+</div>
+{{#if pet.comments.length}}
+    <h3>Comments</h3>
+    <ul>
+    {{#each pet.comments}}
+        <li>{{this.name}}: {{this.comment}}</li>
+    {{/each}}
+    </ul>
+{{else}}
+    <p>No comments yet</p>
+{{/if}}
+<div id="diverror"></div>
+<form method="post" id="addComment">
+    <label id="nameLabel">
+        Commenter Name
+        <input type="text" id="commenterName" name="commenterName" placeholder="Commenter Name"/>
+    </label>
+    <label id="commentLabel">
+        Comment
+        <input type="text" id="comment" name="comment" placeholder="Comment"/>
+    </label>
+    <button type="submit">Add Comment</button>
+</form>
+
+<a href="/petdetails/{{pet._id}}/delete_comment">Delete comment here</a>

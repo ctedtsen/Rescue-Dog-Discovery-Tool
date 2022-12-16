@@ -1,0 +1,14 @@
+<h1>{{title}}</h1>
+<div class="shelters-info">
+  {{#each shelters}}
+    <h4><a href="/shelters/{{_id}}">{{this.shelterName}}</a></h4>
+    <dl>
+      <dt>City</dt>
+      <dd>{{this.city}}</dd>
+      <dt>State</dt>
+      <dd>{{this.state}}</dd>
+      <dt>Number of Pets</dt>
+      <dd>{{this.numberPets}}</dd>
+    </dl>
+  {{/each}}
+</div>

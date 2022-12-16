@@ -10,7 +10,7 @@ const exportedMethods = {
         shelterName,
         city,
         state,
-        killShelter
+        killShelter,
     ){
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
@@ -42,7 +42,7 @@ const exportedMethods = {
     },
 
     async getShelterById (id){
-        id = helpers.checkId(id, "id");
+        id = helpers.checkId(id, "shelterId");
     
         const shelterCollection = await shelters();
         const shelter = await shelterCollection.findOne({_id: ObjectId(id)});
@@ -55,7 +55,7 @@ const exportedMethods = {
     },
 
     async removeShelter (id) {
-        id = helpers.checkId(id);
+        id = helpers.checkId(id, "shelterId");
 
         const shelter = await this.getShelterById(id);
 
@@ -76,7 +76,7 @@ const exportedMethods = {
         state,
         killShelter
     ){
-        id = helpers.checkId(id, "id");
+        id = helpers.checkId(id, "shelterId");
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
         state = helpers.checkString(state, "state");
@@ -107,10 +107,20 @@ const exportedMethods = {
     async getAllShelters(){
         const all_shelters = await shelters();
         const shelterList = await all_shelters.find({}).toArray();
-
+        
         if(!shelterList){
             throw "Not able to get shelters";
         }
+
+        shelterList.sort(function (sheltera, shelterb) {
+            if(sheltera.shelterName.toLowerCase() < shelterb.shelterName.toLowerCase()){
+                return -1;
+            }
+            if(sheltera.shelterName.toLowerCase() > shelterb.shelterName.toLowerCase()){
+                return 1;
+            }
+            return 0;
+        });
 
         shelterList.forEach(shelter => {
             shelter._id = shelter._id.toString();
@@ -131,7 +141,7 @@ const exportedMethods = {
             }
         }
 
-        const newPetList = [...shelter.pets, dogId];
+        const newPetList = [...shelter.pets, {id: dogId, name: dog.name}];
         const numberOfPets = newPetList.length;
       
         const shelterCollection = await shelters();
@@ -163,7 +173,7 @@ const exportedMethods = {
             }
         }
 
-        const newPetList = [...shelter.pets, catId];
+        const newPetList = [...shelter.pets, {id: catId, name: cat.name}];
         const numberOfPets = newPetList.length;
       
         const shelterCollection = await shelters();

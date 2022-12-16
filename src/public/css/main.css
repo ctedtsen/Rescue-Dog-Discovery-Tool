@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: rgb(191, 239, 255);
+}
+.topnav {
+  font-size: 17px;
+}
+
+.login-topnav {
+  float: right;
+}
+
+.welcome-msg {
+  font-family: "Marcellus", sans-serif;
+}
+.about-msg {
+  font-family: "Libre baskerville", sans-serif;
+}
+.about-msg {
+  text-align: center;
+  padding: 0px 25px 0px 25px;
+}
+.div-bg {
+  width: 100%;
+  height: 190px;
+  background-image: url("../images/dog-prints.webp");
+  background-repeat: repeat-x;
+}
+footer {
+  margin-top: auto;
+  flex: 0 0 50px;
+}
+
+.pet-img {
+  max-width: 20%;
+  max-height: 30%;
+}
+
+.pet-img-div {
+  text-align: center;
+}
+
+.pet-info-div {
+  text-align: center;
+  margin-left: 38%;
+}
+
+.pet-info {
+  max-width: 40%;
+  overflow: hidden;
+}
+.pet-info dt {
+  float: left;
+  width: 30%;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
+dt:after {
+  content: ":";
+}
+.pet-info dd {
+  float: right;
+  text-align: left;
+  width: 35%;
+}
+
+.shelters-info dl {
+  clear: left;
+}
+.shelters-info dt {
+  float: left;
+  clear: left;
+  width: 150px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.shelters-info dd {
+  margin: 0 0 0 110px;
+  padding: 0 0 0.5em 0;
+}
+
+.shelters-info h4 {
+  float: left;
+  clear: left;
+}
