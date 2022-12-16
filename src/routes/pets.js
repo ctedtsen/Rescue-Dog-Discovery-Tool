@@ -9,10 +9,11 @@ const xss = require('xss');
 
 router.post('/:petid', async function (request, response){
     let petId = request.params.petid;
+    let loggedIn = helpers.isAuthenticated(request);
     try {
         petId = helpers.checkId(petId, "id for rescue pet");
     }catch(e) {
-        return response.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid"});
+        return response.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid", loggedIn: loggedIn});
     }
     let pet;
     let petNotFound = false;
@@ -28,26 +29,27 @@ router.post('/:petid', async function (request, response){
             pet = await catData.getCatById(petId);
             petType = "cat";
         }catch{
-            return response.status(404).render('pet/index', {title: "pet error", error: "No pet found with that id"})
+            return response.status(404).render('pet/index', {title: "pet error", error: "No pet found with that id", loggedIn: loggedIn})
         }
     }
 
     try{
         await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType);
     } catch(e) {
-        response.render('pet/index', {title: "Pet error", pet: pet, petType: petType})
+        response.render('pet/index', {title: "Pet error", pet: pet, petType: petType, loggedIn: loggedIn})
         return;
     }
 
-    response.render('pet/index', {title: "Pet", pet: pet, petType: petType})
+    response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn})
 });
 
 router.get('/:petid', async (req, res) => {
     let petId = req.params.petid;
+    let loggedIn = helpers.isAuthenticated(req);
     try {
         petId = helpers.checkId(petId, "id for rescue pet");
     }catch(e) {
-        return res.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid"});
+        return res.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid", loggedIn: loggedIn});
     }
     let pet;
     let petNotFound = false;
@@ -63,30 +65,35 @@ router.get('/:petid', async (req, res) => {
             pet = await catData.getCatById(petId);
             petType = "cat";
         }catch{
-            return res.status(404).render('pet/index', {title: "pet", error: "No pet found with that id"})
+            return res.status(404).render('pet/index', {title: "pet", error: "No pet found with that id", loggedIn: loggedIn})
         }
     }
-    return res.render('pet/index', {title: "Pet", pet: pet, petType: petType})
+    return res.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn})
 })
 
 router.get('/:petid/delete_comment', async(req, res) => {
     let petId = req.params.petid;
+    let loggedIn = helpers.isAuthenticated(req);
+    if(!loggedIn){
+        return res.redirect('/');
+    }
     try {
         petId = helpers.checkId(petId, "id for rescue pet");
     }catch(e) {
-        return res.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid"});
+        return res.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid", loggedIn: loggedIn});
     }
-    res.render('pet/deletecomment', {title: "Remove Comment"});
+    res.render('pet/deletecomment', {title: "Remove Comment", loggedIn: loggedIn});
     return;
 });
 
 router.post('/:petid/delete_comment', async(req, res) => {
     let petId = req.params.petid;
     let commentId = req.body.commentID;
+    let loggedIn = helpers.isAuthenticated(req);
     try {
         petId = helpers.checkId(petId, "id for rescue pet");
     }catch(e) {
-        return res.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid"});
+        return res.status(400).render('pet/index', {title: "Pet", error: "Pet id is not valid", loggedIn: loggedIn});
     }
     let pet;
     let petNotFound = false;
@@ -102,19 +109,18 @@ router.post('/:petid/delete_comment', async(req, res) => {
             pet = await catData.getCatById(petId);
             petType = "cat";
         }catch{
-            return res.status(404).render('pet/index', {title: "pet error", error: "No pet found with that id"})
+            return res.status(404).render('pet/index', {title: "pet error", error: "No pet found with that id", loggedIn: loggedIn})
         }
     }
 
     try{
         await commentsData.removeComment(commentId, petType);
     } catch(e) {
-        //console.log(e);
-        res.render('pet/deletecomment', {title: "Remove Comment", error: e});
+        res.render('pet/deletecomment', {title: "Remove Comment", error: e, loggedIn: loggedIn});
     return;
     }
 
-    res.render('pet/deletecomment', {title: "Remove Comment"});
+    res.render('pet/deletecomment', {title: "Remove Comment", loggedIn: loggedIn});
 });
 
 module.exports = router;

@@ -12,12 +12,39 @@ body {
   position: relative;
   background-color: rgb(191, 239, 255);
 }
-.topnav {
-  font-size: 17px;
+.topnav{
+  overflow: hidden;
 }
 
-.login-topnav {
+.topnav a {
+  float: left;
+  text-align: center;
+  padding: 5px 16px;
+}
+
+.profile-dropdwn {
   float: right;
+  overflow: hidden;
+}
+
+.profile-dropdwn .profile-dropbtn{
+  border: none;
+  outline: none;
+  padding: 5px 16px;
+  margin: 0;
+}
+.profile-items{
+  display: none;
+  position: absolute;
+}
+.profile-items a {
+  float: none;
+  padding: 5 16px;
+  display: block;
+}
+
+.profile-dropdwn:hover .profile-items {
+  display: block;
 }
 
 .welcome-msg {
