@@ -1,6 +1,10 @@
 <h1>{{title}}</h1>
 <h2>Create your username and password. Then press Register.</h2>
-<div id="error" class="error" hidden>{{error}}</div>
+{{#if error}}
+<div id="error" class="error">{{error}}</div>
+{{else}}
+<div id="error" class="error" hidden></div>
+{{/if}}
 <form action="/users/register" id="registerForm" method="post">
   <label for="usernameInput" id="usernameLabel">Username:</label>
   <input type="text" id="usernameInput" name="usernameInput" /><br />
@@ -8,7 +12,7 @@
   <input type="password" id="passwordInput" name="passwordInput" />
   <label for="cityInput" id ="cityLabel">City</label>
   <input type="text" id="cityInput" name="cityInput"/><br />
-  <label for="stateInput" id="state">State: </label>
+  <label for="stateInput" id="stateLabel">State: </label>
   <input type="text" id="stateInput" name="stateInput"/>
   <button type="submit">Register</button>
 </form>

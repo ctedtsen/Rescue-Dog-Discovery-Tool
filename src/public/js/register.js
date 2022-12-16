@@ -6,10 +6,10 @@ let passwordLabelR = document.getElementById("passwordLabel");
 let cityInputR = document.getElementById("cityInput");
 let cityLabelR = document.getElementById("cityLabel");
 let stateInputR = document.getElementById("stateInput");
-let stateLabelR = document.getElementById("sateLabel");
-let errorDiv = document.getElementById("error");
+let stateLabelR = document.getElementById("stateLabel");
 
   if(registerForm){
+    let errorDiv = document.getElementById("error");
     registerForm.addEventListener("submit", (event) => {
         event.preventDefault();
         try{
@@ -27,7 +27,7 @@ let errorDiv = document.getElementById("error");
             return;
         }
         try{
-            checkString(cityInputR.value, "cityInput");
+            checkString(cityInputR.value, "city input");
         }catch(e){
             errorDiv.innerHTML = "";
             errorFound(e, cityInputR, cityLabelR, errorDiv);

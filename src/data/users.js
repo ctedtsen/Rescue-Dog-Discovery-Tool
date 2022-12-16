@@ -25,9 +25,11 @@ const createUser = async (
 
     const hashedPassword = await helper.getHashedPassword(password);
     const userCollection = await users();
-    const result = await userCollection.find({ username: username }).toArray();
-    if (result.length > 0) {
-        throw { message: "Already a user with the name.", errorCode: 400 }
+    const userList = await userCollection.find({}).toArray();
+    for (let u of userList) {
+      if (u.username.toLowerCase() === username.toLowerCase()) {
+        throw "There is already a user with that username";
+      }
     }
     let newUser = {
         username: username, 

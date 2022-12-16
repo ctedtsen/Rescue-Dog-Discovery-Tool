@@ -1,6 +1,10 @@
 <h1>{{title}}</h1>
 <h2>Enter your username and password. Then press Login.</h2>
-<div id="error" class="error" hidden>{{error}}</div>
+{{#if error}}
+<div id="error" class="error">{{error}}</div>
+{{else}}
+<div id="error" class="error" hidden></div>
+{{/if}}
 <form action="/users/login" id="loginForm" method="post">
   <label for="usernameInput" id="usernameLabel">Username:</label>
   <input type="text" id="usernameInput" name="usernameInput" /><br />
