@@ -1,0 +1,72 @@
+
+
+<main>
+    <p>
+    <p>Account Login: This search tool allows you to Register or Sign-In into new or existing account!</p>
+    </p>
+    <form id="loginForm">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your Username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your Password">
+        </div>
+        <div>
+            <p id="errorMsg" style="color:red"></p>
+        </div>
+        <button class="my-btn" type="submit">Sign In</button>
+    </form>
+    <a href="/register">Click here to Register!</a>
+
+</main>
+
+<script>
+    (function () {
+        const errorState = document.getElementById('errorMsg');
+
+        const form = document.querySelector('#loginForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if(!username || !password) {
+                 errorState.innerHTML = "Enter the username and password.";
+            return;
+            }
+            if(username.length < 4){
+              errorState.innerHTML = "username must be at least 4 char.";
+            return;  
+            }
+             if(password.length < 6){
+              errorState.innerHTML = "password must be at least 6 char with at least one capital, one small, one number and one special char.";
+            return;  
+            }
+            errorState.innerHTML = ""
+            const xhr = new XMLHttpRequest()
+            xhr.open('POST', '/login')
+
+            let data = new FormData(form)
+
+            // set headers
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+
+            console.log(`username=${username}&password=${password}`)
+            xhr.send(`username=${username}&password=${password}`)
+
+            // listen for `load` event
+            xhr.onload = () => {
+                console.log(xhr.responseText)
+                const res = JSON.parse(xhr.responseText);
+                if (res.status && res.status == "success") {
+                    window.location.replace("http://localhost:3000/protected");
+                } else {
+                    errorState.innerHTML = res.message;
+                }
+
+            }
+        })
+    })()
+
+</script>
