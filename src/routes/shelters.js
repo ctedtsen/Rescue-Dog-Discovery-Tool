@@ -5,6 +5,7 @@ const helpers = require('../helpers');
 const sheltersData = data.shelters;
 const reviewsData = data.reviews;
 const xss = require('xss');
+const { reviews } = require('../data');
 
 router.get('/add', async (req, res) => {
     res.render('shelter/add', {title: "Add a Shelter"});
@@ -73,11 +74,45 @@ router.post('/remove', async(req, res) => {
     return;
 });
 
+router.post('/delete_review', async(req, res) => {
+    let reviewId = req.body.reviewID;
+    //console.log(reviewId);
+    try{
+        reviewId = helpers.checkId(reviewId, "review id");
+    } catch(e) {
+        //console.log(e);
+        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e});
+        return;
+    }
+    try{
+        if(!await reviews.containsReview(reviewId)){
+            throw "Error: no review with that id";
+        }
+    } catch(e) {
+        console.log(e)
+        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e});
+        return;
+    }
+    try{
+        await reviewsData.deleteReview(reviewId);
+    } catch(e) {
+        console.log("delete: " + e + " " + reviewId)
+        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e});
+        return;
+    }
+    res.render('shelter/deletereview', {title: "Delete Review", error: ""});
+    return;
+});
+
+router.get('/delete_review', async(req, res) => {
+    res.render('shelter/deletereview', {title: "Delete Review"});
+    return;
+});
+
 router.get('/', async (req, res) => {
     const shelters = await sheltersData.getAllShelters();
     res.render('shelter/index', {title: "Shelters", shelters: shelters});
 });
-
 
 router.post('/:id', async (req, res) => {
     let shelterId = req.params.id;
@@ -122,38 +157,6 @@ router.get('/:id', async (req, res) => {
         const shelters = await sheltersData.getAllShelters();
         return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters});
     }
-});
-
-router.post('/:id/delete_review', async(req, res) => {
-    let reviewId = req.body.reviewId;
-
-    try{
-        reviewId = helpers.checkId(reviewId, "review id");
-    } catch(e) {
-        res.render('shelter/deletereview', {title: "Delete Review", error: e});
-        return;
-    }
-    try{
-        await reviewsData.deleteReview(reviewId);
-    } catch(e) {
-        console.log("delete: " + e + " " + reviewId)
-        res.render('shelter/deletereview', {title: "Delete Review", error: e});
-        return;
-    }
-    res.render('shelter/deletereview', {title: "Delete Review", error: ""});
-    return;
-});
-
-router.get('/:id/delete_review', async(req, res) => {
-    let shelterId = req.params.id;
-    try {
-        shelterId = helpers.checkId(shelterId, "id for shelter");
-    }catch(e) {
-        const shelters = await sheltersData.getAllShelters();
-        return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters});
-    }
-    res.render('shelter/deletereview', {title: "Delete Review"});
-    return;
 });
 
 module.exports = router;

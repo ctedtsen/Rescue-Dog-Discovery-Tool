@@ -8,7 +8,7 @@ const createUser = async (
     username, password, city, state, admin = false, savedPets = [], shelterReviews = [], comments = []
 ) => {
 
-    if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(password))) {
+    if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{6,}$/.test(password))) {
         throw { message: "Password not valid", errorCode: 400 }
     }
 

@@ -4,6 +4,7 @@ const shelters = data.shelters;
 const dogs = data.dogs;
 const cats = data.cats;
 const reviews = data.reviews;
+const users = data.users;
 
 const main = async () => {
 const db = await dbConnection.dbConnection();
