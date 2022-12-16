@@ -22,14 +22,18 @@ const exportedMethods = {
 
         const reviewCollection = await reviews();
 
+        let shelter = await sheltersFunctions.getShelterById(shelterId);
+
         const newReview = {
             reviewerName: reviewerName,
             review: review,
             rating: rating,
-            username: username
+            username: username,
+            shelter: shelter
         };
 
-        let shelter = await sheltersFunctions.getShelterById(shelterId);
+        const newInsertInformation = await reviewCollection.insertOne(newReview);
+        const newId = newInsertInformation.insertedId;
 
         let temp = shelter.reviews;
         temp.forEach(element => {
@@ -75,8 +79,6 @@ const exportedMethods = {
             throw "Error: not able to update user (add review) successfully"
         }
 
-        const newInsertInformation = await reviewCollection.insertOne(newReview);
-        const newId = newInsertInformation.insertedId;
         return await this.getReviewById(newId.toString());
     },
 

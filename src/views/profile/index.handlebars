@@ -1,0 +1,48 @@
+<h1>{{title}}</h1>
+<div class="shelters-info">
+    <dl>
+        <dt>City</dt>
+        <dd>{{user.city}}</dd>
+        <dt>State</dt>
+        <dd>{{user.state}}</dd>
+    </dl>
+
+    {{#if user.savedPets.length}}
+        <h3>Saved Pets</h3>
+        <ul>
+            {{#each user.savedPets}}
+                <li><a href="/petdetails/{{this.id}}">{{this.name}}</a></li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No pets saved</p>
+    {{/if}}
+
+     {{#if user.shelterReviews.length}}
+        <h3>Shelter Reviews</h3>
+        <ul>
+            {{#each user.shelterReviews}}
+                <li>
+                    Shelter: {{this.shelter.shelterName}}      
+                    ReviewId: {{this._id}}
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No reviews for any shelters</p>
+    {{/if}}
+
+    {{#if user.comments.length}}
+        <h3>Pet Comments</h3>
+        <ul>
+            {{#each user.comments}}
+                <li>
+                    CommentId: {{this._id}}     
+                    Comment: {{this.comment}}
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No comments for any pets</p>
+    {{/if}}
+</div>
