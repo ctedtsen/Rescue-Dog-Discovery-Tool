@@ -64,7 +64,7 @@ const addUserComment = async (userId, commentId) => {
             { _id: ObjectId(userId) },
             { $push: { comments: commentId } }
         )
-        console.log("output", result);
+        //console.log("output", result);
         return result;
     } catch (error) {
         throw error
@@ -78,7 +78,7 @@ const addShelterReview = async (userId, shelterReviewId) => {
             { _id: ObjectId(userId) },
             { $push: { shelterReviews: shelterReviewId } }
         )
-        console.log("output", result);
+        //console.log("output", result);
 
         return result;
     } catch (error) {
@@ -93,7 +93,7 @@ const savePet = async (userId, PetId) => {
             { _id: ObjectId(userId) },
             { $push: { savedPets: PetId } }
         )
-        console.log("output", result);
+        //console.log("output", result);
 
         return result;
     } catch (error) {
@@ -104,11 +104,11 @@ const savePet = async (userId, PetId) => {
 const checkUser = async (username, password) => {
     try {
         const userCollection = await users();
-        console.log(username, password);
+        //console.log(username, password);
         const result = await userCollection.find({ username: String(username).toLowerCase() }).toArray();
         let isValid = false;
         if (result.length > 0) {
-            const hashedPassword = result[0].password;
+            const hashedPassword = result[0].hashedpassword;
             isValid = await helper.comparePassword(password, hashedPassword);
         }
         return isValid;
