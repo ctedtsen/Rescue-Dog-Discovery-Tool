@@ -74,6 +74,9 @@ router.get('/:petid', async (req, res) => {
 router.get('/:petid/delete_comment', async(req, res) => {
     let petId = req.params.petid;
     let loggedIn = helpers.isAuthenticated(req);
+    if(!loggedIn){
+        return res.redirect('/');
+    }
     try {
         petId = helpers.checkId(petId, "id for rescue pet");
     }catch(e) {

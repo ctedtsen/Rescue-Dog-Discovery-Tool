@@ -64,7 +64,6 @@ router
     return;
   })
   .post(async (req, res) => {
-    console.log("made it to routes/register/post");
     let usernameInput = req.body.usernameInput;
     let passwordInput = req.body.passwordInput;
     let cityInput = req.body.cityInput;
