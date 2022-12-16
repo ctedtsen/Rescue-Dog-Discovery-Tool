@@ -7,11 +7,12 @@ const helpers = require("../helpers");
 router
   .route("/login")
   .get(async (req, res) => {
+    let loggedIn = helpers.isAuthenticated(req);
     if (req.session.user) {
-      res.redirect("/");
+      res.redirect(loggedIn);
       return;
     }
-    let loggedIn = helpers.isAuthenticated(req);
+    //let loggedIn = helpers.isAuthenticated(req);
     res.render("users/login", { title: "Login", loggedIn:loggedIn });
     return;
   })
@@ -111,4 +112,24 @@ router
     res.render("users/logout", {titile: "Logout"});
     return;
   });
+
+router.get('/:username', async (req, res) => {
+  if (!req.session.user) {
+    res.redirect("login");
+    return;
+  }
+  let loggedIn = helpers.isAuthenticated(req);
+  let user;
+  try{
+      user = await userData.findByUsername(loggedIn);
+  } catch(e) {
+    res.redirect("/");
+  }  
+  try{
+      let username = loggedIn.toUpperCase();
+      res.render('profile/index', {title: username, user: user});
+  } catch(e) {
+    res.redirect("/");
+  }
+});
 module.exports = router;

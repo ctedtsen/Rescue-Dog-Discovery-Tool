@@ -34,7 +34,7 @@ router.post('/:petid', async function (request, response){
     }
 
     try{
-        await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType);
+        await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
     } catch(e) {
         response.render('pet/index', {title: "Pet error", pet: pet, petType: petType, loggedIn: loggedIn})
         return;
@@ -114,7 +114,7 @@ router.post('/:petid/delete_comment', async(req, res) => {
     }
 
     try{
-        await commentsData.removeComment(commentId, petType);
+        await commentsData.removeComment(commentId, petType, loggedIn);
     } catch(e) {
         res.render('pet/deletecomment', {title: "Remove Comment", error: e, loggedIn: loggedIn});
     return;
