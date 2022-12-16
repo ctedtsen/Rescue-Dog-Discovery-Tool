@@ -36,7 +36,8 @@
 {{else}}
     <p>No comments yet</p>
 {{/if}}
-<div id="diverror"></div>
+{{#if loggedIn}}
+<div id="diverror">{{error}}</div>
 <form method="post" id="addComment">
     <label id="nameLabel">
         Commenter Name
@@ -48,5 +49,5 @@
     </label>
     <button type="submit">Add Comment</button>
 </form>
-
+{{/if}}
 <a href="/petdetails/{{pet._id}}/delete_comment">Delete comment here</a>

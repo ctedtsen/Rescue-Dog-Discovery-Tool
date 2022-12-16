@@ -50,7 +50,6 @@ const createUser = async (
 const findByUsername = async (username) => {
     const userCollection = await users();
     const user = await userCollection.findOne({username: username});
-    //console.log("find by username" + await user)
     if(!user){
         throw "Error: user not found";
     }
@@ -64,7 +63,6 @@ const addUserComment = async (userId, commentId) => {
             { _id: ObjectId(userId) },
             { $push: { comments: commentId } }
         )
-        console.log("output", result);
         return result;
     } catch (error) {
         throw error
@@ -78,7 +76,6 @@ const addShelterReview = async (userId, shelterReviewId) => {
             { _id: ObjectId(userId) },
             { $push: { shelterReviews: shelterReviewId } }
         )
-        console.log("output", result);
 
         return result;
     } catch (error) {
@@ -93,7 +90,6 @@ const savePet = async (userId, PetId) => {
             { _id: ObjectId(userId) },
             { $push: { savedPets: PetId } }
         )
-        console.log("output", result);
 
         return result;
     } catch (error) {
@@ -104,7 +100,6 @@ const savePet = async (userId, PetId) => {
 const checkUser = async (username, password) => {
     try {
         const userCollection = await users();
-        console.log(username, password);
         const result = await userCollection.find({ username: String(username).toLowerCase() }).toArray();
         let isValid = false;
         if (result.length > 0) {
@@ -117,8 +112,6 @@ const checkUser = async (username, password) => {
     }
 };
 
-
-
 module.exports = {
     createUser,
     checkUser,
@@ -127,7 +120,3 @@ module.exports = {
     findByUsername
 
 };
-
-
-
-

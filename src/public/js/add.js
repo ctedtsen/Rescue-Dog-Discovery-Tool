@@ -8,8 +8,6 @@ if(addShelterForm){
   const stateElement = document.getElementById('shelterState');
   const stateLabel = document.getElementById('shelterFormLabel');
   const errorDiv = document.getElementById("error");
-  const myUl = document.getElementById("list");
-  const frmLabel = document.getElementById("formLabel");
 
   addShelterForm.addEventListener('submit', (event) => {
     event.preventDefault();
