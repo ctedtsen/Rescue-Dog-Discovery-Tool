@@ -5,7 +5,6 @@ const helpers = require('../helpers');
 const sheltersData = data.shelters;
 const reviewsData = data.reviews;
 const xss = require('xss');
-const { reviews } = require('../data');
 
 router.get('/add', async (req, res) => {
     res.render('shelter/add', {title: "Add a Shelter"});
@@ -85,7 +84,7 @@ router.post('/delete_review', async(req, res) => {
         return;
     }
     try{
-        if(!await reviews.containsReview(reviewId)){
+        if(!await reviewsData.containsReview(reviewId)){
             throw "Error: no review with that id";
         }
     } catch(e) {
