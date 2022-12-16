@@ -13,17 +13,6 @@
     <dd>{{shelter.killShelter}}</dd>
   </dl>
 
-  {{#if shelter.reviews.length}}
-    <h3>Reviews</h3>
-    <ul>
-      {{#each shelter.reviews}}
-        <li>{{this}}</li>
-      {{/each}}
-    </ul>
-  {{else}}
-    <p>No reviews yet</p>
-  {{/if}}
-
   {{#if shelter.pets.length}}
     <h3>Pets</h3>
     <ul>
@@ -33,3 +22,38 @@
     </ul>
   {{/if}}
 </div>
+
+  {{#if shelter.reviews.length}}
+    <h3>Reviews</h3>
+    <ul>
+      {{#each shelter.reviews}}
+        <li>{{this.reviewerName}} - Review: "{{this.review}}" Rating: {{this.rating}}</li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p>No reviews yet</p>
+  {{/if}}
+<p>
+    {{error}}
+</p>
+<div id="diverror"></div>
+<form method="post" id="addReview">
+    <label id="nameLabel">
+        Reviewer Name
+        <input type="text" id="name" name="name" placeholder="Reviewer Name"/>
+    </label>
+    <label id="reviewLabel">
+        Review
+        <input type="text" id="review" name="review" placeholder="Review"/>
+    </label>
+    <label id="ratingLabel">
+        Rating
+        <input type="text" id="rating" name="rating" placeholder="Rating"/>
+    </label>
+    <label id="usernameLabel">
+        Username
+        <input type="text" id="username" name="username" placeholder="Username"/>
+    </label>
+    <button type="submit">Add Review</button>
+</form>
+<a href="/shelters/delete_review">Delete review here</a>

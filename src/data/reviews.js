@@ -92,6 +92,21 @@ const exportedMethods = {
         return review;
     },
 
+    async containsReview(reviewId){
+        reviewId = helpers.checkId(reviewId, "reviewId");
+        const reviewCollection = await reviews();
+        const reviewList = await reviewCollection.find({}).toArray();
+
+        let equal = false;
+        reviewList.forEach(review => {
+            if(review._id.toString() === reviewId){
+                equal = true;
+            }
+        });
+
+        return equal;
+    },
+
     async deleteReview(reviewId){
         reviewId = helpers.checkId(reviewId, "reviewId");
 
