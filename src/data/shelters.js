@@ -107,10 +107,20 @@ const exportedMethods = {
     async getAllShelters(){
         const all_shelters = await shelters();
         const shelterList = await all_shelters.find({}).toArray();
-
+        
         if(!shelterList){
             throw "Not able to get shelters";
         }
+
+        shelterList.sort(function (sheltera, shelterb) {
+            if(sheltera.shelterName.toLowerCase() < shelterb.shelterName.toLowerCase()){
+                return -1;
+            }
+            if(sheltera.shelterName.toLowerCase() > shelterb.shelterName.toLowerCase()){
+                return 1;
+            }
+            return 0;
+        });
 
         shelterList.forEach(shelter => {
             shelter._id = shelter._id.toString();
