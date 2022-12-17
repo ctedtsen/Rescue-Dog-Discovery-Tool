@@ -8,6 +8,11 @@ const dogsData = data.dogs;
 const catsData = data.cats;
 const xss = require('xss');
 
+router.get('/kill_shelters', async(req, res) => {
+    let shelters = await sheltersData.getAllKillShelters();
+    return res.render('shelter/killShelters', {title: "Kill Shelters", shelters: shelters})
+});
+
 router.get('/add', async (req, res) => {
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
