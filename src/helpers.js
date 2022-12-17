@@ -189,8 +189,15 @@ module.exports = {
 
   checkSpecialNeeds(needs) {
     if (!needs) {
-      throw "Error: you must enter an array that lists special needs of rescue pet";
+      return "";
     }
+    needs = this.checkString(needs, "special needs");
+    for (let char of needs) {
+      if (!alphabet.includes(char.toLowerCase()) && char !== "," && char !== " ") {
+        throw "Error: invalid list input";
+      }
+    }
+    needs = needs.split(",");
     if (!Array.isArray(needs)) {
       throw "Error: you must enter an array that lists special needs of rescue pet";
     }
@@ -203,7 +210,6 @@ module.exports = {
         }
       }
     }
-
     return needs;
   },
 
