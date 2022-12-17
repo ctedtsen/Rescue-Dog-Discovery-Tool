@@ -1,9 +1,9 @@
 <ul> 
     {{#each shelters}} 
-        <li class="tabClass" ><a href="/shelters/{{this._id}}">{{this.shelterName}}</a></li> 
+        <li class="tabClass" ><a href="/shelters/{{this._id}}">{{this.shelterName}}</a> 
         <ul> 
             <li>Pets at this shelter have at most {{this.timeKept}} days until they are euthanized</li> 
-            <li>There are currently {{this.numberPets}} pets at this shelter</li> 
+            <li>There are currently {{this.numberPets}} pets at this shelter
             {{#if this.pets.length}} 
                 <ul> 
                     {{#each this.pets}} 
@@ -11,6 +11,8 @@
                     {{/each}} 
                 </ul> 
             {{/if}} 
+            </li>
         </ul> 
+        </li>
     {{/each}}
 </ul>
