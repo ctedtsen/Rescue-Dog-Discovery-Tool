@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const shelters = mongoCollections.shelters;
 const {ObjectId} = require('mongodb');
 const dogs = require("./dogs");
+const dogsData = mongoCollections.dogs;
 const cats = require("./cats");
 const helpers = require('../helpers');
 
@@ -161,6 +162,47 @@ const exportedMethods = {
         const updatedShelter = await this.getShelterById(shelterId);
         return updatedShelter;
     },
+
+    async removeRescuePet(shelterId, petId){
+        let shelter =  await this.getShelterById(shelterId);
+
+        let pets = shelter.pets;
+
+        id_list = [];
+        pets.forEach(pet => {
+            id_list.push(pet.id);
+        })
+
+        let index;
+        try{
+            index = id_list.indexOf(petId);
+        } catch(e) {
+            throw "Error: pet not found x";
+        }
+
+        if(index === -1){
+            throw "Error: pet not found y";
+        }
+
+        pets.splice(index, 1);
+
+        const shelterCollection = await shelters();
+
+        let num = shelter.numberPets;
+        const updatedShelters = await shelterCollection.updateOne(
+            {_id: ObjectId(shelter._id)},
+            {$set: {
+                pets: pets,
+                numberPets: num - 1
+            }}
+        )
+
+        if(updatedShelters.modifiedCount === 0){
+            throw "Error: not able to update shelter successfully (deleteReview)"
+        }
+        return this.getShelterById(shelterId);
+    },
+
     async addRescueCat(shelterId, catId) {
         helpers.checkId(shelterId, "id for shelter")
         helpers.checkId(catId, "id for rescue cat");
@@ -192,6 +234,32 @@ const exportedMethods = {
 
         const updatedShelter = await this.getShelterById(shelterId);
         return updatedShelter;
+
+    },
+    async getAllShelters(){
+        const { data } = await axios.get('https://gist.githubusercontent.com/');
+        return data;
+    },
+    async searchShelterCity(searchSheltersCity){
+        const error = new Error();
+    let result;
+    try {
+        const shelter = await getAllShelter();
+        return shelter.filter((shelters) =>
+        (shelters.firstName.toLocaleLowerCase().includes(searchSheltersCity) ||
+        shelters.lastName.toLocaleLowerCase().includes(searchSheltersCity)));
+    } catch (error) {
+        throw error;
+    }
+    },
+    async searchShelterById(id){
+        try {
+            return await getAllShelters();
+    
+    
+        } catch (error) {
+            throw error;
+        }
     }
 }
 
