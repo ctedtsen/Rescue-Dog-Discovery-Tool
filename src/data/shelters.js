@@ -261,6 +261,27 @@ const exportedMethods = {
         });
 
         return killShelters;
+    },
+
+    async findSheltersInCity(city, state){
+        city = helpers.checkString(city, "shleter city");
+        state = helpers.checkState(state);
+        let shelters = [];
+        let shelters_in_city = [];
+
+        try{
+            shelters = await this.getAllShelters();
+        } catch(e){
+            throw "Error: " + e;
+        }
+
+        shelters.forEach(shelter => {
+            if(shelter.city === city && shelter.state === state){
+                shelters_in_city.push(shelter);
+            }
+        });
+
+        return shelters_in_city;
     }
 }
 

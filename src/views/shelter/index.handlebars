@@ -1,5 +1,19 @@
 <h1>{{title}}</h1>
 <a href="/shelters/kill_shelters">List of Kill Shelters</a>
+
+<div id="error" class="error" hidden>{{error}}</div>
+<form method="post" id="searchShelter">
+    <label id="theCityLabel">
+        Shelter City
+        <input type="text" id="theCity" name="theCity" placeholder="City" value={{city}}>
+    </label>
+    <label id="theStateLabel">
+        Shelter State
+        <input type="text" id="theState" name="theState" placeholder="State" value={{state}}>
+    </label>
+    <button type="submit">Find Shelters</button>
+</form>
+
 <div class="shelters-info">
   {{#each shelters}}
     <h4><a href="/shelters/{{_id}}">{{this.shelterName}}</a></h4>

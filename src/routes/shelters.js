@@ -174,6 +174,44 @@ router.get('/', async (req, res) => {
     res.render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
 });
 
+router.post('/', async (req, res) => {
+    let city = req.body.theCity;
+    let state = req.body.theState;
+
+    let loggedIn = req.session.user;
+    let isAdmin = req.session.admin;
+
+    let errors =[];
+
+    try{
+        city = helpers.checkString(city, "Shelter city")
+    } catch (e) {
+        errors.push(e);
+    }
+
+    try{   
+        state = helpers.checkState(state);
+    } catch (e) {
+        errors.push(e);
+    }
+
+    const allshelters = await sheltersData.getAllShelters();
+
+    if(errors.length > 0){
+        return res.render('shelter/index', {title: "Shelters", shelters: allshelters, loggedIn: loggedIn, isAdmin: isAdmin, city: city, state: state, error: errors});
+    }
+
+    let shelters;
+    try{
+        shelters = await sheltersData.findSheltersInCity(city, state);
+    } catch(e){
+        console.log(e);
+        errors.push(e);
+        return res.render('shelter/index', {title: "Shelters", shelters: allshelters, loggedIn: loggedIn, isAdmin: isAdmin, city: city, state: state, error: errors});
+    }
+    return res.render('shelter/sheltersSearch', {title: "Shelter Search", shelters: shelters, city: city, state: state});
+});
+
 
 router.post('/:id', async (req, res) => {
     let shelterId = req.params.id;
