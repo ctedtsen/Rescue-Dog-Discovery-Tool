@@ -163,7 +163,7 @@ let checkPersonName = (personName) => {
     }
  
     if(numSpaces !== 1){
-      throw "Error: incorrect format for name?";
+      throw "Error: incorrect format for name";
     }
 
     let name = personName.split(' ');
@@ -224,4 +224,15 @@ let checkRating = (rating) => {
   }
 
   return rating;
+};
+
+let checkUsername = (username) => {
+  if (!(/^[a-zA-Z0-9]{4,}$/.test(username))) {
+      throw "Username not valid";
+  }
+}
+let checkPassword = (password) => {
+  if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{6,}$/.test(password))) {
+      throw "Password not valid";
+  }
 };

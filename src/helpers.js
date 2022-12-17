@@ -346,6 +346,19 @@ module.exports = {
       throw "Error: animalType must be dog or cat";
     }
   },
+  checkUsername(username) {
+    if (!(/^[a-zA-Z0-9]{4,}$/.test(username))) {
+        throw "Username not valid";
+    }
+    return username.trim();
+  },
+
+  checkPassword(password) {
+    if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{6,}$/.test(password))) {
+        throw "Password not valid";
+    }
+    return password;
+  },
 
   getHashedPassword: (myPlaintextPassword) => {
     const saltRounds = 10;
@@ -412,6 +425,9 @@ module.exports = {
     }
 
     return rating;
+  },
+  isAuthenticated(req){
+    return req.session.user;
   }
 
 };

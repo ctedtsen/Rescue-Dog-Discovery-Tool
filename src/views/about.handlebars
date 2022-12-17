@@ -1,0 +1,14 @@
+<h1 class="welcome-msg">Welcome to the Rescue Dog and Cat Discovery Tool</h1><br/>
+
+{{#unless loggedIn}}
+<p class="about-msg">Search to adopt rescued dogs and cats from shelters all
+  across the United States. You can find information on specific shelters and
+  individual pets without visiting different websites. What's better? You can
+  create an account with us and add pets that you are interested in to your
+  saved list. Let us help you in the lengthy process of finding your perfect
+  furry friend!
+</p>
+{{else}}
+<p>You are Logged in!</p>
+<a href="/shelters">Start your search by visiting the Shelters Page</a>
+{{/unless}}

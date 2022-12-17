@@ -3,6 +3,8 @@ const dogs = mongoCollections.dogs;
 const dogsFunctions = require('./dogs');
 const cats = mongoCollections.cats;
 const catsFunctions = require('./cats');
+const users = mongoCollections.users;
+const usersFunctions = require('./users');
 const {ObjectId} = require('mongodb');
 const helpers = require('../helpers');
 
@@ -11,7 +13,8 @@ const exportedMethods = {
         commenterName,
         comment,
         petId,
-        animalType
+        animalType,
+        username
     ){
         commenterName = helpers.checkPersonName(commenterName);
         comment = helpers.checkString(comment, "comment");
@@ -59,6 +62,21 @@ const exportedMethods = {
             if(updatedCats.modifiedCount === 0){
                 throw "Error: not able to undate the cat's comments successfully";
             }
+        }
+
+        const userCollection = await users();
+        let user = await usersFunctions.findByUsername(username);
+    
+        let user_comments_list = [...user.comments, newComment];
+        const updatedUsers = await userCollection.updateOne(
+            {username: username},
+            {$set: {
+                comments: user_comments_list
+            }}
+        );
+
+        if(updatedUsers.modifiedCount === 0){
+            throw "Error: not able to update user (add review) successfully"
         }
 
         return this.getComment(id, animalType);
@@ -126,9 +144,45 @@ const exportedMethods = {
         return comment;
     },
 
-    async removeComment(commentId, animalType, petId){
+    async removeComment(commentId, animalType, username){
         commentId = helpers.checkId(commentId, "commentId");
         animalType = helpers.checkAnimalType(animalType);
+        username = helpers.checkUsername(username);
+
+        const userCollection = await users();
+        let user = await usersFunctions.findByUsername(username);
+
+        let user_comments_list = user.comments;
+
+        let user_contains_comment = false;
+
+        let index = 0;
+        let comment_index = 0;
+        
+        user_comments_list.forEach(comment => {
+            if(comment._id.toString() === commentId){
+                user_contains_comment = true;
+                comment_index = index;
+            }
+            index = index + 1;
+        });
+
+        if(user_contains_comment === false){
+            throw "Error: comment not found";
+        }
+        
+        user_comments_list.splice(comment_index, 1);
+
+        const updatedUsers = await userCollection.updateOne(
+            {username: username},
+            {$set: {
+                comments: user_comments_list
+            }}
+        );
+
+        if(updatedUsers.modifiedCount === 0){
+            throw "Error: not able to update user successfully (deletReview)"
+        }
 
         
 

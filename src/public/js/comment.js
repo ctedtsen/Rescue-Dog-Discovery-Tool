@@ -1,7 +1,9 @@
 (function ($) {
-    var newCommentForm = $('#addComment'),
+    var newCommentForm = $('#addComment');
         newNameInput = $('#commenterName'),
-        newCommentInput = $('#comment');
+        newCommentInput = $('#comment'),
+        errorDiv = $('#error')
+        commentArea = $('#comment-area');
 
     newCommentForm.submit(function (event) {
         event.preventDefault();

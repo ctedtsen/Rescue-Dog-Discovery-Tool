@@ -4,6 +4,7 @@ const shelters = data.shelters;
 const dogs = data.dogs;
 const cats = data.cats;
 const reviews = data.reviews;
+const users = data.users;
 
 const main = async () => {
 const db = await dbConnection.dbConnection();
@@ -427,6 +428,66 @@ await db.dropDatabase();
         );
     } catch(e) {
         console.log(e);
+    }
+
+    try{
+        let user1 = await users.createUser("ariel", "#PartOfThatWor1d", "Atlantis", "Utah", false);
+    } catch(e) {
+        console.log(e + "user1");
+    }
+
+    try{
+        let user2 = await users.createUser("belle", "Teapot1!", "NYC", "NY", false);
+    } catch(e) {
+        console.log(e + "user2");
+    }
+
+    try{
+        let user3 = await users.createUser("moana", "howFar1llgo&", "Honolulu", "Hawaii", false);
+    } catch(e) {
+        console.log(e + "user3");
+    }
+
+    try{
+        let user4 = await users.createUser("elsa", "#1ceQueen", "Anchorage", "Alaska", false);
+    } catch(e) {
+        console.log(e + "user4");
+    }
+
+    try{
+        let user5 = await users.createUser("anna", "HansSucks!11", "Portland", "Maine", false);
+    } catch(e) {
+        console.log(e + "user5");
+    }
+
+    try{
+        let user6 = await users.createUser("mulan", "Reflection#2", "Los Angeles", "Ca", false);
+    } catch(e) {
+        console.log(e + "user6");
+    }
+
+    try{
+        let user7 = await users.createUser("cinderella", "glassShoes1%", "Las Vegas", "Nevada", false);
+    } catch(e) {
+        console.log(e + "user7");
+    }
+
+    try{
+        let user8 = await users.createUser("rapunzel", "FryingPan11!", "Hoboken", "NJ", false);
+    } catch(e) {
+        console.log(e + "user8");
+    }
+
+    try{
+        let user9 = await users.createUser("tiana", "avoidFr0gs!", "New Orleans", "La", true);
+    } catch(e) {
+        console.log(e + "user9");
+    }
+
+    try{
+        let user10 = await users.createUser("jasmine", "1LoveTigers!", "Seatle", "Washington", true);
+    } catch(e) {
+        console.log(e + "user10");
     }
 
     await dbConnection.closeConnection();
