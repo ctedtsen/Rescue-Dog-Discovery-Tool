@@ -10,5 +10,10 @@
       <dt>Number of Pets</dt>
       <dd>{{this.numberPets}}</dd>
     </dl>
+    <form action="/searchShelter" method="post">
+                <label for="shelterSearch">Search Shelter City:</label>
+                <input type="search" id="shelterSearch" name="searchShelterCity" placeholder="First or Last name">
+                <button class="my-btn" type="submit">Search</button>
+            </form>
   {{/each}}
 </div>
