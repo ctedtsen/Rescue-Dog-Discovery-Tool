@@ -130,6 +130,8 @@ const exportedMethods = {
         commentId = helpers.checkId(commentId, "commentId");
         animalType = helpers.checkAnimalType(animalType);
 
+        
+
         if(animalType === "dog"){
             const dogList = await dogsFunctions.getAllDogs();
 
@@ -213,7 +215,106 @@ const exportedMethods = {
 
             return catsFunctions.getCatById(catId.toString());
         }
+    },
+
+    async updateComment(commentId, animalType, petId, commentText){
+      commentId = helpers.checkId(commentId, "commentId");
+      animalType = helpers.checkAnimalType(animalType);
+      commentText = helpers.checkString(commentText, "comment");
+      petId = helpers.checkId(petId, "petId");
+
+      let oldComment = this.getComment(commentId,animalType);
+
+      const newComment = {
+        name: oldComment.commenterName,
+        comment: commentText
+      }
+
+      if(animalType === "dog"){
+        const dogList = await dogsFunctions.getAllDogs();
+
+        let wanted_comment = undefined;
+        let comment_list = [];
+        let wanted_dog = undefined;
+        let comment_index = undefined;
+        let wanted_comment_list = undefined;
+        dogList.forEach(dog => {
+            comment_list = dog.comments;
+
+            comment_list.forEach(comment => {
+                if(comment._id === commentId){
+                    wanted_comment = comment;
+                    wanted_dog = dog;
+                    comment_index = comment_list.indexOf(comment);
+                    wanted_comment_list = comment_list;
+                }
+            })
+        }); 
+
+        if(wanted_comment === undefined){
+            throw "Error: no comment in dogs with that id"
+        }
+
+        wanted_comment_list[comment_index] = newComment;
+
+        const dogId = wanted_dog._id;
+        const dogCollection = await dogs();
+        const updatedDogs = await dogCollection.updateOne(
+            {_id: ObjectId(dogId)},
+            {$set: {
+                comments: wanted_comment_list
+            }}
+        );
+
+        if(updatedDogs.modifiedCount === 0){
+            throw "Error: not able to update the comment from the dogs successfully";
+        }
+        return dogsFunctions.getDogById(dogId.toString());
+
+    } else {
+        const catList = await catsFunctions.getAllcats();
+
+        let wanted_comment = undefined;
+        let comment_list = [];
+        let wanted_cat = undefined;
+        let comment_index = undefined;
+        let wanted_comment_list = undefined;
+        catList.forEach(cat => {
+            comment_list = cat.comments;
+
+            comment_list.forEach(comment => {
+                if(comment._id === commentId){
+                    wanted_comment = comment;
+                    wanted_cat = cat;
+                    comment_index = comment_list.indexOf(comment);
+                    wanted_comment_list = comment_list;
+                }
+            })
+        });
+
+        if(wanted_comment === undefined){
+            throw "Error: no comment in cats with that id"
+        }
+
+        wanted_comment_list[comment_index] = newComment;
+
+        const catId = wanted_cat._id;
+        const catCollection = await cats();
+        const updatedCats = await catCollection.updateOne(
+            {_id: ObjectId(catId)},
+            {$set: {
+                comments: wanted_comment_list
+            }}
+        );
+
+        if(updatedCats.modifiedCount === 0){
+            throw "Error: not able to update the comment from the dogs successfully";
+        }
+
+        return catsFunctions.getCatById(catId.toString());
     }
+    }
+
 }
 
 module.exports = exportedMethods;
