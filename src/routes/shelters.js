@@ -22,66 +22,66 @@ router.post('/add', async(req, res) => {
     let state = req.body.shelterState;
     let city = req.body.shelterCity;
     let killShelter = req.body.killShelter
+    let time = req.body.timeKept
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
 
     // if(!loggedIn){
     //     return res.redirect('/');
     // }
+    let errors = [];
 
     try{
         shelterName = helpers.checkString(shelterName, "Shelter Name");
     } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
+        errors.push(e);
     }
 
     try{
         state = helpers.checkState(state, "State");
     } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
+        errors.push(e);
     }
 
     try{
         city = helpers.checkString(city, "City");
     } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        errors.push(e);
+    }
+
+    let kill = false;
+    if(killShelter === "on"){
+        kill = true;
+    } 
+
+    try{
+         time = helpers.checkTimeKept(time, kill);
+    } catch(e) {
+        errors.push(e);
+    }
+
+    if(errors.length > 0){
+        res.render('shelter/add', {title: "Add a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: errors,
+        name: shelterName,
+        city: city,
+        state: state,
+        time: time});
         return;
     }
 
     try{
-        shelterName = helpers.checkString(shelterName, "Shelter Name");
+        console.log(typeof time);
+        await sheltersData.addShelter(shelterName, city, state, kill, time.toString());
+        console.log(kill)
     } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        res.render('shelter/add', {title: "Add a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: e,
+        name: shelterName,
+        city: city,
+        state: state,
+        time: time});
         return;
     }
-
-    try{
-        state = helpers.checkState(state, "State");
-    } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-
-    try{
-        city = helpers.checkString(city, "City");
-    } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-
-    try{
-        if(killShelter === "on"){
-            await sheltersData.addShelter(shelterName, city, state, true);
-        } else{
-            await sheltersData.addShelter(shelterName, city, state, false);
-        }
-    } catch(e) {
-        res.render('shelter/add', {title: "Add a Shelter", loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    res.render('shelter/add', {title: "Add a Shelter", loggedIn: loggedIn, isAdmin: isAdmin});
+    res.render('shelter/add', {title: "Add a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: "Shelter successfully added"});
     return;
 });
 
