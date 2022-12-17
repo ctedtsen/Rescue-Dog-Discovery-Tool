@@ -7,7 +7,7 @@ let checkString = (str, varName) => {
       throw "Error: you must provide a " + varName;
     }
     if (typeof str !== "string") {
-      throw "Error: " + varName + " must be of type string";
+      throw "Error: " + varName + " must be of type string x";
     }
     str = str.trim();
     if (str.length === 0) {

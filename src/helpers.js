@@ -197,7 +197,7 @@ module.exports = {
         throw "Error: invalid list input";
       }
     }
-    needs = needs.split(",");
+   /* needs = needs.split(",");
     if (!Array.isArray(needs)) {
       throw "Error: you must enter an array that lists special needs of rescue pet";
     }
@@ -209,7 +209,7 @@ module.exports = {
           throw "Error: needs array cannot contain numbers";
         }
       }
-    }
+    }*/
     return needs;
   },
 

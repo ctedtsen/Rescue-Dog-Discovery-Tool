@@ -313,7 +313,7 @@ router.post('/:id/add_pet', async function(req, res){
 
     if(type === 'dog'){
         try{
-            let dog = await dogsData.addDog(name, birthday, breed, height, weight, sex, name, picture);
+            let dog = await dogsData.addDog(name, birthday, breed, height, weight, sex, needs, picture);
             await sheltersData.addRescueDog(shelterId, dog._id.toString());
         } catch(e) {
             return res.render('pet/addPet', {title: "Add Pet", error: e, 
@@ -329,7 +329,7 @@ router.post('/:id/add_pet', async function(req, res){
         }
     } else {
         try{
-            let cat = await catsData.addCat(name, birthday, height, weight, sex, name, picture);
+            let cat = await catsData.addCat(name, birthday, height, weight, sex, needs, picture);
             await sheltersData.addRescueCat(shelterId, cat._id.toString());
         } catch(e) {
             return res.render('pet/addPet', {title: "Add Pet", error: e, 
