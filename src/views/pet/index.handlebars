@@ -26,6 +26,10 @@
         <dd>{{pet.likes}}</dd>
     </dl>
 </div>
+{{#if loggedIn}}
+    <a href="/petdetails/{{pet._id}}/save">Save this pet!</a>
+    <a href="/petdetails/{{pet._id}}/remove">Remove this pet from your saved list</a>
+{{/if}}
 {{#if pet.comments.length}}
     <h3>Comments</h3>
     <ul>

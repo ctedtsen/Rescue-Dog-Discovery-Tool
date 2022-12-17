@@ -2,7 +2,8 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const helper = require("../helpers");
 const { ObjectId } = require("mongodb");
-
+const dogData = require('./dogs');
+const catData = require('./cats');
 
 const createUser = async (
     username, password, city, state, admin = false, savedPets = [], shelterReviews = [], comments = []
@@ -85,18 +86,81 @@ const addShelterReview = async (userId, shelterReviewId) => {
     }
 }
 
-const savePet = async (userId, PetId) => {
+const savePet = async (username, petId) => {
+    let pet;
+    let petNotFound = false;
+    try{
+        pet = await dogData.getDogById(petId);
+    }catch{
+        petNotFound = true;
+    }
+    if(petNotFound){
+        try{
+            pet = await catData.getCatById(petId);
+        }catch{
+            throw("Error: Pet not found");
+        }
+    }
+
+    petInList = false;
+    let user = await findByUsername(username);
+    let pets = user.savedPets;
+
+    pets.forEach(element => {
+        if(element._id.toString() === petId){
+            petInList = true;
+        }
+    });
+
+    if(petInList){
+        throw "Error: Pet already added to list";
+    }
     try {
         const userCollection = await users();
         const result = await userCollection.updateOne(
-            { _id: ObjectId(userId) },
-            { $push: { savedPets: PetId } }
+            { username: username },
+            { $push: { savedPets: pet } }
         )
 
-        return result;
+         result;
     } catch (error) {
         throw error
     }
+}
+
+const removePet = async (username, petId) => {
+    let user = await findByUsername(username);
+    let pets = user.savedPets;
+
+    let pet;
+    pets.forEach(element => {
+        if(element._id.toString() === petId){
+            pet = element;
+        }
+    })
+
+    if(!pet){
+        throw "Error: Pet not currently saved";
+    }
+
+    let index = pets.indexOf(pet);
+    pets.splice(index, 1);
+
+    const userCollection = await users();
+
+    const updatedUsers = await userCollection.updateOne(
+        {username: username},
+        {$set: {
+            savedPets: pets
+        }}
+    )
+
+    if(updatedUsers.modifiedCount === 0){
+        throw "Error: not able to update user successfully (removePet)"
+    }
+
+    return pet;
+
 }
 
 const checkUser = async (username, password) => {
@@ -119,6 +183,7 @@ module.exports = {
     checkUser,
     addShelterReview,
     addUserComment,
-    findByUsername
-
+    findByUsername,
+    savePet,
+    removePet
 };

@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require('../data');
 const dogData = data.dogs;
 const catData = data.cats;
+const usersData = data.users;
 const commentsData = data.comments;
 const helpers = require('../helpers')
 const xss = require('xss');
@@ -75,6 +76,70 @@ router.get('/:petid', async (req, res) => {
     }
     return res.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin})
 })
+
+router.post('/:petid/save', async(req, res) => {
+    let id = req.params.petid;
+    let loggedIn = req.session.user;
+    let errors =[];
+    try{
+        id = helpers.checkId(id, "pet id");
+    } catch(e) {
+        errors.push(e);
+    }
+
+    if(errors.length > 0){
+        return res.render('pet/savePet', {title: "Save this pet?", error: errors, loggedIn: loggedIn});
+    }
+
+    try{
+        await usersData.savePet(loggedIn, id)
+    } catch(e) {
+        errors.push(e);
+    }
+
+    if(errors.length > 0){
+        return res.render('pet/savePet', {title: "Save this pet?", error: errors, loggedIn: loggedIn});
+    }
+    
+    return res.render('pet/savePet', {title: "Save this pet?", error: "Pet has been saved", loggedIn: loggedIn});
+});
+
+router.get('/:petid/save', async(req, res) => {
+    let loggedIn = req.session.user;
+    return res.render('pet/savePet', {title: "Save this pet?", loggedIn: loggedIn})
+});
+
+router.post('/:petid/remove', async(req, res) => {
+    let id = req.params.petid;
+    let loggedIn = req.session.user;
+    let errors =[];
+    try{
+        id = helpers.checkId(id, "pet id");
+    } catch(e) {
+        errors.push(e);
+    }
+
+    if(errors.length > 0){
+        return res.render('pet/savePet', {title: "Save this pet?", error: errors, loggedIn: loggedIn});
+    }
+
+    try{
+        await usersData.removePet(loggedIn, id)
+    } catch(e) {
+        errors.push(e);
+    }
+
+    if(errors.length > 0){
+        return res.render('pet/removePet', {title: "Remove this pet?", error: errors, loggedIn: loggedIn});
+    }
+    
+    return res.render('pet/removePet', {title: "Remove this pet?", error: "Pet has been removed", loggedIn: loggedIn});
+});
+
+router.get('/:petid/remove', async(req, res) => {
+    let loggedIn = req.session.user;
+    return res.render('pet/removePet', {title: "Remove this pet?", loggedIn: loggedIn})
+});
 
 router.get('/:petid/delete_comment', async(req, res) => {
     let petId = req.params.petid;

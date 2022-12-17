@@ -1,22 +1,11 @@
 <h1>{{title}}</h1>
-<div class="shelters-info">
+<div class="profile-info">
     <dl>
         <dt>City</dt>
         <dd>{{user.city}}</dd>
         <dt>State</dt>
         <dd>{{user.state}}</dd>
     </dl>
-
-    {{#if user.savedPets.length}}
-        <h3>Saved Pets</h3>
-        <ul>
-            {{#each user.savedPets}}
-                <li><a href="/petdetails/{{this.id}}">{{this.name}}</a></li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <p>No pets saved</p>
-    {{/if}}
 
      {{#if user.shelterReviews.length}}
         <h3>Shelter Reviews</h3>
@@ -68,4 +57,6 @@
     {{#if message}}
         <p>{{message}}</p>
     {{/if}}
+
+    <a href="{{user.username}}/saved_lists">View saved pets and shelters here</a>
 </div>
