@@ -11,7 +11,7 @@ if(deleteReviewForm){
       let id = undefined;
       
       try{
-       // errorDiv.innerHTML = "";
+        errorDiv.innerHTML = "";
         id = idElement.value;
       } catch(e){
         errorDiv.hidden = false;
@@ -24,7 +24,6 @@ if(deleteReviewForm){
         id = checkId(id, "reviewId");
       } catch(e){
         errorDiv.innerHTML = "";
-        //console.log(errorDiv.innerHTML)
         errorFound(e, idElement, idLabel, errorDiv);
         return;
       }
@@ -33,7 +32,6 @@ if(deleteReviewForm){
 
         deleteReviewForm.submit();
       } else{
-        errorDiv.innerHTML = "";
         if(!id.trim()){
           errorDiv.innerHTML = "";
           errorFound("Review ID cannot be empty", idElement, idLabel, errorDiv);
