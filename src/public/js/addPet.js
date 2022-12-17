@@ -97,7 +97,7 @@ if(addPetForm){
         let newPicture;
         try{
             newPicture = newPictureElement.value;
-            newPicture = checkString(newPicture);
+            newPicture = checkString(newPicture, "Picture");
         } catch(e) {
             errorDiv.innerHTML = "";
             errorFound(e, newPictureElement, pictureLabelElement, errorDiv);

@@ -171,7 +171,6 @@ const exportedMethods = {
         id_list = [];
         pets.forEach(pet => {
             id_list.push(pet.id);
-            console.log(pet.id)
         })
 
         let index;
