@@ -3,39 +3,75 @@
 <form method="post" id="addPet">
     <label id="petNameLabel">
         Name
-        <input type="text" id="petName" name="petName" placeholder="Name" value={{name}}>
+        {{#if name}}
+            <input type="text" id="petName" name="petName" placeholder="Name" value={{name}}>
+        {{else}}
+            <input type="text" id="petName" name="petName" placeholder="Name"/>
+        {{/if}}
     </label>
     <label id="birthdayLabel">
         Birthday
-        <input type="text" id="birthday" name="birthday" placeholder="Birthday" value={{birthday}}>
+        {{#if birthday}}
+            <input type="text" id="birthday" name="birthday" placeholder="Birthday" value={{birthday}}>
+        {{else}}
+            <input type="text" id="birthday" name="birthday" placeholder="Birthday"/>
+        {{/if}}
     </label>
     <label id="breedLabel">
         Breed
-        <input type="text" id="breed" name="breed" placeholder="Breed" value={{breed}}>
+        {{#if breed}}
+            <input type="text" id="breed" name="breed" placeholder="Breed" value={{breed}}>
+        {{else}}
+            <input type="text" id="breed" name="breed" placeholder="Breed"/>
+        {{/if}}
     </label>
     <label id="heightLabel">
         Height
-        <input type="text" id="height" name="height" placeholder="Height" value={{height}}>
+        {{#if height}}
+            <input type="text" id="height" name="height" placeholder="Height" value={{height}}>
+        {{else}}
+            <input type="text" id="height" name="height" placeholder="Height"/>
+        {{/if}}    
     </label>
     <label id="weightLabel">
         Weight
-        <input type="text" id="weight" name="weight" placeholder="Weight" value={{weight}}>
+        {{#if weight}}
+            <input type="text" id="weight" name="weight" placeholder="Weight" value={{weight}}>
+        {{else}}
+            <input type="text" id="weight" name="weight" placeholder="Weight"/>
+        {{/if}}
     </label>
     <label id="sexLabel">
         Sex
-        <input type="text" id="sex" name="sex" placeholder="Sex" value={{sex}}>
+        {{#if sex}}
+            <input type="text" id="sex" name="sex" placeholder="Sex" value={{sex}}>
+        {{else}}
+            <input type="text" id="sex" name="sex" placeholder="Sex"/>
+        {{/if}}
     </label>
     <label id="needsLabel">
         Special Needs
-        <input type="text" id="needs" name="needs" placeholder="Needs" value={{needs}}>
+        {{#if needs}}
+            <input type="text" id="needs" name="needs" placeholder="Needs" value={{needs}}>
+        {{else}}
+            <input type="text" id="needs" name="needs" placeholder="Needs"/>
+        {{/if}}
     </label>
     <label id="pictureLabel">
         Picture
-        <input type="text" id="picture" name="picture" placeholder="Picture" value={{picture}}>
+        {{#if picture}}
+            <input type="text" id="picture" name="picture" placeholder="Picture" value={{picture}}>
+        {{else}}
+            <input type="text" id="picture" name="picture" placeholder="Picture">
+        {{/if}}
     </label>
     <label id="typeLabel">
         Type
-        <input type="text" id="type" name="type" placeholder="Dog/Cat" value={{type}}>
+        {{#if type}}
+            <input type="text" id="type" name="type" placeholder="Dog/Cat" value={{type}}>
+        {{else}}
+            <input type="text" id="type" name="type" placeholder="Dog/Cat"/>
+        {{/if}}
     </label>
     <button type="submit">Add Pet</button>
 </form>

@@ -1,0 +1,11 @@
+<h1>{{title}}</h1>
+<p>Showing shelters in {{city}}, {{state}}</p>
+{{#if shelters.length}}
+    <ul>
+        {{#each shelters}}
+            <li class="tabClass" ><a href="/shelters/{{this._id}}">{{this.shelterName}}</a></li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No shelters found in that city!</p>
+{{/if}}

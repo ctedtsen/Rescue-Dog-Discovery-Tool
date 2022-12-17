@@ -325,20 +325,6 @@ let checkSpecialNeeds = (needs) => {
       throw "Error: invalid list input";
     }
   }
-  /*
-  needs = needs.split(",");
-  if (!Array.isArray(needs)) {
-    throw "Error: you must enter an array that lists special needs of rescue pet";
-  }
-  for (item of needs) {
-    checkString(item, "special needs element of rescue pet");
-    item = item.trim();
-    for (letter of item) {
-      if (numbers.includes(letter)) {
-        throw "Error: needs array cannot contain numbers";
-      }
-    }
-  }*/
   return needs;
 };
 
@@ -372,5 +358,27 @@ let checkWeight = (weight) => {
     throw "Error: weight argument is invalid";
 
   return `${weightValue}${weightTxt}`;
+};
+
+let checkTimeKept = (timeKept, killShelter) => {
+  if(!timeKept){
+    throw "Error: timeKept must be provided";
+  }
+  if(!killShelter){
+    return "n/a";
+  }
+  timeKept = this.checkString(timeKept, "timeKept");
+  timeKept = Number(timeKept);
+  if(isNaN(timeKept)){
+    throw "Error: time kept is not a number";
+  }
+  if(typeof timeKept !== "number"){
+    throw "Error: time must be of type number";
+  }
+  if(timeKept % 1 !== 0){
+    throw "Error: time kept must be an integer";
+  }
+
+  return timeKept;
 };
 

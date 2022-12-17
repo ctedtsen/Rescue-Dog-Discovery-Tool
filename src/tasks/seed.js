@@ -34,7 +34,8 @@ await db.dropDatabase();
             "Central California SPCA",
             "Fresno",
             "CA",
-            false
+            false,
+            "n/a"
         );
         const shelterId = centralCali._id.toString();
         const dogWhiskey = await dogs.addDog("Whiskey", "02/28/2021", "siberian husky", "1ft10in", "50lbs", "male", "", "public/petImages/husky-whiskey.jpg");
@@ -68,7 +69,8 @@ await db.dropDatabase();
             "Humane Society of North Texas",
             "Forte Worth",
             "TX",
-            false
+            false,
+            "n/a"
         );
         const shelterId = humaneSocietyTexas._id.toString();
         const dogRob = await dogs.addDog("Rob", "07/30/2019", "great dane", "2ft10in", "120lbs", "male", "bloats easily", "public/petImages/great-dane-rob.jpg");
@@ -102,7 +104,8 @@ await db.dropDatabase();
             "Homeward Animal Shelter",
             "Fargo",
             "ND",
-            false
+            false,
+            "n/a"
         );
         const shelterId = homewardNorDa._id.toString();
         const dogAmil = await dogs.addDog("Amil", "05/19/2021", "shepherd/mix", "2ft1in", "57lbs", "male", "", "public/petImages/shepherd-amil.jpeg");
@@ -136,7 +139,8 @@ await db.dropDatabase();
             "Oregon Dog Rescue",
             "Tualatin",
             "OR",
-            false
+            false,
+            "n/a"
         );
         const shelterId = oregonDogRescue._id.toString();
         const dogJade = await dogs.addDog("Jade", "08/02/2022", "russel terrier", "0ft8in", "10lbs", "female", "", "public/petImages/russel-terrier-jade.jpeg");
@@ -170,7 +174,8 @@ await db.dropDatabase();
             "Harvest Hills Animal Shelter",
             "Fryeburg",
             "ME",
-            true
+            true,
+            "7"
         );
         const shelterId = harvestHillsMaine._id.toString();
         const dogJoani = await dogs.addDog("Joani", "04/30/2022", "labrador retriever/mix", "1ft8in", "52lbs", "female", "", "public/petImages/lab-retriever-joani.jpeg");
@@ -204,7 +209,8 @@ await db.dropDatabase();
             "Lowell Humane Society",
             "Lowell",
             "MA",
-            true
+            true,
+            "5"
         );
     } catch(e) {
         console.log(e);
@@ -217,7 +223,8 @@ await db.dropDatabase();
             "Animal Humane New Mexico Westside Adoption Center",
             "Albuquerque",
             "NM",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -230,7 +237,8 @@ await db.dropDatabase();
             "Wyoming County SPCA",
             "Attica",
             "NY",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -243,7 +251,8 @@ await db.dropDatabase();
             "Heart Of The Valley Animal Shelter",
             "Bozeman",
             "MT",
-            true
+            true,
+            "2"
         );
     } catch(e) {
         console.log(e);
@@ -256,7 +265,8 @@ await db.dropDatabase();
             "Helping Paws Animal Shelter",
             "Woodstock",
             "IL",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -269,7 +279,8 @@ await db.dropDatabase();
             "Fulton County Animal Services",
             "Atlanta",
             "GA",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -282,7 +293,8 @@ await db.dropDatabase();
             "The Humane Society of Charlotte",
             "Charlotte",
             "NC",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -295,7 +307,8 @@ await db.dropDatabase();
             "Calvert Animal Welfare League",
             "Prince Frederick",
             "MD",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -308,7 +321,8 @@ await db.dropDatabase();
             "SAVE - A Friend to Homeless Animals",
             "Montgomery",
             "NJ",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);
@@ -321,7 +335,8 @@ await db.dropDatabase();
             "SPCA of Connecticut",
             "Monroe",
             "CT",
-            false
+            false,
+            "n/a"
         );
     } catch(e) {
         console.log(e);

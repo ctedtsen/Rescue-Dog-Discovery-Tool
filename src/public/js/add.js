@@ -7,6 +7,8 @@ if(addShelterForm){
   const cityLabel = document.getElementById('cityFormLabel"')
   const stateElement = document.getElementById('shelterState');
   const stateLabel = document.getElementById('shelterFormLabel');
+  const timeElement = document.getElementById('timeKept');
+  const timeLabel = document.getElementById("timeKeptLabel");
   const errorDiv = document.getElementById("error");
 
   addShelterForm.addEventListener('submit', (event) => {
@@ -15,11 +17,13 @@ if(addShelterForm){
     let name = undefined;
     let city = undefined;
     let state = undefined;
+    let time = undefined;
 
     try{
       name = nameElement.value;
       city = cityElement.value;
       state = stateElement.value;
+      time = timeElement.value;
     } catch(e){
       errorDiv.hidden = false;
       let errMsg = document.createElement("p");
@@ -46,6 +50,13 @@ if(addShelterForm){
     } catch(e){
       errorDiv.innerHTML = "";
       errorFound(e, stateElement, stateLabel, errorDiv);
+      return;
+    }
+    try{
+      checkString(time, "time kept");
+    } catch(e){
+      errorDiv.innerHTML = "";
+      errorFound(e, timeElement, timeLabel, errorDiv);
       return;
     }
 
