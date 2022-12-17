@@ -431,9 +431,5 @@ module.exports = {
     }
 
     return rating;
-  },
-  isAuthenticated(req){
-    return req.session.user;
   }
-
 };

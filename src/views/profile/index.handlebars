@@ -45,4 +45,27 @@
     {{else}}
         <p>No comments for any pets</p>
     {{/if}}
+
+    {{#if isAdmin}}
+    <h3>Create new admin user</h3>
+    {{#if error}}
+        <div id="error" class="error">{{error}}</div>
+    {{else}}
+        <div id="error" class="error" hidden></div>
+    {{/if}}
+    <form action="/users/create-admin" id="registerForm" method="post">
+        <label for="usernameInput" id="usernameLabel">Username:</label>
+        <input type="text" id="usernameInput" name="usernameInput" /><br />
+        <label for="passwordInput" id="passwordLabel">Password: </label>
+        <input type="password" id="passwordInput" name="passwordInput" />
+        <label for="cityInput" id ="cityLabel">City</label>
+        <input type="text" id="cityInput" name="cityInput"/><br />
+        <label for="stateInput" id="stateLabel">State: </label>
+        <input type="text" id="stateInput" name="stateInput"/>
+        <button type="submit">Register</button>
+    </form>
+    {{/if}}
+    {{#if message}}
+        <p>{{message}}</p>
+    {{/if}}
 </div>
