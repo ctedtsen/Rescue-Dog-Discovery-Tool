@@ -1,18 +1,16 @@
-<h1>{{title}}</h1>
-
-{{#if shelters.length}}
-    <ul>
-        {{#each shelters}}
-            <li class="tabClass" ><a href="/shelters/{{this._id}}">{{this.shelterName}}</a></li>
-            <li>Pets at this shelter have at most {{this.timeKept}} days until they are euthanized</li>
-            <li>There are currently {{this.numberPets}} pets at this shelter</li>
-            {{#if this.pets.length}}    
-                {{#each this.pets}}
-                    <li>{{this.name}}</li>
-                {{/each}}
-            {{/if}}
-        {{/each}}
-    </ul>
-{{else}}
-    <p>No kill shelters currently in the database!</p>
-{{/if}}
+<ul> 
+    {{#each shelters}} 
+        <li class="tabClass" ><a href="/shelters/{{this._id}}">{{this.shelterName}}</a></li> 
+        <ul> 
+            <li>Pets at this shelter have at most {{this.timeKept}} days until they are euthanized</li> 
+            <li>There are currently {{this.numberPets}} pets at this shelter</li> 
+            {{#if this.pets.length}} 
+                <ul> 
+                    {{#each this.pets}} 
+                        <li>{{this.name}}</li> 
+                    {{/each}} 
+                </ul> 
+            {{/if}} 
+        </ul> 
+    {{/each}}
+</ul>
