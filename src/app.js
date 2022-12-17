@@ -37,6 +37,22 @@ app.use('/shelters/remove', async (req, res, next) => {
   next();
 });
 
+app.use('/shelters/:id/add_pet', async (req, res, next) => {
+  if(!req.session.admin){
+    res.status(403).render('users/forbiddenAccess');
+    return;
+  }
+  next();
+});
+
+app.use('/shelters/:id/delete_pet', async (req, res, next) => {
+  if(!req.session.admin){
+    res.status(403).render('users/forbiddenAccess');
+    return;
+  }
+  next();
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {

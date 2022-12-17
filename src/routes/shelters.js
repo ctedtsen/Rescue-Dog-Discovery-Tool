@@ -4,6 +4,8 @@ const data = require('../data');
 const helpers = require('../helpers');
 const sheltersData = data.shelters;
 const reviewsData = data.reviews;
+const dogsData = data.dogs;
+const catsData = data.cats;
 const xss = require('xss');
 
 router.get('/add', async (req, res) => {
@@ -126,9 +128,6 @@ router.post('/delete_review', async(req, res) => {
     let reviewId = req.body.reviewID;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
-    // if(!loggedIn){
-    //     return res.redirect('/');
-    // }
     try{
         reviewId = helpers.checkId(reviewId, "review id");
     } catch(e) {
@@ -224,9 +223,9 @@ router.post('/:id/delete_review', async(req, res) => {
     let reviewId = req.body.reviewId;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
-    // if(!loggedIn){
-    //     return res.redirect('/');
-    // }
+    if(!loggedIn){
+        return res.redirect('/');
+    }
     try{
         reviewId = helpers.checkId(reviewId, "review id");
     } catch(e) {
@@ -236,7 +235,6 @@ router.post('/:id/delete_review', async(req, res) => {
     try{
         await reviewsData.deleteReview(reviewId);
     } catch(e) {
-        console.log("delete: " + e + " " + reviewId)
         res.render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
@@ -259,6 +257,165 @@ router.get('/:id/delete_review', async(req, res) => {
     }
     res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
     return;
+});
+
+router.get('/:id/add_pet', async function(req, res){
+    return res.render('pet/addPet', {title: "Add Pet", error: ""});
+});
+
+router.post('/:id/add_pet', async function(req, res){
+    let shelterId = req.params.id;
+    let errors = [];
+
+    let name = req.body.petName;
+    try{
+        name = helpers.checkName(name);
+    } catch(e) {
+        errors.push(e + " (name) ");
+    }
+
+    let birthday = req.body.birthday;
+    try{
+        birthday = helpers.checkBirthday(birthday);
+    } catch(e) {
+        errors.push(e + " (birthday) ");
+    }
+
+    let age = helpers.calcAge(birthday);
+
+    let breed = req.body.breed;
+    try{
+        breed = helpers.checkBreed(breed);
+    } catch(e) {
+        errors.push(e + " (breed) ");
+    }
+
+    let height = req.body.height;
+    try{
+        height = helpers.checkHeight(height);
+    } catch(e) {
+        errors.push(e + " (height) ")
+    }
+
+    let weight = req.body.weight;
+    try{
+        weight = helpers.checkWeight(weight);
+    } catch(e) {
+        errors.push(e + " (weight) ")
+    }
+
+    let sex = req.body.sex
+    try{
+        sex = helpers.checkSexInput(sex);
+    } catch(e) {
+        errors.push(e + " (sex) ");
+    }
+
+    let needs = req.body.needs;
+    try{
+        needs = helpers.checkSpecialNeeds(needs);
+    } catch(e) {
+        errors.push(e)
+    }
+
+    let picture = req.body.picture;
+    try{
+        picture = helpers.checkPicture(picture);
+    } catch(e) {
+        errors.push(e + " (picture) ")
+    }
+
+    let type = req.body.type;
+    try{
+        type = helpers.checkAnimalType(type);
+    } catch(e) {
+        errors.push(e + " (type) ")
+    }
+
+    if(errors.length > 0){
+        return res.render('pet/addPet', {title: "Add Pet", error: errors, 
+            name: name,
+            birthday: birthday,
+            breed: breed,
+            height: height,
+            weight: weight,
+            sex: sex,
+            needs: needs,
+            picture: picture,
+            type: type});
+    }
+
+    if(type === 'dog'){
+        try{
+            let dog = await dogsData.addDog(name, birthday, breed, height, weight, sex, needs, picture);
+            await sheltersData.addRescueDog(shelterId, dog._id.toString());
+        } catch(e) {
+            return res.render('pet/addPet', {title: "Add Pet", error: e, 
+            name: name,
+            birthday: birthday,
+            breed: breed,
+            height: height,
+            weight: weight,
+            sex: sex,
+            needs: needs,
+            picture: picture,
+            type: type});
+        }
+    } else {
+        try{
+            let cat = await catsData.addCat(name, birthday, height, weight, sex, needs, picture);
+            await sheltersData.addRescueCat(shelterId, cat._id.toString());
+        } catch(e) {
+            return res.render('pet/addPet', {title: "Add Pet", error: e, 
+            name: name,
+            birthday: birthday,
+            breed: breed,
+            height: height,
+            weight: weight,
+            sex: sex,
+            needs: needs,
+            picture: picture,
+            type: type});
+        }
+    }
+    return res.render('pet/addPet', {title: "Add Pet", error: "Pet added successfully"});
+});
+
+router.get('/:id/delete_pet', async function(req, res){
+    return res.render('pet/deletePet', {title: "Delete Pet", error: ""});
+});
+
+router.post('/:id/delete_pet', async function(req, res){
+    let shelteId = req.params.id;
+    let petId = req.body.petID;
+    let type = req.body.petType;
+    let errors = [];
+
+    try{
+        helpers.checkId(petId);
+    } catch(e){
+        errors.push(e);
+    }
+    try{
+        helpers.checkAnimalType(type);
+    } catch(e) {
+        errors.push(e);
+    }
+    if(errors.length > 0){
+        return res.render('pet/deletePet', {title: "Delete Pet", error: errors});  
+    }
+    try{
+        if(type === 'dog'){
+            await dogsData.removeDog(petId);
+            await sheltersData.removeRescuePet(shelteId, petId);
+        } else{
+            await catsData.removeCat(petId);
+            await sheltersData.removeRescuePet(shelteId, petId);
+        }
+    } catch(e){
+        return res.render('pet/deletePet', {title: "Delete Pet", error: e}); 
+    }
+    return res.render('pet/deletePet', {title: "Delete Pet", error: "Pet deleted successfully"});
 });
 
 module.exports = router;
