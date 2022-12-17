@@ -4,15 +4,27 @@
 <form method="post" id="addShelter">
     <label id="shelterNameLabel">
         Shelter Name
-        <input type="text" id="shelterName" name="shelterName" placeholder="Shelter Name" value={{name}}>
+        {{#if shelter}}
+            <input type="text" id="shelterName" name="shelterName" placeholder="Shelter Name" value={{name}}>
+        {{else}}
+            <input type="text" id="shelterName" name="shelterName" placeholder="Shelter Name">
+        {{/if}}
     </label>
     <label id="cityFormLabel">
         City
-        <input type="text" id="shelterCity" name="shelterCity" placeholder="City" value={{city}}>
+        {{#if city}}
+            <input type="text" id="shelterCity" name="shelterCity" placeholder="City" value={{city}}>
+        {{else}}
+            <input type="text" id="shelterCity" name="shelterCity" placeholder="City">
+        {{/if}}
     </label>
     <label id="stateFormLabel">
         State
-        <input type="text" id="shelterState" name="shelterState" placeholder="State" value={{state}}>
+        {{#if state}}
+            <input type="text" id="shelterState" name="shelterState" placeholder="State" value={{state}}>
+        {{else}}
+            <input type="text" id="shelterState" name="shelterState" placeholder="State">
+        {{/if}}
     </label>
     <label id="killShelterFormLabel">
         Kill Shelter
@@ -20,7 +32,11 @@
     </label>
      <label id="timeKeptLabel">
         How Long Kill Shelter Holds Pets:
-        <input type="text" id="timeKept" name="timeKept", placeholder="in days" value={{time}}> 
+        {{#if time}}
+            <input type="text" id="timeKept" name="timeKept" placeholder="in days" value={{time}}> 
+        {{else}}
+            <input type="text" id="timeKept" name="timeKept" placeholder="in days"/> 
+        {{/if}}
     </label>
     <button type="submit">Add Shelter</button>
 </form>

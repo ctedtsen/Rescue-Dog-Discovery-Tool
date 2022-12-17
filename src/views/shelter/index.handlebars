@@ -5,11 +5,19 @@
 <form method="post" id="searchShelter">
     <label id="theCityLabel">
         Shelter City
+        {{#if city}}
         <input type="text" id="theCity" name="theCity" placeholder="City" value={{city}}>
+        {{else}}
+        <input type="text" id="theCity" name="theCity" placeholder="City">
+        {{/if}}
     </label>
     <label id="theStateLabel">
         Shelter State
+        {{#if state}}
         <input type="text" id="theState" name="theState" placeholder="State" value={{state}}>
+        {{else}}
+        <input type="text" id="theState" name="theState" placeholder="State">
+        {{/if}}
     </label>
     <button type="submit">Find Shelters</button>
 </form>
