@@ -151,40 +151,46 @@ router.post('/create-admin', async (req, res) => {
   let passwordInput = req.body.passwordInput;
   let cityInput = req.body.cityInput;
   let stateInput = req.body.stateInput;
-
+  let user;
+  try{
+      user = await userData.findByUsername(loggedIn);
+  } catch(e) {
+    res.redirect("/users/register");
+    return;
+  }  
   try {
     usernameInput = helpers.checkUsername(usernameInput.trim());
   } catch (e) {
-    res.status(400).render("profile/index", { title: username, error: e, loggedIn: loggedIn, isAdmin: isAdmin });
+    res.status(400).render("profile/index", { title: username, error: e, user: user, loggedIn: loggedIn, isAdmin: isAdmin });
     return;
   }
   try {
     passwordInput = helpers.checkPassword(passwordInput);
   } catch (e) {
-    res.status(400).render("profile/index", { title: username, error: e, loggedIn: loggedIn, isAdmin: isAdmin });
+    res.status(400).render("profile/index", { title: username, error: e, user: user,loggedIn: loggedIn, isAdmin: isAdmin });
     return;
   }
 
   try {
     cityInput = helpers.checkString(cityInput, "cityInput");
   } catch (e) {
-    res.status(400).render("profile/index", { title: username, error: e, loggedIn: loggedIn, isAdmin: isAdmin });
+    res.status(400).render("profile/index", { title: username, error: e, user: user, loggedIn: loggedIn, isAdmin: isAdmin });
     return;
   }
 
   try {
     stateInput = helpers.checkState(stateInput);
   } catch (e) {
-    res.status(400).render("profile/index", { title: username, error: e, loggedIn: loggedIn, isAdmin: isAdmin });
+    res.status(400).render("profile/index", { title: username, error: e, user: user, loggedIn: loggedIn, isAdmin: isAdmin });
     return;
   }
 
   try {
     let userCreated = await userData.createUser(usernameInput, passwordInput, cityInput, stateInput, true, [], [], []);
-    res.render("profile/index", { title: username, loggedIn: loggedIn, isAdmin: isAdmin, message: "New Admin user was created!" });
+    res.render("profile/index", { title: username, user: user, loggedIn: loggedIn, isAdmin: isAdmin, message: "New Admin user was created!" });
     return;
   } catch (e) {
-    res.status(400).render("profile/index", { title: username, error: e, loggedIn: loggedIn, isAdmin: isAdmin });
+    res.status(400).render("profile/index", { title: username, error: e, user: user, loggedIn: loggedIn, isAdmin: isAdmin });
     return;
   }
 
