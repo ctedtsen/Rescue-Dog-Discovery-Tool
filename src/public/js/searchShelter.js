@@ -13,7 +13,7 @@ if(searchShelterForm){
         let city;
         try{
             city = cityElement.value;
-            city = checkString(city, "shelter city");
+            city = checkWord(city, "shelter city");
         } catch(e){
             errorDiv.innerHTML = "";
             errorFound(e, cityElement, cityLabel, errorDiv);
