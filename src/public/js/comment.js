@@ -40,7 +40,7 @@
 
         var newComment = newCommentInput.val();
         try{
-            newComment = checkString(newComment, "comment");
+            newComment = checkWord(newComment, "comment");
         } catch(e) {
             $("#diverror").html(e);
             return;
