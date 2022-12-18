@@ -8,6 +8,7 @@ const usersFunctions = require('./users');
 const {ObjectId} = require('mongodb');
 const helpers = require('../helpers');
 
+
 const exportedMethods = {
     async createComment (
         commenterName,
@@ -184,6 +185,8 @@ const exportedMethods = {
             throw "Error: not able to update user successfully (deletReview)"
         }
 
+        
+
         if(animalType === "dog"){
             const dogList = await dogsFunctions.getAllDogs();
 
@@ -267,7 +270,98 @@ const exportedMethods = {
 
             return catsFunctions.getCatById(catId.toString());
         }
+    },
+
+    async updateComment(commentId, animalType, petId, name,commentText,username){
+      commentId = helpers.checkId(commentId, "commentId");
+      animalType = helpers.checkAnimalType(animalType);
+      commentText = helpers.checkString(commentText, "comment");
+      petId = helpers.checkId(petId, "petId");
+      name = helpers.checkPersonName(name);
+
+      let oldComment = this.getComment(commentId,animalType);
+
+      const newComment = {
+        name: name,
+        comment: commentText
+      };
+        
+      let deleteComment = await this.removeComment(commentId,animalType,username);
+
+      let addComment = await this.createComment(name,commentText,petId,animalType,username);
+
+      if(animalType === "dog"){
+        return dogsFunctions.getDogById(petId.toString());
+      }else if(animalType === "cat"){
+        return catsFunctions.getCatById(petId.toString());
+      }
+
+      
+    },
+
+    async getCommentsByUser(petId,animalType,username){
+      animalType = helpers.checkAnimalType(animalType);
+      petId = helpers.checkId(petId, "petId");
+
+      let user = await usersFunctions.findByUsername(username);
+
+      //console.log(user.comments);
+
+      let userComments = [];
+      for(let x in user.comments){
+        userComments.push(user.comments[x]._id);
+      }
+
+      if(animalType === "dog"){
+        let dog = await dogsFunctions.getDogById(petId);
+
+        //console.log(dog.comments);
+        let contains_comment = false;
+        let comment = [];
+
+        let temp = dog.comments;
+        temp.forEach(element => {
+          //console.log(userComments);
+          //console.log(element);
+          if(userComments.includes(element._id)){
+            comment.push(element);
+            contains_comment = true;
+          }
+        });
+
+        if(!contains_comment){
+          throw "No comment found for user (getcommentByUser)";
+        }
+
+        return comment;
+
+      }
+      else if(animalType === "cat"){
+        let cat = await catsFunctions.getCatById(petId);
+
+        //console.log(cat.comments);
+        let contains_comment = false;
+        let comment = [];
+
+        let temp = cat.comments;
+        temp.forEach(element => {
+          //console.log(userComments);
+          //console.log(element);
+          if(userComments.includes(element._id)){
+            comment.push(element);
+            contains_comment = true;
+          }
+        });
+
+        if(!contains_comment){
+          throw "No comment found for user (getcommentByUser)";
+        }
+
+        return comment;
+      }
     }
+
+
 }
 
 module.exports = exportedMethods;

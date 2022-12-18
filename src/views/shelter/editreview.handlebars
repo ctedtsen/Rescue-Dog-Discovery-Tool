@@ -1,0 +1,25 @@
+<h3>{{title}}</h3>
+<div id="error" class="error" hidden>I'm an error</div>
+{{#if loggedIn}}
+<div id="diverror">{{error}}</div>
+<h3>Reviews</h3>
+  <ul>
+    <li>{{review.reviewerName}} - Review: "{{review.review}}" Rating: {{review.rating}}</li>
+  </ul>
+<form method="post" id="updateReview">
+    <label id="nameLabel">
+        Reviewer Name
+        <input type="text" id="name" name="name" placeholder="Reviewer Name"/>
+    </label>
+    <label id="reviewLabel">
+        Review
+        <input type="text" id="review" name="review" placeholder="Review"/>
+    </label>
+    <label id="ratingLabel">
+        Rating
+        <input type="text" id="rating" name="rating" placeholder="Rating"/>
+    </label>
+    <button type="submit">Update Review</button>
+</form>
+<a href="/shelters/{{shelter._id}}/delete_review">Delete review here</a>
+{{/if}}

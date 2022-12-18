@@ -222,6 +222,7 @@ router.post('/:id', async (req, res) => {
     let shelterId = req.params.id;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    
     if(!loggedIn){
         res.json({error: 'Error: Must be logged in to leave a review', loggedIn: loggedIn, isAdmin: isAdmin});
         return;
@@ -242,7 +243,7 @@ router.post('/:id', async (req, res) => {
             (xss(req.body.rating)), shelterId, loggedIn);
             return res.status(200).render('shelter/single', {title: "Name of Shelter: ", shelter: shelter, loggedIn: loggedIn, isAdmin: isAdmin});
     } catch(e) {
-        res.json({error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        res.status(400).render('shelter/single', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
 });
@@ -267,14 +268,24 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/:id/save', async(req, res) => {
-    let id = req.params.id;
+router.post('/:id/delete_review', async(req, res) => {
+    let shelterId = req.params.id;
+    let reviewId = req.body.reviewID;
     let loggedIn = req.session.user;
-    let errors =[];
+    let isAdmin = req.session.admin;
+    let review;
+    if(!loggedIn){
+        return res.redirect('/');
+    }
     try{
-        id = helpers.checkId(id, "pet id");
+        reviewId = helpers.checkId(reviewId, "review id");
+        shelterId = helpers.checkId(shelterId, "Shelter ID");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+
     } catch(e) {
-        errors.push(e);
+        //console.log(e);
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+        return;
     }
 
     if(errors.length > 0){
@@ -282,16 +293,14 @@ router.post('/:id/save', async(req, res) => {
     }
 
     try{
-        await usersData.saveShelter(loggedIn, id)
+        await reviewsData.deleteReview(reviewId,shelterId,loggedIn);
+        return res.redirect(302, `/shelters/${shelterId}`);
     } catch(e) {
-        errors.push(e);
-    }
-
-    if(errors.length > 0){
-        return res.render('shelter/saveShelter', {title: "Save this shelter?", error: errors, loggedIn: loggedIn});
+      console.log(e);
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+        return;
     }
     
-    return res.render('shelter/saveShelter', {title: "Save this shelter?", error: "Shelter has been saved", loggedIn: loggedIn});
 });
 
 router.get('/:id/save', async(req, res) => {
@@ -335,17 +344,73 @@ router.get('/delete_review', async(req, res) => {
     let shelterId = req.params.id;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    let review;
     if(!loggedIn){
         return res.redirect('/');
     }
     try {
         shelterId = helpers.checkId(shelterId, "id for shelter");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
     }catch(e) {
         const shelters = await sheltersData.getAllShelters();
-        return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
+        return res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
+    res.render('shelter/deletereview', {title: "Delete Review", review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     return;
+});
+
+router.get('/:id/edit_review', async (req, res) => {
+  let shelterId = req.params.id;
+  let loggedIn = req.session.user;
+  let review;
+  try {
+      shelterId = helpers.checkId(shelterId, "id for shelter");
+      review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+  }catch(e) {
+      //console.log(e);
+      const shelters = await sheltersData.getAllShelters();
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
+  res.render('shelter/editreview', {title: "Edit Review", loggedIn: loggedIn, review: review});
+  return;
+});
+
+router.post('/:id/edit_review', async (req, res) => {
+  let shelterId = req.params.id;
+  let loggedIn = req.session.user;
+  let review;
+  let reviewtext = req.body.review;
+  let rating = req.body.rating;
+  let reviewerName = req.body.name;
+
+  if(!loggedIn){
+      res.json({error: 'Error: Must be logged in to edit a review', loggedIn: loggedIn});
+      return;
+  }
+  try{
+      shelterId = helpers.checkId(shelterId, "Shelter ID");
+      reviewerName = helpers.checkPersonName(reviewerName);
+      reviewtext = helpers.checkString(reviewtext, "review");
+      rating = helpers.checkRating(rating);
+      review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+  } catch(e) {
+      console.log(e);
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
+  let shelter;
+  try{
+      shelter = await sheltersData.getShelterById(shelterId);
+  } catch(e) {
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
+  try{
+      await reviewsData.updateReview(xss(req.body.name), xss(req.body.review), 
+          (xss(req.body.rating)), review._id.toString(), shelterId);
+          return res.redirect(302, `/shelters/${shelterId}`);
+  } catch(e) {
+      console.log(e);
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
 });
 
 router.get('/:id/add_pet', async function(req, res){
