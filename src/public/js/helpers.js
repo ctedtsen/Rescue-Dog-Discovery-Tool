@@ -229,13 +229,13 @@ let checkRating = (rating) => {
 
 let checkUsername = (username) => {
   if (!(/^[a-zA-Z0-9]{4,}$/.test(username))) {
-      throw "Username not valid";
+      throw "Username or password not valid";
   }
 };
 
 let checkPassword = (password) => {
   if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{6,}$/.test(password))) {
-      throw "Password not valid";
+      throw "Username or password not valid";
   }
 };
 

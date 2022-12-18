@@ -12,6 +12,8 @@ let errorDivL = document.getElementById("error");
             checkUsername(usernameInput.value);
         }catch(e){
             errorDivL.innerHTML = "";
+            usernameInput.value = "";
+            passwordInput.value = "";
             errorFound(e, usernameInput, usernameLabel, errorDivL);
             return;
         }
@@ -19,6 +21,8 @@ let errorDivL = document.getElementById("error");
             checkPassword(passwordInput.value);
         }catch(e){
             errorDivL.innerHTML = "";
+            usernameInput.value = "";
+            passwordInput.value = "";
             errorFound(e, passwordInput, passwordLabel, errorDivL)
             return;
         }
