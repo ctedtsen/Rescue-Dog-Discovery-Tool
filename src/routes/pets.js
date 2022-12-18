@@ -40,29 +40,31 @@ router.post('/:petid', async function (request, response){
 
     if(!xss(request.body.commenterName)){
         try{
-            const user = request.session
+            /*const user = request.session
             if(!user.liked){
                 user.liked = [];
-            }
-            if(petType === 'dog' && !user.liked.includes(petId)){
+            }*/
+            const user = await usersData.findByUsername(loggedIn);
+            const liked = user.likes;
+            if(petType === 'dog' && !liked.includes(petId)){
                 await dogData.updateDog(petId, pet.name, pet.birthday, pet.breed, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes + 1);
-                user.liked.push(petId);
+                await usersData.addLike(loggedIn, petId);
                 return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
-            } else if (petType === 'cat' && !user.liked.includes(petId)){
+            } else if (petType === 'cat' && !liked.includes(petId)){
                 await catData.updateCat(petId, pet.name, pet.birthday, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes + 1);
-                user.liked.push(petId);
+                await usersData.addLike(loggedIn, petId);
                 return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
             } else if (petType === 'cat'){
-                let arr = user.liked;
-                let index = arr.indexOf(petId);
-                user.liked.splice(index, 1);
+                await usersData.removeLike(loggedIn, petId);
                 await catData.updateCat(petId, pet.name, pet.birthday, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes - 1);
                 return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
-            } else{
-                let arr = user.liked;
-                let index = arr.indexOf(petId);
-                user.liked.splice(index, 1);
+            } else if (petType === 'dog'){
+                await usersData.removeLike(loggedIn, petId);
                 await dogData.updateDog(petId, pet.name, pet.birthday, pet.breed, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes - 1);
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+            } else {
+                await usersData.removeLike(loggedIn, petId);
+                await catData.updateCat(petId, pet.name, pet.birthday,pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes - 1);
                 return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
             }
         } catch(e){
