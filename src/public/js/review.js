@@ -20,6 +20,7 @@
   
       try {
         newReview = checkWord(newReview, "review");
+        newReview = checkComment(newReview, "review");
       } catch (e) {
         $("#diverror").html(e);
         return;
