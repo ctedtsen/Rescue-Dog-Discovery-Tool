@@ -21,6 +21,7 @@ if(deleteCommentForm){
         }
         try{
           id = checkId(id, "shelterId");
+          id = checkCity(id, "comment id")
         } catch(e){
           errorDiv.innerHTML = "";
           errorFound(e, idElement, idLabel, errorDiv);
