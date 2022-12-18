@@ -132,7 +132,7 @@ router.get('/:username/saved_lists', async (req, res) => {
     return;
   }  
   try{
-      res.render('profile/saved', {title: "Saved Shelters and Pets", user: user});
+      res.render('profile/saved', {title: "Saved Shelters and Pets", user: user, loggedIn: loggedIn});
   } catch(e) {
     res.redirect("/");
   }
