@@ -23,13 +23,27 @@
         <dd>{{pet.specialNeeds}}</dd>
         {{/if}}
         <dt>Likes</dt>
-        <dd>{{pet.likes}}</dd>
+        {{#if likes}}
+            <dd>{{likes}}</dd>
+        {{else}}
+            <dd>{{pet.likes}}</dd>
+        {{/if}}
     </dl>
 </div>
+
+<div id="diverror">{{error}}</div>
+<p></p>
+{{#if loggedIn}}
+    <form method="post">
+        <button type="submit">Like</button>
+    </form>
+{{/if}}
+
 {{#if loggedIn}}
     <a href="/petdetails/{{pet._id}}/save">Save this pet!</a>
     <a href="/petdetails/{{pet._id}}/remove">Remove this pet from your saved list</a>
 {{/if}}
+
 {{#if pet.comments.length}}
     <h3>Comments</h3>
     <ul>
@@ -41,7 +55,6 @@
     <p>No comments yet</p>
 {{/if}}
 {{#if loggedIn}}
-<div id="diverror">{{error}}</div>
 <form method="post" id="addComment">
     <label id="nameLabel">
         Commenter Name
