@@ -1,4 +1,5 @@
 <h1>{{title}} {{shelter.shelterName}}</h1>
+<h2>Click on each rescue to see a more in depth bio!</h2>
 <div class="shelters-info">
   <dl>
     <dt>City</dt>
@@ -24,7 +25,11 @@
     <h3>Pets</h3>
     <ul>
       {{#each shelter.pets}}
-        <li><a href="/petdetails/{{this.id}}">{{this.name}}</a></li>
+        <li><a href="/petdetails/{{this.id}}">{{this.name}}</a>
+        <ul> 
+            <li><img class="pet-img" src="../../{{this.picture}}" alt="{{pet.name}}, a rescue at this shelter."></li>
+        </ul>
+        </li>
       {{/each}}
     </ul>
   {{/if}}
