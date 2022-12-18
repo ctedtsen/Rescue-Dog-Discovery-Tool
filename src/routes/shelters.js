@@ -304,7 +304,7 @@ router.get('/:id/delete_review', async(req, res) => {
 
 router.get('/:id/edit_review', async (req, res) => {
   let shelterId = req.params.id;
-  let loggedIn = helpers.isAuthenticated(req);
+  let loggedIn = req.session.user;
   let review;
   try {
       shelterId = helpers.checkId(shelterId, "id for shelter");
@@ -320,7 +320,7 @@ router.get('/:id/edit_review', async (req, res) => {
 
 router.post('/:id/edit_review', async (req, res) => {
   let shelterId = req.params.id;
-  let loggedIn = helpers.isAuthenticated(req);
+  let loggedIn = req.session.user;
   let review;
   if(!loggedIn){
       res.json({error: 'Error: Must be logged in to edit a review', loggedIn: loggedIn});

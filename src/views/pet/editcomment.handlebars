@@ -4,19 +4,22 @@
 {{#if loggedIn}}
 <div id="diverror">{{error}}</div>
 <h3>Comments</h3>
-  <ul>
-    <li>{{comment.commenterName}} - Comment: "{{comment.comment}}"</li>
-  </ul>
-<form method="post" id="updateComment">
-    <label id="nameLabel">
-        Commenter Name
-        <input type="text" id="name" name="name" placeholder="commenter Name"/>
-    </label>
-    <label id="commentLabel">
-        Comment
-        <input type="text" id="comment" name="comment" placeholder="comment"/>
-    </label>
-    <button type="submit">Update Comment</button>
-</form>
+<ul>
+  {{#each comments}}
+    <li>{{this.name}}: {{this.comment}}</li>
+    <form method="post" id="updateComment">
+      <input type="hidden" name="commentId" value="{{this._id}}">
+      <label id="nameLabel">
+          Commenter Name
+          <input type="text" id="name" name="name" placeholder="commenter Name"/>
+      </label>
+      <label id="commentLabel">
+          Comment
+          <input type="text" id="comment" name="comment" placeholder="comment"/>
+      </label>
+      <button type="submit">Update Comment</button>
+    </form>
+  {{/each}}
+</ul> 
 <a href="/petdetails/{{pet._id}}/delete_comment">Delete comment here</a>
 {{/if}}
