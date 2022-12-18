@@ -1,6 +1,6 @@
 <h1>{{title}}</h1>
 {{#if user.savedPets.length}}
-    <h3>Saved Shelters</h3>
+    <h2>Saved Shelters</h2>
     <ul>
         {{#each user.savedPets}}
             {{#if this.shelterName}}
@@ -12,7 +12,7 @@
     <p>No shelters saved</p>
 {{/if}}
 {{#if user.savedPets.length}}
-    <h3>Saved Pets</h3>
+    <h2>Saved Pets</h2>
     <ul>
         {{#each user.savedPets}}
             {{#if this.name}}
