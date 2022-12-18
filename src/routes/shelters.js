@@ -217,6 +217,7 @@ router.post('/:id', async (req, res) => {
     let shelterId = req.params.id;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    
     if(!loggedIn){
         res.json({error: 'Error: Must be logged in to leave a review', loggedIn: loggedIn, isAdmin: isAdmin});
         return;
@@ -273,7 +274,9 @@ router.post('/:id/delete_review', async(req, res) => {
     }
     try{
         reviewId = helpers.checkId(reviewId, "review id");
+        shelterId = helpers.checkId(shelterId, "Shelter ID");
         review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+
     } catch(e) {
         //console.log(e);
         res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
@@ -303,7 +306,7 @@ router.get('/:id/delete_review', async(req, res) => {
         review = await reviewsData.getReviewByUser(shelterId,loggedIn);
     }catch(e) {
         const shelters = await sheltersData.getAllShelters();
-        return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
+        return res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     }
     res.render('shelter/deletereview', {title: "Delete Review", review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     return;
@@ -319,7 +322,7 @@ router.get('/:id/edit_review', async (req, res) => {
   }catch(e) {
       //console.log(e);
       const shelters = await sheltersData.getAllShelters();
-      return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn});
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
   }
   res.render('shelter/editreview', {title: "Edit Review", loggedIn: loggedIn, review: review});
   return;
@@ -329,12 +332,19 @@ router.post('/:id/edit_review', async (req, res) => {
   let shelterId = req.params.id;
   let loggedIn = req.session.user;
   let review;
+  let reviewtext = req.body.review;
+  let rating = req.body.rating;
+  let reviewerName = req.body.name;
+
   if(!loggedIn){
       res.json({error: 'Error: Must be logged in to edit a review', loggedIn: loggedIn});
       return;
   }
   try{
       shelterId = helpers.checkId(shelterId, "Shelter ID");
+      reviewerName = helpers.checkPersonName(reviewerName);
+      reviewtext = helpers.checkString(reviewtext, "review");
+      rating = helpers.checkRating(rating);
       review = await reviewsData.getReviewByUser(shelterId,loggedIn);
   } catch(e) {
       console.log(e);

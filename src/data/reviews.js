@@ -111,13 +111,13 @@ const exportedMethods = {
 
     async deleteReview(reviewId,shelterId, username){
         reviewId = helpers.checkId(reviewId, "reviewId");
-
+        shelterId = helpers.checkId(id, "shelterId");
         const reviewCollection = await reviews();
 
         let review = await this.getReviewById(reviewId);
 
         if(!review){
-            throw "Error: no review with that id (delete review)";
+          throw "Error: no review with that id (delete review)";
         }
 
         //let username = review.username;
