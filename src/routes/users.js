@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require("../data");
 const userData = data.users;
 const helpers = require("../helpers");
+const xss = require('xss');
 
 router
   .route("/login")
@@ -15,9 +16,10 @@ router
     return;
   })
   .post(async (req, res) => {
-    let usernameInput = req.body.usernameInput;
-    let passwordInput = req.body.passwordInput;
+    let usernameInput = xss(req.body.usernameInput);
+    let passwordInput = xss(req.body.passwordInput);
 
+    usernameInput = usernameInput.toLowerCase();
     try {
       usernameInput = helpers.checkUsername(usernameInput.trim());
     } catch (e) {
@@ -42,14 +44,14 @@ router
         req.session.admin = user.admin;
       } else {
         res.render("users/login", {
-          title: "login",
+          title: "Login",
           error: "Username or password invalid",
         });
         return;
       }
       return res.redirect("/");
     } catch (e) {
-      res.status(404).render("users/login", { title: "login", error: e });
+      res.status(404).render("users/login", { title: "Login", error: e });
     }
   });
 
@@ -64,10 +66,12 @@ router
     return;
   })
   .post(async (req, res) => {
-    let usernameInput = req.body.usernameInput;
-    let passwordInput = req.body.passwordInput;
-    let cityInput = req.body.cityInput;
-    let stateInput = req.body.stateInput;
+    let usernameInput = xss(req.body.usernameInput);
+    let passwordInput = xss(req.body.passwordInput);
+    let cityInput = xss(req.body.cityInput);
+    let stateInput = xss(req.body.stateInput);
+
+    usernameInput = usernameInput.toLowerCase();
 
     try {
       usernameInput = helpers.checkUsername(usernameInput.trim());
@@ -170,10 +174,10 @@ router.post('/create-admin', async (req, res) => {
     return res.status(403).render('/users/forbiddenAccess');
   }
   let username = loggedIn.toUpperCase();
-  let usernameInput = req.body.usernameInput;
-  let passwordInput = req.body.passwordInput;
-  let cityInput = req.body.cityInput;
-  let stateInput = req.body.stateInput;
+  let usernameInput = xss(req.body.usernameInput);
+  let passwordInput = xss(req.body.passwordInput);
+  let cityInput = xss(req.body.cityInput);
+  let stateInput = xss(req.body.stateInput);
   let user;
   try{
       user = await userData.findByUsername(loggedIn);

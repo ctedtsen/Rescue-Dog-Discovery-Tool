@@ -41,7 +41,8 @@ const createUser = async (
         admin: admin, 
         savedPets: [], 
         shelterReviews: [],
-        comments: []
+        comments: [],
+        likes: []
     }
     const insertInfo = await userCollection.insertOne(newUser);
     if(!insertInfo.acknowledged || !insertInfo.insertedId){
@@ -248,6 +249,36 @@ const checkUser = async (username, password) => {
     }
 };
 
+const addLike = async(username, petId) => {
+    try{
+        const userCollection = await users();
+        const result = await userCollection.updateOne(
+            { username: username },
+            { $push: { likes: petId } }
+        )
+        return result;
+    } catch(e) {
+        throw e;
+    }
+}
+
+const removeLike = async(username, petId) => {
+    try{
+        const userCollection = await users();
+        const user = await findByUsername(username);
+        const likes = user.likes
+        const index = likes.indexOf(petId);
+        likes.splice(index, 1);
+        const result = await userCollection.updateOne(
+            { username: username },
+            { $set: {likes: likes} }
+        )
+        return result;
+    } catch(e) {
+        throw e;
+    }
+}
+
 module.exports = {
     createUser,
     checkUser,
@@ -257,5 +288,7 @@ module.exports = {
     savePet,
     removePet,
     saveShelter,
-    removeShelter
+    removeShelter,
+    addLike,
+    removeLike
 };

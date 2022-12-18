@@ -19,10 +19,7 @@
       }
   
       try {
-        newReview = checkString(newReview, "review");
-        if (newReview.length < 3) {
-          throw "Error: Incorrect format for review";
-        }
+        newReview = checkWord(newReview, "review");
       } catch (e) {
         $("#diverror").html(e);
         return;
