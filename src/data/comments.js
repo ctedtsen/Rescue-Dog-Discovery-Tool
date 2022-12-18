@@ -325,49 +325,119 @@ const exportedMethods = {
         }
         return dogsFunctions.getDogById(dogId.toString());
 
-    } else {
-        const catList = await catsFunctions.getAllcats();
+      } else {
+          const catList = await catsFunctions.getAllcats();
 
-        let wanted_comment = undefined;
-        let comment_list = [];
-        let wanted_cat = undefined;
-        let comment_index = undefined;
-        let wanted_comment_list = undefined;
-        catList.forEach(cat => {
-            comment_list = cat.comments;
+          let wanted_comment = undefined;
+          let comment_list = [];
+          let wanted_cat = undefined;
+          let comment_index = undefined;
+          let wanted_comment_list = undefined;
+          catList.forEach(cat => {
+              comment_list = cat.comments;
 
-            comment_list.forEach(comment => {
-                if(comment._id === commentId){
-                    wanted_comment = comment;
-                    wanted_cat = cat;
-                    comment_index = comment_list.indexOf(comment);
-                    wanted_comment_list = comment_list;
-                }
-            })
+              comment_list.forEach(comment => {
+                  if(comment._id === commentId){
+                      wanted_comment = comment;
+                      wanted_cat = cat;
+                      comment_index = comment_list.indexOf(comment);
+                      wanted_comment_list = comment_list;
+                  }
+              })
+          });
+
+          if(wanted_comment === undefined){
+              throw "Error: no comment in cats with that id"
+          }
+
+          wanted_comment_list[comment_index] = newComment;
+
+          const catId = wanted_cat._id;
+          const catCollection = await cats();
+          const updatedCats = await catCollection.updateOne(
+              {_id: ObjectId(catId)},
+              {$set: {
+                  comments: wanted_comment_list
+              }}
+          );
+
+          if(updatedCats.modifiedCount === 0){
+              throw "Error: not able to update the comment from the dogs successfully";
+          }
+
+          return catsFunctions.getCatById(catId.toString());
+      }
+    },
+
+    async getCommentByUser(petId,animalType,username){
+      animalType = helpers.checkAnimalType(animalType);
+      petId = helpers.checkId(petId, "petId");
+
+
+      if(animalType === "dog"){
+        let dog = await dogsFunctions.getDogById(petId);
+
+        console.log(dog);
+        let contains_comment = false;
+        let comment = 0;
+
+        let temp = dog.comments;
+        temp.forEach(element => {
+            if(element.username === username){
+              comment = element;
+              contains_comment = true;
+            }
         });
 
-        if(wanted_comment === undefined){
-            throw "Error: no comment in cats with that id"
+        if(!contains_comment){
+          throw "No comment found for user (getcommentByUser)";
         }
 
-        wanted_comment_list[comment_index] = newComment;
+        return comment;
 
-        const catId = wanted_cat._id;
-        const catCollection = await cats();
-        const updatedCats = await catCollection.updateOne(
-            {_id: ObjectId(catId)},
-            {$set: {
-                comments: wanted_comment_list
-            }}
-        );
+      }
+      else if(animalType === "cat"){
+        let cat = await catsFunctions.getCatById(petId);
 
-        if(updatedCats.modifiedCount === 0){
-            throw "Error: not able to update the comment from the dogs successfully";
+        let contains_comment = false;
+        let comment = 0;
+
+        let temp = cat.comments;
+        temp.forEach(element => {
+            if(element.username === username){
+              comment = element;
+              contains_comment = true;
+            }
+        });
+
+        if(!contains_comment){
+          throw "No comment found for user (getcommentByUser)";
         }
 
-        return catsFunctions.getCatById(catId.toString());
+        return comment;
+      }
+
+      let shelter = await sheltersFunctions.getShelterById(shelterId);
+
+      let contains_comment = false;
+      let comment = 0;
+
+      let temp = shelter.comments;
+      temp.forEach(element => {
+          if(element.username === username){
+            comment = element;
+            contains_comment = true;
+          }
+      });
+
+      if(!contains_comment){
+        throw "No comment found for user (getcommentByUser)";
+      }
+
+      return comment;
+
     }
-    }
+
 
 }
 

@@ -4,6 +4,7 @@ const data = require('../data');
 const dogData = data.dogs;
 const catData = data.cats;
 const commentsData = data.comments;
+const sheltersData = data.shelters;
 const helpers = require('../helpers')
 const xss = require('xss');
 
@@ -121,6 +122,45 @@ router.post('/:petid/delete_comment', async(req, res) => {
     }
 
     res.render('pet/deletecomment', {title: "Remove Comment", loggedIn: loggedIn});
+});
+
+router.get('/:petid/edit_comment', async (req, res) => {
+  let petId = req.params.petid;
+  let loggedIn = helpers.isAuthenticated(req);
+  let comment;
+  try {
+      petId = helpers.checkId(petId, "petid");
+  }catch(e) {
+      console.log(e);
+      const shelters = await sheltersData.getAllShelters();
+      return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn});
+  }
+  let pet;
+  let petNotFound = false;
+  let petType;
+  try{
+      pet = await dogData.getDogById(petId);
+      petType = "dog"
+  }catch{
+      petNotFound = true;
+  }
+  if(petNotFound){
+      try{
+          pet = await catData.getCatById(petId);
+          petType = "cat";
+      }catch{
+          return res.status(404).render('pet/index', {title: "pet error", error: "No pet found with that id", loggedIn: loggedIn})
+      }
+  }
+  try {
+    comment = await commentsData.getCommentByUser(petId,petType,loggedIn);
+  }catch(e) {
+      console.log(e);
+      const shelters = await sheltersData.getAllShelters();
+      return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn});
+  }
+  res.render('pet/editcomment', {title: "Edit Comment", loggedIn: loggedIn, comment: comment});
+  return;
 });
 
 module.exports = router;
