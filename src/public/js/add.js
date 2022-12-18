@@ -32,14 +32,14 @@ if(addShelterForm){
       errorDiv.appendChild(e);
     }
     try{
-      checkString(name, "Name");
+      checkWord(name, "Name");
     } catch(e){
       errorDiv.innerHTML = "";
       errorFound(e, nameElement, nameLabel, errorDiv);
       return;
     }
     try{
-      checkString(city, "City");
+      checkWord(city, "City");
     } catch(e){
       errorDiv.innerHTML = "";
       errorFound(e, cityElement, cityLabel, errorDiv);

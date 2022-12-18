@@ -157,7 +157,7 @@ const exportedMethods = {
             }
         }
 
-        const newPetList = [...shelter.pets, {id: dogId, name: dog.name}];
+        const newPetList = [...shelter.pets, {id: dogId, name: dog.name, picture: dog.picture}];
         const numberOfPets = newPetList.length;
       
         const shelterCollection = await shelters();
@@ -230,7 +230,7 @@ const exportedMethods = {
             }
         }
 
-        const newPetList = [...shelter.pets, {id: catId, name: cat.name}];
+        const newPetList = [...shelter.pets, {id: catId, name: cat.name, picture: cat.picture}];
         const numberOfPets = newPetList.length;
       
         const shelterCollection = await shelters();
@@ -283,7 +283,22 @@ const exportedMethods = {
         });
 
         return shelters_in_city;
-    }
+    },
+
+    async containsShelter(shelterId){
+        shelterId = helpers.checkId(shelterId, "shelterId");
+        const shelterCollection = await shelters();
+        const shelterList = await shelterCollection.find({}).toArray();
+
+        let equal = false;
+        shelterList.forEach(shelter => {
+            if(shelter._id.toString() === shelterId){
+                equal = true;
+            }
+        });
+
+        return equal;
+    },
 }
 
 module.exports = exportedMethods;

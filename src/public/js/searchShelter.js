@@ -45,7 +45,7 @@ if(searchShelterForm){
         }
     });
 }
-
+//followed tutorial here https://www.w3schools.com/howto/howto_js_filter_lists.asp to implement this
 function search() {
     const searchInput = document.getElementById('mySearch');
     const filter = searchInput.value.toUpperCase();

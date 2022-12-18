@@ -111,21 +111,25 @@ router.post('/remove', async(req, res) => {
         id = helpers.checkId(id, "shelter ID");
     } catch(e) {
         const shelters = await sheltersData.getAllShelters();
-        res.render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
+        res.render('shelter/remove', {title: "Remove a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: e});
     }
     try{
-        id = helpers.checkId(id, "shelter ID");
+        if(!await sheltersData.containsShelter(id)){
+            throw "Error: no shelter with that id";
+        }
     } catch(e) {
-        const shelters = await sheltersData.getAllShelters();
-        res.render('shelter/index', {title: "Shelters", shelters: shelters, error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        console.log(e);
+        res.render('shelter/remove', {title: "Remove a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: e});
+        return;
     }
     try{
         await sheltersData.removeShelter(id);
     } catch(e) {
-        res.render('shelter/remove', {title: "Remove a Shelter", loggedIn: loggedIn, isAdmin: isAdmin});
+        console.log(e);
+        res.render('shelter/remove', {title: "Remove a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: e});
         return;
     }
-    res.render('shelter/remove', {title: "Remove a Shelter", loggedIn: loggedIn, isAdmin: isAdmin});
+    res.render('shelter/remove', {title: "Remove a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: "Shelter successfully removed"});
     return;
 
 });
