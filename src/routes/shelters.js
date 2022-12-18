@@ -430,13 +430,6 @@ router.post('/:id/add_pet', async function(req, res){
         errors.push(e)
     }
 
-    let picture = xss(req.body.picture);
-    try{
-        picture = helpers.checkPicture(picture);
-    } catch(e) {
-        errors.push(e + " (picture) ")
-    }
-
     let type = xss(req.body.type);
     try{
         type = helpers.checkAnimalType(type);
