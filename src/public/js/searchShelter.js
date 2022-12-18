@@ -13,7 +13,7 @@ if(searchShelterForm){
         let city;
         try{
             city = cityElement.value;
-            city = checkString(city, "shelter city");
+            city = checkWord(city, "shelter city");
         } catch(e){
             errorDiv.innerHTML = "";
             errorFound(e, cityElement, cityLabel, errorDiv);
@@ -45,7 +45,7 @@ if(searchShelterForm){
         }
     });
 }
-
+//followed tutorial here https://www.w3schools.com/howto/howto_js_filter_lists.asp to implement this
 function search() {
     const searchInput = document.getElementById('mySearch');
     const filter = searchInput.value.toUpperCase();

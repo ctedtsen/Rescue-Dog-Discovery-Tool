@@ -17,6 +17,27 @@ let checkString = (str, varName) => {
     return str;
 };
 
+let checkWord = (str, varName) => {
+  if(!str) {
+    throw "Error: " + varName + " must be provided";
+  }
+  str = checkString(str, varName);
+  if(str.length < 3){
+    throw "Error: " + varName + " must be at least 4 characters long";
+  }
+  let contains_letters = false;
+  for(let i = 0; i < str.length; i++){
+    if(alphabet.includes(str[i])){
+      contains_letters = true;
+    }
+  }
+  if(!contains_letters){
+    throw "Error: " + varName + " must contain letters";
+  }
+
+  return str;
+}
+
 let checkId = (id, varName) => {
     if (!id) {
       throw "Error: you must provide an " + varName;
@@ -229,13 +250,13 @@ let checkRating = (rating) => {
 
 let checkUsername = (username) => {
   if (!(/^[a-zA-Z0-9]{4,}$/.test(username))) {
-      throw "Username not valid";
+      throw "Username or password not valid";
   }
 };
 
 let checkPassword = (password) => {
   if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{6,}$/.test(password))) {
-      throw "Password not valid";
+      throw "Username or password not valid";
   }
 };
 

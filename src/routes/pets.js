@@ -9,7 +9,7 @@ const helpers = require('../helpers')
 const xss = require('xss');
 
 router.post('/:petid', async function (request, response){
-    let petId = request.params.petid;
+    let petId =request.params.petid;
     let loggedIn = request.session.user;
     let isAdmin = request.session.admin;
     if(!loggedIn){
@@ -38,31 +38,40 @@ router.post('/:petid', async function (request, response){
         }
     }
 
-    if(!request.body.commenterName){
+    if(!xss(request.body.commenterName)){
         try{
-            const user = request.session
+            /*const user = request.session
             if(!user.liked){
                 user.liked = [];
-            }
-            if(petType === 'dog' && !user.liked.includes(petId)){
+            }*/
+            const user = await usersData.findByUsername(loggedIn);
+            const liked = user.likes;
+            if(petType === 'dog' && !liked.includes(petId)){
                 await dogData.updateDog(petId, pet.name, pet.birthday, pet.breed, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes + 1);
-                user.liked.push(petId);
-                let likes = pet.likes + 1;
-                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin, likes: likes});
-            } else if (petType === 'cat' && !user.liked.includes(petId)){
+                await usersData.addLike(loggedIn, petId);
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+            } else if (petType === 'cat' && !liked.includes(petId)){
                 await catData.updateCat(petId, pet.name, pet.birthday, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes + 1);
-                user.liked.push(petId);
-                let likes = pet.likes + 1;
-                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin, likes: likes});
-            } else{
-                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin, error: "User already liked this pet!"});
-            } 
+                await usersData.addLike(loggedIn, petId);
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+            } else if (petType === 'cat'){
+                await usersData.removeLike(loggedIn, petId);
+                await catData.updateCat(petId, pet.name, pet.birthday, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes - 1);
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+            } else if (petType === 'dog'){
+                await usersData.removeLike(loggedIn, petId);
+                await dogData.updateDog(petId, pet.name, pet.birthday, pet.breed, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes - 1);
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+            } else {
+                await usersData.removeLike(loggedIn, petId);
+                await catData.updateCat(petId, pet.name, pet.birthday,pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes - 1);
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+            }
         } catch(e){
             console.log(e);
             return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
         }
-        return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
-    } else{
+        } else{
     
         try{
             await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
@@ -186,7 +195,7 @@ router.get('/:petid/delete_comment', async(req, res) => {
 
 router.post('/:petid/delete_comment', async(req, res) => {
     let petId = req.params.petid;
-    let commentId = req.body.commentID;
+    let commentId = xss(req.body.commentID);
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
     try {
