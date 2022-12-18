@@ -22,7 +22,6 @@ if(deleteReviewForm){
       }
       try{
         id = checkId(id, "reviewId");
-        id = checkId(id, "review id");
       } catch(e){
         errorDiv.innerHTML = "";
         errorFound(e, idElement, idLabel, errorDiv);

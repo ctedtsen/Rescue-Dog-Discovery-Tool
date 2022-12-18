@@ -21,7 +21,6 @@ if(removeShelterForm){
         }
         try{
           id = checkId(id, "shelterId");
-          id = checkCity(id, "shelter ID");
         } catch(e){
           errorDiv.innerHTML = "";
           errorFound(e, idElement, idLabel, errorDiv);
