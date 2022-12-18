@@ -263,42 +263,49 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/:id/delete_review', async(req, res) => {
-    let reviewId = req.body.reviewId;
+    let shelterId = req.params.id;
+    let reviewId = req.body.reviewID;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    let review;
     if(!loggedIn){
         return res.redirect('/');
     }
     try{
         reviewId = helpers.checkId(reviewId, "review id");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
     } catch(e) {
-        res.render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        //console.log(e);
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
     try{
-        await reviewsData.deleteReview(reviewId);
+        await reviewsData.deleteReview(reviewId,shelterId,loggedIn);
+        return res.redirect(302, `/shelters/${shelterId}`);
     } catch(e) {
-        res.render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+      console.log(e);
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
-    res.render('shelter/deletereview', {title: "Delete Review", error: "", loggedIn: loggedIn, isAdmin: isAdmin});
-    return;
+    
 });
 
 router.get('/:id/delete_review', async(req, res) => {
     let shelterId = req.params.id;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    let review;
     if(!loggedIn){
         return res.redirect('/');
     }
     try {
         shelterId = helpers.checkId(shelterId, "id for shelter");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
     }catch(e) {
         const shelters = await sheltersData.getAllShelters();
         return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
     }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
+    res.render('shelter/deletereview', {title: "Delete Review", review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     return;
 });
 

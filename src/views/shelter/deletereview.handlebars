@@ -1,9 +1,13 @@
 <h3>{{title}}</h3>
 <div id="error" class="error" hidden>I'm an error</div>
-<form method="post" id="deleteReview">
-    <label id="reviewIdFormLabel">
-        Review ID
-        <input type="text" id="reviewID" name="reviewID" placeholder="Review ID"/>
-    </label>
+<form method="post" id="removeReview">
+    <h3>Reviews</h3>
+<ul>
+    <li>{{review.reviewerName}} - Review: "{{review.review}}" Rating: {{review.rating}}</li>
+</ul>
+<form method="post" id="updateReview">
+    <input type="hidden" id="reviewID" name="reviewID" value="{{review._id}}"/>
     <button type="submit">Delete Review</button>
+</form>
+    
 </form>
