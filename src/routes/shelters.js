@@ -237,7 +237,7 @@ router.post('/:id', async (req, res) => {
             (xss(req.body.rating)), shelterId, loggedIn);
             return res.status(200).render('shelter/single', {title: "Name of Shelter: ", shelter: shelter, loggedIn: loggedIn, isAdmin: isAdmin});
     } catch(e) {
-        res.json({error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        res.status(400).render('shelter/single', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
 });
@@ -330,13 +330,14 @@ router.post('/:id/edit_review', async (req, res) => {
       shelterId = helpers.checkId(shelterId, "Shelter ID");
       review = await reviewsData.getReviewByUser(shelterId,loggedIn);
   } catch(e) {
-      return res.status(400).render('shelter/single', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn});
+      console.log(e);
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
   }
   let shelter;
   try{
       shelter = await sheltersData.getShelterById(shelterId);
   } catch(e) {
-      return res.status(400).render('shelter/single', {title: "Name of Shelter: ", loggedIn: loggedIn});
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
   }
   try{
       await reviewsData.updateReview(xss(req.body.name), xss(req.body.review), 
@@ -344,8 +345,7 @@ router.post('/:id/edit_review', async (req, res) => {
           return res.redirect(302, `/shelters/${shelterId}`);
   } catch(e) {
       console.log(e);
-      res.json({error: e, loggedIn: loggedIn});
-      return;
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
   }
 });
 
