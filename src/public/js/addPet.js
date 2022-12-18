@@ -46,9 +46,10 @@ if(addPetForm){
         try{
             newBreed = newBreedElement.value;
             newBreed = checkBreed(newBreed);
+            newBreed = checkComment(newBreed, "breed");
         } catch(e) {
             errorDiv.innerHTML = "";
-            errorFound(e, newBirthdayElement, breedLabelElement, errorDiv);
+            errorFound(e, newBreedElement, breedLabelElement, errorDiv);
             return;
         }
 

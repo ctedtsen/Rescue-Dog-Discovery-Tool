@@ -40,10 +40,6 @@ router.post('/:petid', async function (request, response){
 
     if(!xss(request.body.commenterName)){
         try{
-            /*const user = request.session
-            if(!user.liked){
-                user.liked = [];
-            }*/
             const user = await usersData.findByUsername(loggedIn);
             const liked = user.likes;
             if(petType === 'dog' && !liked.includes(petId)){

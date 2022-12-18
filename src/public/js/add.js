@@ -33,6 +33,7 @@ if(addShelterForm){
     }
     try{
       checkWord(name, "Name");
+      checkCity(name, "name");
     } catch(e){
       errorDiv.innerHTML = "";
       errorFound(e, nameElement, nameLabel, errorDiv);
@@ -40,6 +41,7 @@ if(addShelterForm){
     }
     try{
       checkWord(city, "City");
+      checkCity(city, "city");
     } catch(e){
       errorDiv.innerHTML = "";
       errorFound(e, cityElement, cityLabel, errorDiv);
