@@ -8,7 +8,7 @@
     </dl>
 
      {{#if user.shelterReviews.length}}
-        <h3>Shelter Reviews</h3>
+        <h2>Shelter Reviews</h2>
         <ul>
             {{#each user.shelterReviews}}
                 <li>
@@ -22,7 +22,7 @@
     {{/if}}
 
     {{#if user.comments.length}}
-        <h3>Pet Comments</h3>
+        <h2>Pet Comments</h2>
         <ul>
             {{#each user.comments}}
                 <li>
@@ -41,7 +41,7 @@
     {{/if}}
 
     {{#if isAdmin}}
-    <h3>Create new admin user</h3>
+    <h2>Create new admin user</h2>
     {{#if error}}
         <div id="error" class="error">{{error}}</div>
     {{else}}
