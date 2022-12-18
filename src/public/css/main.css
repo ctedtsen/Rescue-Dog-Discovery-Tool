@@ -50,13 +50,14 @@ body {
 .welcome-msg {
   font-family: "Marcellus", sans-serif;
 }
+
 .about-msg {
-  font-family: "Libre baskerville", sans-serif;
-}
-.about-msg {
+  font-family: "Libre baskerville", sans-serif; 
   text-align: center;
-  padding: 0px 25px 0px 25px;
+  padding: 0px 15% 0px 15%;
+  font-size: 18px;
 }
+
 .div-bg {
   width: 100%;
   height: 190px;
@@ -121,4 +122,16 @@ dt:after {
 .shelters-info h4 {
   float: left;
   clear: left;
+}
+
+.user-cred{
+  margin-bottom: 20px;
+}
+
+#loginForm, #registerForm{
+  margin-bottom: 20px;
+}
+
+.error{
+  color: red
 }
