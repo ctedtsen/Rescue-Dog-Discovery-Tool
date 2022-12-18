@@ -4,6 +4,7 @@ const helper = require("../helpers");
 const { ObjectId } = require("mongodb");
 const dogData = require('./dogs');
 const catData = require('./cats');
+const shelterData = require('./shelters');
 
 const createUser = async (
     username, password, city, state, admin = false, savedPets = [], shelterReviews = [], comments = []
@@ -163,6 +164,75 @@ const removePet = async (username, petId) => {
 
 }
 
+const saveShelter = async (username, shelterId) => {
+    let shelter;
+    try{
+        shelter = await shelterData.getShelterById(shelterId);
+    }catch{
+        throw "Error: Shelter not found"
+    }
+
+    shelterInList = false;
+    let user = await findByUsername(username);
+    let shelters = user.savedPets;
+
+    shelters.forEach(element => {
+        if(element._id.toString() === shelterId){
+            shelterInList = true;
+        }
+    });
+
+    if(shelterInList){
+        throw "Error: Shelter already added to list";
+    }
+    try {
+        const userCollection = await users();
+        const result = await userCollection.updateOne(
+            { username: username },
+            { $push: { savedPets: shelter } }
+        )
+
+         result;
+    } catch (error) {
+        throw error
+    }
+}
+
+const removeShelter = async (username, shelterId) => {
+    let user = await findByUsername(username);
+    let shelters = user.savedPets;
+
+    let shelter;
+    shelters.forEach(element => {
+        if(element._id.toString() === shelterId){
+            shelter = element;
+        }
+    })
+
+    if(!shelter){
+        throw "Error: Shelter not currently saved";
+    }
+
+    let index = shelters.indexOf(shelter);
+    shelters.splice(index, 1);
+
+    const userCollection = await users();
+
+    const updatedUsers = await userCollection.updateOne(
+        {username: username},
+        {$set: {
+            savedPets: shelters
+        }}
+    )
+
+    if(updatedUsers.modifiedCount === 0){
+        throw "Error: not able to update user successfully"
+    }
+
+    return shelter;
+
+}
+
 const checkUser = async (username, password) => {
     try {
         const userCollection = await users();
@@ -185,5 +255,7 @@ module.exports = {
     addUserComment,
     findByUsername,
     savePet,
-    removePet
+    removePet,
+    saveShelter,
+    removeShelter
 };

@@ -1,0 +1,9 @@
+<h1>{{title}}</h1>
+<div id="error" class="error">{{error}}</div>
+{{#if loggedIn}}
+    <form method="post" id="saveShelter">
+        <button type="submit" id="sbtn">Save this shelter!</button>
+    </form>
+{{else}}
+    <p>You must be logged in to save a shelter!</p>
+{{/if}}
