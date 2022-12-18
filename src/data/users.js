@@ -114,11 +114,28 @@ const checkUser = async (username, password) => {
     }
 };
 
+const removeShelterReview = async (userId, shelterReviewId) => {
+  try {
+      const userCollection = await users();
+      const result = await userCollection.updateOne(
+          { _id: ObjectId(userId) },
+          { $pull: { shelterReviews: shelterReviewId } }
+      )
+
+      return result;
+  } catch (error) {
+      throw error
+  }
+}
+
+
+
 module.exports = {
     createUser,
     checkUser,
     addShelterReview,
     addUserComment,
-    findByUsername
+    findByUsername,
+    removeShelterReview
 
 };
