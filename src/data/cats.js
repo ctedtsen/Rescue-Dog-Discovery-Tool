@@ -25,7 +25,7 @@ const addCat = async (
   weight,
   sex,
   specialNeeds,
-  picture
+  picture,
 ) => {
   name = helper.checkName(name);
   birthday = helper.checkBirthday(birthday);
@@ -91,7 +91,8 @@ const updateCat = async (
   weight,
   sex,
   specialNeeds,
-  picture
+  picture,
+  likes
 ) => {
   //Input checking
   catId = helper.checkId(catId, "id for rescue cat");
@@ -121,13 +122,14 @@ const updateCat = async (
     specialNeeds: specialNeeds,
     picture: picture,
     likes: oldCat.likes,
-    comments: oldCat.comments
+    comments: oldCat.comments,
+    likes: likes,
   };
 
   if ((updatedCat.name === oldCat.name) && (updatedCat.birthday === oldCat.birthday) && 
   (updatedCat.height === oldCat.height) && (updatedCat.weight === oldCat.weight) &&
   (updatedCat.sex === oldCat.sex) && (updatedCat.specialNeeds === oldCat.specialNeeds) &&
-  (updatedCat.picture === oldCat.picture)){
+  (updatedCat.picture === oldCat.picture && updatedCat.likes === oldCat.likes)){
     throw "No changes to cat were made."
   }
 

@@ -38,14 +38,41 @@ router.post('/:petid', async function (request, response){
         }
     }
 
-    try{
-        await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
-    } catch(e) {
-        response.render('pet/index', {title: "Pet error", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin})
-        return;
+    if(!request.body.commenterName){
+        try{
+            const user = request.session
+            if(!user.liked){
+                user.liked = [];
+            }
+            if(petType === 'dog' && !user.liked.includes(petId)){
+                await dogData.updateDog(petId, pet.name, pet.birthday, pet.breed, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes + 1);
+                user.liked.push(petId);
+                let likes = pet.likes + 1;
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin, likes: likes});
+            } else if (petType === 'cat' && !user.liked.includes(petId)){
+                await catData.updateCat(petId, pet.name, pet.birthday, pet.height, pet.weight, pet.sex, pet.specialNeeds, pet.picture, pet.likes + 1);
+                user.liked.push(petId);
+                let likes = pet.likes + 1;
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin, likes: likes});
+            } else{
+                return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin, error: "User already liked this pet!"});
+            } 
+        } catch(e){
+            console.log(e);
+            return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+        }
+        return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
+    } else{
+    
+        try{
+            await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
+        } catch(e) {
+            response.render('pet/index', {title: "Pet error", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin})
+            return;
+        }
+    
+        response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
     }
-
-    response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin})
 });
 
 router.get('/:petid', async (req, res) => {

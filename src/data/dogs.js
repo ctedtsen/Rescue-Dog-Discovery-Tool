@@ -95,7 +95,8 @@ const updateDog = async (
   weight,
   sex,
   specialNeeds,
-  picture
+  picture,
+  likes
 ) => {
   //Input checking
   dogId = helper.checkId(dogId, "id for rescue dog");
@@ -126,14 +127,14 @@ const updateDog = async (
     sex: sex,
     specialNeeds: specialNeeds,
     picture: picture,
-    likes: oldDog.likes,
+    likes: likes,
     comments: oldDog.comments
   };
 
   if ((updatedDog.name === oldDog.name) && (updatedDog.birthday === oldDog.birthday) && (updatedDog.breed === oldDog.breed)
   && (updatedDog.height === oldDog.height) && (updatedDog.weight === oldDog.weight) &&
   (updatedDog.sex === oldDog.sex) && (updatedDog.specialNeeds === oldDog.specialNeeds) &&
-  (updatedDog.picture === oldDog.picture)){
+  (updatedDog.picture === oldDog.picture && updatedDog.likes === oldDog.likes)){
     throw "No changes to dog were made."
   }
 
