@@ -36,6 +36,11 @@
     {{/if}}
 
     {{#if isAdmin}}
+        <a href="/shelters/add">Add a shelter here</a>
+        <a href="/shelters/remove">Remove a shelter here</a>
+    {{/if}}
+
+    {{#if isAdmin}}
     <h3>Create new admin user</h3>
     {{#if error}}
         <div id="error" class="error">{{error}}</div>
