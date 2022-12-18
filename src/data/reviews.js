@@ -250,7 +250,7 @@ const exportedMethods = {
 
       let user = await usersFunctions.findByUsername(username);
 
-      console.log(user);
+      //console.log(user);
 
       //console.log(updatedReview);
 
@@ -286,10 +286,31 @@ const exportedMethods = {
       updatedShelter = await shelterCollection.updateOne({_id: ObjectId(shelter._id)},
       {$pull: {reviews: oldReview}});
 
-      
+
       if(updatedShelter.modifiedCount === 0){
         throw "Error: not able to update shelter successfully (updateReview)"
       }
+
+      shelter = await sheltersFunctions.getShelterById(shelter._id);
+
+      let reviews_list = shelter.reviews;
+
+      let numReviews = reviews_list.length;
+      let totalRating = 0;
+      reviews_list.forEach(review => {
+          totalRating = totalRating + review.rating;
+      })
+      let currentRating = totalRating / numReviews;
+      console.log(shelter);
+      console.log(currentRating);
+
+      updatedShelter = await shelterCollection.updateOne(
+      {_id: ObjectId(shelter._id)},
+      {$set: {rating: currentRating}});
+
+      if(updatedShelter.modifiedCount === 0){
+        throw "Error: not able to update shelter rating (update review) successfully";
+      };
 
       //const userCollection = await users();
 
@@ -307,7 +328,8 @@ const exportedMethods = {
 
       user = await usersFunctions.findByUsername(username);
 
-      console.log(user);
+      //console.log(user);
+
 
       return await sheltersFunctions.getShelterById(shelter._id);
 
