@@ -58,6 +58,13 @@ body {
   font-size: 18px;
 }
 
+.loggedIn-msg {
+  font-size: 25px
+}
+p {
+  font-size: 20px;
+}
+
 .div-bg {
   width: 100%;
   height: 190px;
@@ -134,4 +141,18 @@ dt:after {
 
 .error{
   color: red
+}
+
+#searchShelter{
+  margin-bottom: 5px;
+  margin-left: 1%;
+}
+
+.shelters-info, .shelters-search{
+  margin-left: 1%;
+}
+
+.location{
+  color:rgb(151, 0, 0);
+  text-transform: capitalize;
 }
