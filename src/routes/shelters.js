@@ -368,21 +368,21 @@ router.get('/:id/delete_review', async(req, res) => {
 });
 
 router.get('/:id/add_pet', async function(req, res){
-    return res.render('shelter/addShelter', {title: "Add Shelter", error: ""});
+    return res.render('shelter/addPet', {title: "Add Shelter", error: ""});
 });
 
 router.post('/:id/add_pet', async function(req, res){
     let shelterId = req.params.id;
     let errors = [];
 
-    let name = req.body.petName;
+    let name = xss(req.body.petName);
     try{
         name = helpers.checkName(name);
     } catch(e) {
         errors.push(e + " (name) ");
     }
 
-    let birthday = req.body.birthday;
+    let birthday = xss(req.body.birthday);
     try{
         birthday = helpers.checkBirthday(birthday);
     } catch(e) {
@@ -391,49 +391,49 @@ router.post('/:id/add_pet', async function(req, res){
 
     let age = helpers.calcAge(birthday);
 
-    let breed = req.body.breed;
+    let breed = xss(req.body.breed);
     try{
         breed = helpers.checkBreed(breed);
     } catch(e) {
         errors.push(e + " (breed) ");
     }
 
-    let height = req.body.height;
+    let height = xss(req.body.height);
     try{
         height = helpers.checkHeight(height);
     } catch(e) {
         errors.push(e + " (height) ")
     }
 
-    let weight = req.body.weight;
+    let weight = xss(req.body.weight);
     try{
         weight = helpers.checkWeight(weight);
     } catch(e) {
         errors.push(e + " (weight) ")
     }
 
-    let sex = req.body.sex
+    let sex = xss(req.body.sex);
     try{
         sex = helpers.checkSexInput(sex);
     } catch(e) {
         errors.push(e + " (sex) ");
     }
 
-    let needs = req.body.needs;
+    let needs = xss(req.body.needs);
     try{
         needs = helpers.checkSpecialNeeds(needs);
     } catch(e) {
         errors.push(e)
     }
 
-    let picture = req.body.picture;
+    let picture = xss(req.body.picture);
     try{
         picture = helpers.checkPicture(picture);
     } catch(e) {
         errors.push(e + " (picture) ")
     }
 
-    let type = req.body.type;
+    let type = xss(req.body.type);
     try{
         type = helpers.checkAnimalType(type);
     } catch(e) {
@@ -495,8 +495,8 @@ router.get('/:id/delete_pet', async function(req, res){
 
 router.post('/:id/delete_pet', async function(req, res){
     let shelteId = req.params.id;
-    let petId = req.body.petID;
-    let type = req.body.petType;
+    let petId = xss(req.body.petID);
+    let type = xss(req.body.petType);
     let errors = [];
 
     try{

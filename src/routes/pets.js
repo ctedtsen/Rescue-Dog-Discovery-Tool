@@ -9,7 +9,7 @@ const helpers = require('../helpers')
 const xss = require('xss');
 
 router.post('/:petid', async function (request, response){
-    let petId = request.params.petid;
+    let petId =request.params.petid;
     let loggedIn = request.session.user;
     let isAdmin = request.session.admin;
     if(!loggedIn){
@@ -38,7 +38,7 @@ router.post('/:petid', async function (request, response){
         }
     }
 
-    if(!request.body.commenterName){
+    if(!xss(request.body.commenterName)){
         try{
             const user = request.session
             if(!user.liked){
@@ -61,8 +61,7 @@ router.post('/:petid', async function (request, response){
             console.log(e);
             return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
         }
-        return response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
-    } else{
+        } else{
     
         try{
             await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
@@ -186,7 +185,7 @@ router.get('/:petid/delete_comment', async(req, res) => {
 
 router.post('/:petid/delete_comment', async(req, res) => {
     let petId = req.params.petid;
-    let commentId = req.body.commentID;
+    let commentId = xss(req.body.commentID);
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
     try {
