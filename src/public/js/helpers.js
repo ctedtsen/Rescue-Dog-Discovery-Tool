@@ -1,12 +1,13 @@
 const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
   "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const numbers = ["0", "1", "2,", "3", "4", "5", "6", "7", "8", "9"];
 
 let checkString = (str, varName) => {
     if (!str) {
       throw "Error: you must provide a " + varName;
     }
     if (typeof str !== "string") {
-      throw "Error: " + varName + " must be of type string";
+      throw "Error: " + varName + " must be of type string x";
     }
     str = str.trim();
     if (str.length === 0) {
@@ -179,7 +180,7 @@ let checkPersonName = (personName) => {
 };
 
 let checkAnimalType = (animalType) => {
-    animalType = checkStringComment(animalType, "animalType");
+    animalType = checkString(animalType, "animalType");
     animalType = animalType.toLowerCase();
 
     if (animalType === "dog") {
@@ -230,9 +231,154 @@ let checkUsername = (username) => {
   if (!(/^[a-zA-Z0-9]{4,}$/.test(username))) {
       throw "Username not valid";
   }
-}
+};
+
 let checkPassword = (password) => {
   if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{6,}$/.test(password))) {
       throw "Password not valid";
   }
 };
+
+let checkBirthday = (birthdate)  => {
+  checkString(birthdate, "birthdate for rescue pet");
+  birthdate = birthdate.trim();
+  let dateArray = birthdate.split("/");
+  if (dateArray.length != 3) throw `Error: birthdate argument is invalid`;
+
+  const validMonths = ["01", "02", "03", "04", "05", "06",
+    "07", "08", "09", "10", "11", "12"];
+  const validDays = ["31", "28", "31", "30", "31", "30",
+    "31", "31", "30", "31", "30", "31"];
+
+  let index = validMonths.indexOf(dateArray[0]);
+  if (index < 0) throw `Error: birthdate argument is invalid`;
+  let dayDifference = validDays[index] - dateArray[1];
+  if (dayDifference < 0 || dayDifference > validDays[0])
+    throw `Error: birthdate argument is invalid`;
+  let birthday = new Date(birthdate);
+  let currentDay = new Date();
+  if (birthday > currentDay || birthday.getFullYear() < currentDay.getFullYear() - 30)
+    throw `Error: birthdate argument is invalid`;
+    
+  return birthdate;
+};
+
+let checkBreed = (breed) => {
+  checkString(breed, "breed type for rescue dog");
+  breed = breed.trim();
+
+  if (breed.length < 3)
+    throw "Error: breed type for rescue dog cannot be less than 3 letters";
+
+  for (letter of breed) {
+    if (numbers.includes(letter))
+      throw "Error: breed type for rescue dog cannot contain numbers";
+  }
+
+  return breed;
+};
+
+let checkHeight = (height) => {
+  checkString(height, "height for recue pet");
+  height = height.trim();
+
+  let heightFormat = height.split("t");
+  if (heightFormat.length !== 2) throw "Error: height format is invalid";
+
+  let feet = Number(heightFormat[0].substring(0, heightFormat[0].length - 1));
+  if (typeof feet !== "number" || Number.isNaN(feet))
+    throw "Error: feet value is not a number";
+  if (feet < 0 || feet > 3) throw "Error: feet value is out of range";
+  if (`${feet}f` !== heightFormat[0]) throw "Error: height format is invalid";
+
+  let inches = Number(
+    heightFormat[1].substring(0, heightFormat[1].length - 2)
+  );
+  if (typeof inches !== "number" || Number.isNaN(inches))
+    throw "Error: inches value is not a number";
+  if (inches < 0 || inches > 12) throw "Error: inches value is out of range";
+  if (`${inches}in` !== heightFormat[1].toLowerCase())
+    throw "Error: height format is invalid3";
+
+  return `${feet}ft${inches}in`;
+};
+
+let checkSexInput = (input) => {
+  checkString(input, "sex of rescue pet");
+  input = input.trim();
+  if (input.length < 4) throw "Error: sex input is not valid";
+
+  input = input.toLowerCase();
+  if (input !== "male" && input !== "female")
+    throw "Error: sex input is not valid";
+
+  return input;
+};
+
+let checkSpecialNeeds = (needs) => {
+  if (!needs) {
+    return needs;
+  }
+  needs = checkString(needs, "special needs");
+  for (let char of needs) {
+    if (!alphabet.includes(char.toLowerCase()) && char !== "," && char !== " ") {
+      throw "Error: invalid list input";
+    }
+  }
+  return needs;
+};
+
+let checkWeight = (weight) => {
+  if(!weight){
+    throw "Error: must provide a weight";
+  }
+  checkString(weight, "weight for rescue pet");
+  weight = weight.trim();
+  if (weight.length < 3)
+    throw "Error: weight argument is not valid";
+
+  let weightValue;
+  let weightTxt;
+
+  if (weight[-1] === "b") {
+    weightValue = Number(weight.substring(0, weight.length - 2));
+    weightTxt = "lb";
+  } else {
+    weightValue = Number(weight.substring(0, weight.length - 3));
+    weightTxt = "lbs";
+  }
+
+  if (typeof weightValue !== "number" || Number.isNaN(weightValue))
+    throw "Error: weight value is not a number";
+
+  if (weightValue <= 0 || weightValue > 300)
+    throw "Error: weight is out of range"
+
+  if (`${weightValue}${weightTxt}` !== weight.toLowerCase())
+    throw "Error: weight argument is invalid";
+
+  return `${weightValue}${weightTxt}`;
+};
+
+let checkTimeKept = (timeKept, killShelter) => {
+  if(!timeKept){
+    throw "Error: timeKept must be provided";
+  }
+  if(!killShelter){
+    return "n/a";
+  }
+  timeKept = this.checkString(timeKept, "timeKept");
+  timeKept = Number(timeKept);
+  if(isNaN(timeKept)){
+    throw "Error: time kept is not a number";
+  }
+  if(typeof timeKept !== "number"){
+    throw "Error: time must be of type number";
+  }
+  if(timeKept % 1 !== 0){
+    throw "Error: time kept must be an integer";
+  }
+
+  return timeKept;
+};
+

@@ -36,7 +36,7 @@ const createUser = async (
         password: hashedPassword,
         city: city, 
         state: state, 
-        admin: false, 
+        admin: admin, 
         savedPets: [], 
         shelterReviews: [],
         comments: []

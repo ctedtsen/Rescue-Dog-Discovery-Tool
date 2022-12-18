@@ -11,6 +11,8 @@
     <dd>{{shelter.rating}}</dd>
     <dt>Kill Shelter</dt>
     <dd>{{shelter.killShelter}}</dd>
+    <dt>Time Before Euthanization</dt>
+    <dd>{{shelter.timeKept}}</dd>
   </dl>
 
   {{#if shelter.pets.length}}
@@ -52,4 +54,8 @@
     <button type="submit">Add Review</button>
 </form>
 <a href="/shelters/{{shelter._id}}/delete_review">Delete review here</a>
+{{/if}}
+{{#if isAdmin}}
+  <a href="/shelters/{{shelter._id}}/add_pet">Add a pet to this shelter</a>
+  <a href="/shelters/{{shelter._id}}/delete_pet">Delete a pet from this shelter</a>
 {{/if}}

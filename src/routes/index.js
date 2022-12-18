@@ -8,10 +8,12 @@ const constructorMethod = (app) => {
   app.use('/users', userRoutes);
   app.use('/', (req, res) => {
     let loggedIn = false;
+    let isAdmin = false;
     if(req.session.user){
       loggedIn = true;
+      isAdmin = req.session.admin;
     }
-    res.render('about', {title: 'Home', loggedIn: loggedIn});
+    res.render('about', {title: 'Home', loggedIn: loggedIn, isAdmin: isAdmin});
     return;
   })
   app.use('*', (req, res) => {

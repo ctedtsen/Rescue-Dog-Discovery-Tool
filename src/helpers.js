@@ -4,7 +4,7 @@ const fs = require("fs");
 const numbers = ["0", "1", "2,", "3", "4", "5", "6", "7", "8", "9"];
 const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
   "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   checkId(id, varName) {
@@ -189,21 +189,14 @@ module.exports = {
 
   checkSpecialNeeds(needs) {
     if (!needs) {
-      throw "Error: you must enter an array that lists special needs of rescue pet";
+      return "";
     }
-    if (!Array.isArray(needs)) {
-      throw "Error: you must enter an array that lists special needs of rescue pet";
-    }
-    for (item of needs) {
-      this.checkString(item, "special needs element of rescue pet");
-      item = item.trim();
-      for (letter of item) {
-        if (numbers.includes(letter)) {
-          throw "Error: needs array cannot contain numbers";
-        }
+    needs = this.checkString(needs, "special needs");
+    for (let char of needs) {
+      if (!alphabet.includes(char.toLowerCase()) && char !== "," && char !== " ") {
+        throw "Error: invalid list input";
       }
     }
-
     return needs;
   },
 
@@ -426,8 +419,26 @@ module.exports = {
 
     return rating;
   },
-  isAuthenticated(req){
-    return req.session.user;
-  }
 
+  checkTimeKept(timeKept, killShelter){
+    if(!timeKept){
+      throw "Error: timeKept must be provided";
+    }
+    if(!killShelter){
+      return "n/a";
+    }
+    timeKept = this.checkString(timeKept, "timeKept");
+    timeKept = Number(timeKept);
+    if(isNaN(timeKept)){
+      throw "Error: time kept is not a number";
+    }
+    if(typeof timeKept !== "number"){
+      throw "Error: time must be of type number";
+    }
+    if(timeKept % 1 !== 0){
+      throw "Error: time kept must be an integer";
+    }
+
+    return timeKept;
+  }
 };

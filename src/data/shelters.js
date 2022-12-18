@@ -2,6 +2,7 @@ const mongoCollections = require('../config/mongoCollections');
 const shelters = mongoCollections.shelters;
 const {ObjectId} = require('mongodb');
 const dogs = require("./dogs");
+const dogsData = mongoCollections.dogs;
 const cats = require("./cats");
 const helpers = require('../helpers');
 
@@ -11,11 +12,17 @@ const exportedMethods = {
         city,
         state,
         killShelter,
+        timeKept
     ){
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
         state = helpers.checkState(state);
         killShelter = helpers.checkBool(killShelter, "killShelter");
+        timeKept = helpers.checkTimeKept(timeKept, killShelter);
+
+        if(!killShelter){
+            timeKept = "n/a"
+        }
 
         const shelterCollection = await shelters();
 
@@ -24,6 +31,7 @@ const exportedMethods = {
             city: city,
             state: state,
             killShelter: killShelter,
+            timeKept: timeKept,
             pets: [],
             numberPets: 0,
             reviews: [],
@@ -74,15 +82,21 @@ const exportedMethods = {
         shelterName,
         city,
         state,
-        killShelter
+        killShelter,
+        timeKept
     ){
         id = helpers.checkId(id, "shelterId");
         shelterName = helpers.checkString(shelterName, "shelterName");
         city = helpers.checkString(city, "city");
         state = helpers.checkString(state, "state");
         killShelter = helpers.checkBool(killShelter, "killShelter");
+        timeKept = helpers.checkTimeKept(timeKept, killShelter);
 
         const shelterCollection = await shelters();
+
+        if(!killShelter){
+            timeKept = "n/a";
+        }
     
         const updatedShelters = await shelterCollection.updateOne(
             {_id: ObjectId(id)},
@@ -90,7 +104,8 @@ const exportedMethods = {
                 shelterName: shelterName,
                 city: city,
                 state: state,
-                killShelter: killShelter
+                killShelter: killShelter,
+                timeKept: timeKept
             }}
         );
 
@@ -161,6 +176,47 @@ const exportedMethods = {
         const updatedShelter = await this.getShelterById(shelterId);
         return updatedShelter;
     },
+
+    async removeRescuePet(shelterId, petId){
+        let shelter =  await this.getShelterById(shelterId);
+
+        let pets = shelter.pets;
+
+        id_list = [];
+        pets.forEach(pet => {
+            id_list.push(pet.id);
+        })
+
+        let index;
+        try{
+            index = id_list.indexOf(petId);
+        } catch(e) {
+            throw "Error: pet not found x";
+        }
+
+        if(index === -1){
+            throw "Error: pet not found y";
+        }
+
+        pets.splice(index, 1);
+
+        const shelterCollection = await shelters();
+
+        let num = shelter.numberPets;
+        const updatedShelters = await shelterCollection.updateOne(
+            {_id: ObjectId(shelter._id)},
+            {$set: {
+                pets: pets,
+                numberPets: num - 1
+            }}
+        )
+
+        if(updatedShelters.modifiedCount === 0){
+            throw "Error: not able to update shelter successfully (deleteReview)"
+        }
+        return this.getShelterById(shelterId);
+    },
+
     async addRescueCat(shelterId, catId) {
         helpers.checkId(shelterId, "id for shelter")
         helpers.checkId(catId, "id for rescue cat");
@@ -192,6 +248,40 @@ const exportedMethods = {
 
         const updatedShelter = await this.getShelterById(shelterId);
         return updatedShelter;
+    },
+
+    async getAllKillShelters(){
+        let shelters = await this.getAllShelters();
+        let killShelters = [];
+
+        shelters.forEach(shelter => {
+            if(shelter.killShelter === true){
+                killShelters.push(shelter);
+            }
+        });
+
+        return killShelters;
+    },
+
+    async findSheltersInCity(city, state){
+        city = helpers.checkString(city, "shleter city");
+        state = helpers.checkState(state);
+        let shelters = [];
+        let shelters_in_city = [];
+
+        try{
+            shelters = await this.getAllShelters();
+        } catch(e){
+            throw "Error: " + e;
+        }
+
+        shelters.forEach(shelter => {
+            if(shelter.city === city && shelter.state === state){
+                shelters_in_city.push(shelter);
+            }
+        });
+
+        return shelters_in_city;
     }
 }
 
