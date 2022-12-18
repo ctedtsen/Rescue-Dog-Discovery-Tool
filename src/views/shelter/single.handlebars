@@ -27,7 +27,7 @@
       {{#each shelter.pets}}
         <li><a href="/petdetails/{{this.id}}">{{this.name}}</a>
         <ul> 
-            <li><img class="pet-img" src="../../{{this.picture}}"></li>
+            <li><img class="pet-img" src="../../{{this.picture}}" alt="{{pet.name}}, a rescue at this shelter."></li>
         </ul>
         </li>
       {{/each}}
