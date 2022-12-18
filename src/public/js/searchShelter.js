@@ -45,3 +45,20 @@ if(searchShelterForm){
         }
     });
 }
+
+function search() {
+    const searchInput = document.getElementById('mySearch');
+    const filter = searchInput.value.toUpperCase();
+    const shelters = document.getElementById("sheltersUL");
+    const li = shelters.getElementsByTagName('li');
+
+    for (let i = 0;  i < li.length; i++){
+        val = li[i].getElementsByTagName("a")[0];
+        searchValue = val.innerText
+        if (searchValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
