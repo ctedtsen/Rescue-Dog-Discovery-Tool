@@ -115,6 +115,29 @@ router.route("/logout").get(async (req, res) => {
     return;
 });
 
+router.get('/:username/saved_lists', async (req, res) => {
+  let loggedIn = req.session.user;
+  let username = req.params.username;
+  if(!loggedIn){
+    return res.redirect('/');
+  }
+  if(username.toLowerCase()!==loggedIn){
+    return res.redirect('/');
+  }
+  let user;
+  try{
+      user = await userData.findByUsername(loggedIn);
+  } catch(e) {
+    res.redirect("/users/login");
+    return;
+  }  
+  try{
+      res.render('profile/saved', {title: "Saved Shelters and Pets", user: user, loggedIn: loggedIn});
+  } catch(e) {
+    res.redirect("/");
+  }
+});
+
 router.get('/:username', async (req, res) => {
   let loggedIn = req.session.user;
   let isAdmin = req.session.admin;

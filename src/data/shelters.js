@@ -127,6 +127,7 @@ const exportedMethods = {
             throw "Not able to get shelters";
         }
 
+        //followed tutorial here https://www.freecodecamp.org/news/how-to-sort-alphabetically-in-javascript/ for how to sort objects based on specific attribute
         shelterList.sort(function (sheltera, shelterb) {
             if(sheltera.shelterName.toLowerCase() < shelterb.shelterName.toLowerCase()){
                 return -1;

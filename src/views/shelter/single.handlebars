@@ -15,6 +15,11 @@
     <dd>{{shelter.timeKept}}</dd>
   </dl>
 
+  {{#if loggedIn}}
+    <a href="/shelters/{{shelter._id}}/save">Save this shelter!</a>
+    <a href="/shelters/{{shelter._id}}/remove">Remove this shelter from saved list</a>
+  {{/if}}
+
   {{#if shelter.pets.length}}
     <h3>Pets</h3>
     <ul>

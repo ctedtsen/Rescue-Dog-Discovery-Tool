@@ -1,6 +1,6 @@
 <h1>{{title}}</h1>
 <a href="/shelters/kill_shelters">List of Kill Shelters</a>
-
+<p></p>
 <div id="error" class="error" hidden>{{error}}</div>
 <form method="post" id="searchShelter">
     <label id="theCityLabel">
@@ -21,6 +21,19 @@
     </label>
     <button type="submit">Find Shelters</button>
 </form>
+
+<div>
+  <p>Search for a specific shelter:</p>
+  <input type="text" id="mySearch" onkeyup="search()" placeholder="Search for shelters...">
+</div>
+
+<div class="shelters-info">
+  <ul id="sheltersUL">
+    {{#each shelters}}
+      <li><a href="/shelters/{{_id}}">{{this.shelterName}}</a></li>
+    {{/each}}
+  </ul>
+</div>
 
 <div class="shelters-info">
   {{#each shelters}}
