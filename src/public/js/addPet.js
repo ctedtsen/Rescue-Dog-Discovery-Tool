@@ -15,8 +15,6 @@ if(addPetForm){
     const newSexElement = document.getElementById("sex");
     const needsLabelElement = document.getElementById("needsLabel");
     const newNeedsElement = document.getElementById("needs");
-    const pictureLabelElement = document.getElementById("pictureLabel");
-    const newPictureElement = document.getElementById("picture");
     const typeLabelElement = document.getElementById("typeLabel");
     const newTypeElement = document.getElementById("type");
     const errorDiv = document.getElementById("error");
@@ -94,16 +92,6 @@ if(addPetForm){
             return;
         }
 
-        let newPicture;
-        try{
-            newPicture = newPictureElement.value;
-            newPicture = checkString(newPicture, "Picture");
-        } catch(e) {
-            errorDiv.innerHTML = "";
-            errorFound(e, newPictureElement, pictureLabelElement, errorDiv);
-            return;
-        }
-
         let newType;
         try{
             newType = newTypeElement.value;
@@ -115,7 +103,7 @@ if(addPetForm){
         }
 
         if(newName.trim() && newBirthday.trim() && newBreed.trim() && newHeight.trim() 
-        && newSex.trim() && newPicture.trim() && newType.trim() && newWeight.trim()){
+        && newSex.trim() && newType.trim() && newWeight.trim()){
             errorDiv.innerHTML = "";
 
             addPetForm.submit();
@@ -143,10 +131,6 @@ if(addPetForm){
             } else if(!newSex.trim()){
                 errorDiv.innerHTML = "";
                 errorFound("Error: you must provide a sex", newSexElement, sexLabelElement, errorDiv);
-                return;
-            } else if(!newPicture.trim()){
-                errorDiv.innerHTML = "";
-                errorFound("Error: you must provide a picture", newPictureElement, pictureLabelElement, errorDiv);
                 return;
             } else if(!newType.trim()){
                 errorDiv.innerHTML = "";

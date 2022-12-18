@@ -368,7 +368,7 @@ router.get('/:id/delete_review', async(req, res) => {
 });
 
 router.get('/:id/add_pet', async function(req, res){
-    return res.render('shelter/addShelter', {title: "Add Shelter", error: ""});
+    return res.render('pet/addPet', {title: "Add Shelter", error: ""});
 });
 
 router.post('/:id/add_pet', async function(req, res){
@@ -426,18 +426,18 @@ router.post('/:id/add_pet', async function(req, res){
         errors.push(e)
     }
 
-    let picture = req.body.picture;
-    try{
-        picture = helpers.checkPicture(picture);
-    } catch(e) {
-        errors.push(e + " (picture) ")
-    }
-
     let type = req.body.type;
     try{
         type = helpers.checkAnimalType(type);
     } catch(e) {
         errors.push(e + " (type) ")
+    }
+
+    let picture;
+    if(type.toLowerCase()==='cat'){
+        picture = 'public/petImages/cat-tilly.jpeg'
+    }else{
+        picture = 'public/petImages/lab-retriever-joani.jpeg'
     }
 
     if(errors.length > 0){
