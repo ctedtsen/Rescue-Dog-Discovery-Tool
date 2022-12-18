@@ -23,19 +23,13 @@
         <dd>{{pet.specialNeeds}}</dd>
         {{/if}}
         <dt>Likes</dt>
-        {{#if likes}}
-            <dd>{{likes}}</dd>
-        {{else}}
-            <dd>{{pet.likes}}</dd>
-        {{/if}}
+        <dd>{{pet.likes}}</dd>
     </dl>
 </div>
-
-<div id="diverror">{{error}}</div>
 <p></p>
 {{#if loggedIn}}
-    <form method="post">
-        <button type="submit">Like</button>
+    <form method="post" id="btnForm">
+        <button type="submit" id="like">Like</button>
     </form>
 {{/if}}
 
@@ -54,6 +48,7 @@
 {{else}}
     <p>No comments yet</p>
 {{/if}}
+<div id="diverror">{{error}}</div>
 {{#if loggedIn}}
 <form method="post" id="addComment">
     <label id="nameLabel">

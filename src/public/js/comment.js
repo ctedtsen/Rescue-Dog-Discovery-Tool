@@ -1,4 +1,25 @@
 (function ($) {
+    var btnForm = $('#btnForm');
+    btnForm.submit(function(event) {
+        event.preventDefault();
+
+        const url = window.location.href;
+        let arr = url.split('/');
+        let petId = arr[arr.length - 1];
+
+        var requestConfig = {
+            method: 'POST',
+            url: '/petdetails/' + petId,
+            contentType: 'application/json',
+            success: function() {   
+                location.reload();  
+            }
+        }
+        $.ajax(requestConfig);
+    })
+})(window.jQuery);
+
+(function ($) {
     var newCommentForm = $('#addComment');
         newNameInput = $('#commenterName'),
         newCommentInput = $('#comment'),
