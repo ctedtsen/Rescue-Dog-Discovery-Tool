@@ -1,10 +1,14 @@
 <h1>{{title}}</h1>
-<div id="error" class="error" hidden>I'm an error</div>
+{{#if error}}
+<div id="error" class="error" hidden>{{error}}</div>
+{{/if}}
 <form method="post" id="removeReview">
-    <h3>Reviews</h3>
+    <h2>Reviews</h2>
+    {{#if review}}
 <ul>
     <li>{{review.reviewerName}} - Review: "{{review.review}}" Rating: {{review.rating}}</li>
 </ul>
+    {{/if}}
 <form method="post" id="updateReview">
     <input type="hidden" id="reviewID" name="reviewID" value="{{review._id}}"/>
     <button type="submit">Delete Review</button>
