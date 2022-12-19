@@ -4,7 +4,7 @@
 <div id="error" class="error" hidden>{{error}}</div>
 <form method="post" id="searchShelter">
     <label id="theCityLabel">
-        Shelter City
+        Shelter City:
         {{#if city}}
         <input type="text" id="theCity" name="theCity" placeholder="City" value={{city}}>
         {{else}}
@@ -12,7 +12,7 @@
         {{/if}}
     </label>
     <label id="theStateLabel">
-        Shelter State
+        Shelter State:
         {{#if state}}
         <input type="text" id="theState" name="theState" placeholder="State" value={{state}}>
         {{else}}
@@ -22,13 +22,13 @@
     <button type="submit">Find Shelters</button>
 </form>
 
-<div>
+<div class="shelters-search">
   <label id="searchLabel" for="mySearch">Search for a specific shelter:</label><br>
   <input type="text" id="mySearch" onkeyup="search()" placeholder="Search for shelters...">
 </div>
 
 <div class="shelters-info">
-  <ul id="sheltersUL">
+  <ul id="sheltersUL" hidden>
     {{#each shelters}}
       <li><a href="/shelters/{{_id}}">{{this.shelterName}}</a></li>
     {{/each}}

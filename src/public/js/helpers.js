@@ -220,8 +220,11 @@ let errorFound = (error, varInput, varLabel, errorDiv) => {
   errMsg.className = "error-msg";
   errMsg.innerHTML = `${error}`;
   errorDiv.appendChild(errMsg);
-  varLabel.className = "error";
-  varInput.focus();
+  if(varInput==='usernameInput' || varInput==='passwordInput'){
+    usernameInput.focus();
+  }else{
+    varInput.focus();
+  }
   varInput.className = "inputClass";
   return;
 };

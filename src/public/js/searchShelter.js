@@ -50,9 +50,9 @@ if(searchShelterForm){
 function search() {
     const searchInput = document.getElementById('mySearch');
     const filter = searchInput.value.toUpperCase();
-    const shelters = document.getElementById("sheltersUL");
+    let shelters = document.getElementById("sheltersUL");
     const li = shelters.getElementsByTagName('li');
-
+    shelters.hidden = false;
     for (let i = 0;  i < li.length; i++){
         val = li[i].getElementsByTagName("a")[0];
         searchValue = val.innerText

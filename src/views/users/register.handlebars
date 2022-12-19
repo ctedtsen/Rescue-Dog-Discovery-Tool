@@ -6,13 +6,16 @@
 <div id="error" class="error" hidden></div>
 {{/if}}
 <form action="/users/register" id="registerForm" method="post">
-  <label for="usernameInput" id="usernameLabel">Username:</label>
+  <div class="user-cred">
+  <label for="usernameInput" id="usernameLabel">Username:</label><br>
   <input type="text" id="usernameInput" name="usernameInput" /><br />
-  <label for="passwordInput" id="passwordLabel">Password: </label>
+  <label for="passwordInput" id="passwordLabel">Password: </label><br>
   <input type="password" id="passwordInput" name="passwordInput" />
-  <label for="cityInput" id ="cityLabel">City</label>
-  <input type="text" id="cityInput" name="cityInput"/><br />
+  </div>
+  <label for="cityInput" id ="cityLabel">City: </label>
+  <input type="text" id="cityInput" name="cityInput"/>
   <label for="stateInput" id="stateLabel">State: </label>
   <input type="text" id="stateInput" name="stateInput"/>
   <button type="submit">Register</button>
 </form>
+<a href="/users/login">Already have an account? Click here to login.</a>
