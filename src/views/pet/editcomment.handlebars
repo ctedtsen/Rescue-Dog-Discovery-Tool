@@ -3,9 +3,9 @@
 {{#if loggedIn}}
 <div id="diverror">{{error}}</div>
 <h3>Comments</h3>
-<ul>
+
   {{#each comments}}
-    <li>{{this.name}}: {{this.comment}}</li>
+    <p>{{this.name}}: {{this.comment}}</p>
     <form method="post" id="updateComment">
       <input type="hidden" name="commentId" value="{{this._id}}">
       <label id="nameLabel">
@@ -19,6 +19,6 @@
       <button type="submit">Update Comment</button>
     </form>
   {{/each}}
-</ul> 
-<a href="/petdetails/{{pet._id}}/delete_comment">Delete comment here</a>
+
+<a href="delete_comment">Delete comment here</a>
 {{/if}}
