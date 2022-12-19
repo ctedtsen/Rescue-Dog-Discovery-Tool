@@ -2,14 +2,14 @@
 <div id="error" class="error">{{error}}</div>
 <form method="post" id="removeComment">
     <h3>Comments</h3>
-<ul>
+
   {{#each comments}}
-    <li>{{this.name}}: {{this.comment}}</li>
+    <p>{{this.name}}: {{this.comment}}</p>
     <form method="post" id="updateComment">
       <input type="hidden" name="commentID" id="commentID" value="{{this._id}}">
       <button type="submit">Delete Comment</button>
     </form>
   {{/each}}
-</ul> 
+ 
     
 </form>

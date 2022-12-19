@@ -284,10 +284,10 @@ router.get('/:petid/edit_comment', async (req, res) => {
   }
   try {
     comments = await commentsData.getCommentsByUser(petId,petType,loggedIn);
-    return res.status(200).render('pet/editcomment', {title: "Edit Comment", loggedIn: loggedIn, comments: comments, isAdmin: isAdmin});
+    return res.status(200).render('pet/editcomment', {title: "Edit Comment", loggedIn: loggedIn, comments: comments, isAdmin: isAdmin, pet: pet});
   }catch(e) {
       console.log(e);
-      return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+      return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, isAdmin: isAdmin, pet: pet});
   }
 });
 
@@ -301,7 +301,7 @@ router.post('/:petid/edit_comment', async (req, res) => {
       petId = helpers.checkId(petId, "petid");
   }catch(e) {
       //console.log(e);
-      res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments});
+      res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments, pet: pet});
   }
   let pet;
   let petNotFound = false;
@@ -326,7 +326,7 @@ router.post('/:petid/edit_comment', async (req, res) => {
   }catch(e) {
       console.log(e);
       comments = await commentsData.getCommentsByUser(petId,petType,loggedIn);
-      return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments, isAdmin: isAdmin});
+      return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments, isAdmin: isAdmin, pet: pet});
   }
   res.redirect(301,`/petdetails/${petId}`);
   return;

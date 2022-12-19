@@ -111,7 +111,7 @@ const exportedMethods = {
 
     async deleteReview(reviewId,shelterId, username){
         reviewId = helpers.checkId(reviewId, "reviewId");
-        shelterId = helpers.checkId(id, "shelterId");
+        shelterId = helpers.checkId(shelterId, "shelterId");
         const reviewCollection = await reviews();
 
         let review = await this.getReviewById(reviewId);
