@@ -248,7 +248,17 @@ const exportedMethods = {
       rating = helpers.checkRating(rating);
       reviewId = helpers.checkId(reviewId, "reviewId");
 
-      
+      const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+      "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+      const numbers = ["0", "1", "2,", "3", "4", "5", "6", "7", "8", "9"];
+
+      if (review.length < 3) throw "Error: review cannot be less than 3 characters";
+      for (let char of review) {
+        if (!alphabet.includes(char.toLowerCase()) && !numbers.includes(char.toLowerCase()) 
+        && char !== '.' && char !== ' ' && char !== '!' && char !== '?' && char !== ',') {
+          throw "Error: review must contain only letters, numbers, or punctuation"
+      }
+  }
 
       const reviewCollection = await reviews();
 
