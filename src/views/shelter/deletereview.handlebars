@@ -1,17 +1,26 @@
 <h1>{{title}}</h1>
 {{#if error}}
-<div id="error" class="error" hidden>{{error}}</div>
+  <div id="error" class="error">{{error}}</div>
+{{else}}
+  <div id="error" class="error" hidden></div>
 {{/if}}
-<form method="post" id="removeReview">
+{{#if review}}
+  <form method="post" id="removeReview">
     <h2>Reviews</h2>
-    {{#if review}}
-<ul>
-    <li>{{review.reviewerName}} - Review: "{{review.review}}" Rating: {{review.rating}}</li>
-</ul>
-    {{/if}}
-<form method="post" id="updateReview">
-    <input type="hidden" id="reviewID" name="reviewID" value="{{review._id}}"/>
-    <button type="submit">Delete Review</button>
-</form>
-    
-</form>
+
+    <ul>
+      <li>{{review.reviewerName}}
+        - Review: "{{review.review}}" Rating:
+        {{review.rating}}</li>
+    </ul>
+    <form method="post" id="updateReview">
+      <input
+        type="hidden"
+        id="reviewID"
+        name="reviewID"
+        value="{{review._id}}"
+      />
+      <button type="submit">Delete Review</button>
+    </form>
+  </form>
+{{/if}}
