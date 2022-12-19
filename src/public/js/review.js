@@ -19,7 +19,7 @@
       }
   
       try {
-        newReview = checkString(newReview, "review");
+        newReview = checkComment(newReview, "review");
         if (newReview.length < 3) {
           throw "Error: Incorrect format for review";
         }

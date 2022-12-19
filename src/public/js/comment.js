@@ -19,7 +19,7 @@
 
         var newComment = newCommentInput.val();
         try{
-            newComment = checkString(newComment, "comment");
+            newComment = checkComment(newComment, "comment");
         } catch(e) {
             $("#diverror").html(e);
             return;
