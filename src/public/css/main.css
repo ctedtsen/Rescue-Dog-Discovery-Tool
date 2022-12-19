@@ -140,7 +140,7 @@ dt:after {
 }
 
 .error{
-  color: red
+  color: #d30000
 }
 
 #searchShelter{
@@ -153,6 +153,6 @@ dt:after {
 }
 
 .location{
-  color:rgb(151, 0, 0);
+  color:#d30000;
   text-transform: capitalize;
 }

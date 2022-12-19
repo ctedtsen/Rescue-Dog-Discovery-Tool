@@ -407,7 +407,7 @@ let checkTimeKept = (timeKept, killShelter) => {
 };
 
 let checkComment = (comment, varName) => {
-  checkString(comment, "comment");
+  checkString(comment, varName);
   comment = comment.trim();
   if (comment.length < 3) throw "Error: " + varName + " cannot be less than 3 characters";
   for (let char of comment) {
