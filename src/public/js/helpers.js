@@ -416,3 +416,14 @@ let checkComment = (comment, varName) => {
   return comment;
 };
 
+let checkCity = (city, varName) => {
+  checkString(city, "city");
+  city = city.trim();
+  if (city.length < 3) throw "Error: " + varName + " cannot be less than 3 characters";
+  for (let char of city) {
+    if (!alphabet.includes(char.toLowerCase()) && char !== ' ') {
+      throw "Error: " + varName + " must contain only letters"
+    }
+  }
+  return city;
+};
