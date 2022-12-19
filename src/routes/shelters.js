@@ -129,44 +129,6 @@ router.post('/remove', async(req, res) => {
 
 });
 
-router.post('/delete_review', async(req, res) => {
-    let reviewId = req.body.reviewID;
-    let loggedIn = req.session.user;
-    let isAdmin = req.session.admin;
-    try{
-        reviewId = helpers.checkId(reviewId, "review id");
-    } catch(e) {
-        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    try{
-        if(!await reviewsData.containsReview(reviewId)){
-            throw "Error: no review with that id";
-        }
-    } catch(e) {
-        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    try{
-        await reviewsData.deleteReview(reviewId);
-    } catch(e) {
-        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
-    return;
-});
-
-router.get('/delete_review', async(req, res) => {
-    let loggedIn = req.session.user;
-    let isAdmin = req.session.admin;
-    if(!loggedIn){
-        return res.redirect('/');
-    }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
-    return;
-});
-
 router.get('/', async (req, res) => {
     const shelters = await sheltersData.getAllShelters();
     let loggedIn = req.session.user;
@@ -291,6 +253,17 @@ router.post('/:id/delete_review', async(req, res) => {
         return;
     }
     
+});
+
+router.get('/:id/delete_review', async(req, res) => {
+    let loggedIn = req.session.user;
+    let isAdmin = req.session.admin;
+    if(loggedIn){
+        return res.render('shelter/deletereview', {title: "Delete Review", error: "", review: "", loggedIn: loggedIn, isAdmin: isAdmin});
+    } else {
+        const shelters = await sheltersData.getAllShelters();
+        return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
+    }
 });
 
 router.get('/:id/delete_review', async(req, res) => {
