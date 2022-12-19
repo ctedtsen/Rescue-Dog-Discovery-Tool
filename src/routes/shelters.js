@@ -245,10 +245,6 @@ router.post('/:id/delete_review', async(req, res) => {
         return;
     }
 
-    if(errors.length > 0){
-        return res.render('shelter/saveShelter', {title: "Save this shelter?", error: errors, loggedIn: loggedIn});
-    }
-
     try{
         await reviewsData.deleteReview(reviewId,shelterId,loggedIn);
         return res.redirect(302, `/shelters/${shelterId}`);
