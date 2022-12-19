@@ -76,9 +76,7 @@ router.post('/add', async(req, res) => {
     }
 
     try{
-        console.log(typeof time);
         await sheltersData.addShelter(shelterName, city, state, kill, time.toString());
-        console.log(kill)
     } catch(e) {
         res.render('shelter/add', {title: "Add a Shelter", loggedIn: loggedIn, isAdmin: isAdmin, error: e,
         name: shelterName,
@@ -104,9 +102,7 @@ router.post('/remove', async(req, res) => {
     let id = req.body.shelterID;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
-    // if(!loggedIn){
-    //     return res.redirect('/');
-    // }
+    
     try{
         id = helpers.checkId(id, "shelter ID");
     } catch(e) {
@@ -134,43 +130,6 @@ router.post('/remove', async(req, res) => {
 
 });
 
-router.post('/delete_review', async(req, res) => {
-    let reviewId = req.body.reviewID;
-    let loggedIn = req.session.user;
-    let isAdmin = req.session.admin;
-    try{
-        reviewId = helpers.checkId(reviewId, "review id");
-    } catch(e) {
-        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    try{
-        if(!await reviewsData.containsReview(reviewId)){
-            throw "Error: no review with that id";
-        }
-    } catch(e) {
-        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    try{
-        await reviewsData.deleteReview(reviewId);
-    } catch(e) {
-        res.status(400).render('shelter/deletereview', {title: "Delete Review", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
-        return;
-    }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
-    return;
-});
-
-router.get('/delete_review', async(req, res) => {
-    let loggedIn = req.session.user;
-    let isAdmin = req.session.admin;
-    if(!loggedIn){
-        return res.redirect('/');
-    }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
-    return;
-});
 
 router.get('/', async (req, res) => {
     const shelters = await sheltersData.getAllShelters();
@@ -210,7 +169,6 @@ router.post('/', async (req, res) => {
     try{
         shelters = await sheltersData.findSheltersInCity(city, state);
     } catch(e){
-        console.log(e);
         errors.push(e);
         return res.render('shelter/index', {title: "Shelters", shelters: allshelters, loggedIn: loggedIn, isAdmin: isAdmin, city: city, state: state, error: errors});
     }
@@ -222,6 +180,7 @@ router.post('/:id', async (req, res) => {
     let shelterId = req.params.id;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    
     if(!loggedIn){
         res.json({error: 'Error: Must be logged in to leave a review', loggedIn: loggedIn, isAdmin: isAdmin});
         return;
@@ -242,7 +201,7 @@ router.post('/:id', async (req, res) => {
             (xss(req.body.rating)), shelterId, loggedIn);
             return res.status(200).render('shelter/single', {title: "Name of Shelter: ", shelter: shelter, loggedIn: loggedIn, isAdmin: isAdmin});
     } catch(e) {
-        res.json({error: e, loggedIn: loggedIn, isAdmin: isAdmin});
+        res.status(400).render('shelter/single', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
 });
@@ -265,6 +224,35 @@ router.get('/:id', async (req, res) => {
         const shelters = await sheltersData.getAllShelters();
         return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
     }
+});
+
+router.post('/:id/delete_review', async(req, res) => {
+    let shelterId = req.params.id;
+    let reviewId = req.body.reviewID;
+    let loggedIn = req.session.user;
+    let isAdmin = req.session.admin;
+    let review;
+    if(!loggedIn){
+        return res.redirect('/');
+    }
+    try{
+        reviewId = helpers.checkId(reviewId, "review id");
+        shelterId = helpers.checkId(shelterId, "Shelter ID");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+
+    } catch(e) {
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+        return;
+    }
+
+    try{
+        await reviewsData.deleteReview(reviewId,shelterId,loggedIn);
+        return res.redirect(302, `/shelters/${shelterId}`);
+    } catch(e) {
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+        return;
+    }
+    
 });
 
 router.post('/:id/save', async(req, res) => {
@@ -335,17 +323,72 @@ router.get('/delete_review', async(req, res) => {
     let shelterId = req.params.id;
     let loggedIn = req.session.user;
     let isAdmin = req.session.admin;
+    let review;
     if(!loggedIn){
         return res.redirect('/');
     }
     try {
         shelterId = helpers.checkId(shelterId, "id for shelter");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
     }catch(e) {
-        const shelters = await sheltersData.getAllShelters();
-        return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
+        return res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     }
-    res.render('shelter/deletereview', {title: "Delete Review", loggedIn: loggedIn, isAdmin: isAdmin});
+    res.render('shelter/deletereview', {title: "Delete Review", review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     return;
+});
+
+router.get('/:id/edit_review', async (req, res) => {
+  let shelterId = req.params.id;
+  let loggedIn = req.session.user;
+  let review;
+  try {
+      shelterId = helpers.checkId(shelterId, "id for shelter");
+      review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+  }catch(e) {
+      //console.log(e);
+      const shelters = await sheltersData.getAllShelters();
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
+  res.render('shelter/editreview', {title: "Edit Review", loggedIn: loggedIn, review: review});
+  return;
+});
+
+router.post('/:id/edit_review', async (req, res) => {
+  let shelterId = req.params.id;
+  let loggedIn = req.session.user;
+  let review;
+  let reviewtext = req.body.review;
+  let rating = req.body.rating;
+  let reviewerName = req.body.name;
+
+  if(!loggedIn){
+      res.json({error: 'Error: Must be logged in to edit a review', loggedIn: loggedIn});
+      return;
+  }
+  try{
+      shelterId = helpers.checkId(shelterId, "Shelter ID");
+      reviewerName = helpers.checkPersonName(reviewerName);
+      reviewtext = helpers.checkString(reviewtext, "review");
+      rating = helpers.checkRating(rating);
+      review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+  } catch(e) {
+      console.log(e);
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
+  let shelter;
+  try{
+      shelter = await sheltersData.getShelterById(shelterId);
+  } catch(e) {
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
+  try{
+      await reviewsData.updateReview(xss(req.body.name), xss(req.body.review), 
+          (xss(req.body.rating)), review._id.toString(), shelterId);
+          return res.redirect(302, `/shelters/${shelterId}`);
+  } catch(e) {
+      console.log(e);
+      return res.status(400).render('shelter/editreview', {title: "Name of Shelter: ", error: e, loggedIn: loggedIn, review: review});
+  }
 });
 
 router.get('/:id/add_pet', async function(req, res){
@@ -469,42 +512,53 @@ router.post('/:id/add_pet', async function(req, res){
     }
     return res.render('pet/addPet', {title: "Add Pet", error: "Pet added successfully"});
 });
+router.post('/:id/delete_review', async(req, res) => {
+    let shelterId = req.params.id;
+    let reviewId = req.body.reviewID;
+    let loggedIn = req.session.user;
+    let isAdmin = req.session.admin;
+    let review;
+    if(!loggedIn){
+        return res.redirect('/');
+    }
+    try{
+        reviewId = helpers.checkId(reviewId, "review id");
+        shelterId = helpers.checkId(shelterId, "Shelter ID");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
 
-router.get('/:id/delete_pet', async function(req, res){
-    return res.render('pet/deletePet', {title: "Delete Pet", error: ""});
+    } catch(e) {
+        //console.log(e);
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+        return;
+    }
+    try{
+        await reviewsData.deleteReview(reviewId,shelterId,loggedIn);
+        return res.redirect(302, `/shelters/${shelterId}`);
+    } catch(e) {
+      console.log(e);
+        res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+        return;
+    }
+    
 });
 
-router.post('/:id/delete_pet', async function(req, res){
-    let shelteId = req.params.id;
-    let petId = xss(req.body.petID);
-    let type = xss(req.body.petType);
-    let errors = [];
-
-    try{
-        helpers.checkId(petId);
-    } catch(e){
-        errors.push(e);
+router.get('/:id/delete_review', async(req, res) => {
+    let shelterId = req.params.id;
+    let loggedIn = req.session.user;
+    let isAdmin = req.session.admin;
+    let review;
+    if(!loggedIn){
+        return res.redirect('/');
     }
-    try{
-        helpers.checkAnimalType(type);
-    } catch(e) {
-        errors.push(e);
+    try {
+        shelterId = helpers.checkId(shelterId, "id for shelter");
+        review = await reviewsData.getReviewByUser(shelterId,loggedIn);
+    }catch(e) {
+        const shelters = await sheltersData.getAllShelters();
+        return res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     }
-    if(errors.length > 0){
-        return res.render('pet/deletePet', {title: "Delete Pet", error: errors});  
-    }
-    try{
-        if(type === 'dog'){
-            await dogsData.removeDog(petId);
-            await sheltersData.removeRescuePet(shelteId, petId);
-        } else{
-            await catsData.removeCat(petId);
-            await sheltersData.removeRescuePet(shelteId, petId);
-        }
-    } catch(e){
-        return res.render('pet/deletePet', {title: "Delete Pet", error: e}); 
-    }
-    return res.render('pet/deletePet', {title: "Delete Pet", error: "Pet deleted successfully"});
+    res.render('shelter/deletereview', {title: "Delete Review", review: review, loggedIn: loggedIn, isAdmin: isAdmin});
+    return;
 });
 
 module.exports = router;

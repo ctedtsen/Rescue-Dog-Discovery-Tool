@@ -278,6 +278,21 @@ const removeLike = async(username, petId) => {
         throw e;
     }
 }
+const removeShelterReview = async (userId, shelterReviewId) => {
+  try {
+      const userCollection = await users();
+      const result = await userCollection.updateOne(
+          { _id: ObjectId(userId) },
+          { $pull: { shelterReviews: shelterReviewId } }
+      )
+
+      return result;
+  } catch (error) {
+      throw error
+  }
+}
+
+
 
 module.exports = {
     createUser,
@@ -290,5 +305,7 @@ module.exports = {
     saveShelter,
     removeShelter,
     addLike,
-    removeLike
+    removeLike,
+    removeShelterReview
+
 };

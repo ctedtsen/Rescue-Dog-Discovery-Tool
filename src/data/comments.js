@@ -8,6 +8,7 @@ const usersFunctions = require('./users');
 const {ObjectId} = require('mongodb');
 const helpers = require('../helpers');
 
+
 const exportedMethods = {
     async createComment (
         commenterName,
@@ -76,7 +77,7 @@ const exportedMethods = {
         );
 
         if(updatedUsers.modifiedCount === 0){
-            throw "Error: not able to update user (add review) successfully"
+            throw "Error: not able to update user successfully"
         }
 
         return this.getComment(id, animalType);
@@ -181,8 +182,10 @@ const exportedMethods = {
         );
 
         if(updatedUsers.modifiedCount === 0){
-            throw "Error: not able to update user successfully (deletReview)"
+            throw "Error: not able to update user successfully"
         }
+
+        
 
         if(animalType === "dog"){
             const dogList = await dogsFunctions.getAllDogs();
@@ -267,7 +270,105 @@ const exportedMethods = {
 
             return catsFunctions.getCatById(catId.toString());
         }
+    },
+
+    async updateComment(commentId, animalType, petId, name,commentText,username){
+      commentId = helpers.checkId(commentId, "commentId");
+      animalType = helpers.checkAnimalType(animalType);
+      commentText = helpers.checkString(commentText, "comment");
+      petId = helpers.checkId(petId, "petId");
+      name = helpers.checkPersonName(name);
+
+      let oldComment = this.getComment(commentId,animalType);
+
+      const newComment = {
+        name: name,
+        comment: commentText
+      };
+
+      const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+      "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+      const numbers = ["0", "1", "2,", "3", "4", "5", "6", "7", "8", "9"];
+
+      if (commentText.length < 3) throw "Error: comment cannot be less than 3 characters";
+      for (let char of commentText) {
+        if (!alphabet.includes(char.toLowerCase()) && !numbers.includes(char.toLowerCase()) 
+        && char !== '.' && char !== ' ' && char !== '!' && char !== '?' && char !== ',') {
+          throw "Error: comment must contain only letters, numbers, or punctuation"
+        }
+
+      }
+        
+      let deleteComment = await this.removeComment(commentId,animalType,username);
+
+      let addComment = await this.createComment(name,commentText,petId,animalType,username);
+
+      if(animalType === "dog"){
+        return dogsFunctions.getDogById(petId.toString());
+      }else if(animalType === "cat"){
+        return catsFunctions.getCatById(petId.toString());
+      }
+
+      
+    },
+
+    async getCommentsByUser(petId,animalType,username){
+      animalType = helpers.checkAnimalType(animalType);
+      petId = helpers.checkId(petId, "petId");
+
+      let user = await usersFunctions.findByUsername(username);
+
+
+      let userComments = [];
+      for(let x in user.comments){
+        userComments.push(user.comments[x]._id);
+      }
+
+      if(animalType === "dog"){
+        let dog = await dogsFunctions.getDogById(petId);
+
+        let contains_comment = false;
+        let comment = [];
+
+        let temp = dog.comments;
+        temp.forEach(element => {
+         
+          if(userComments.includes(element._id)){
+            comment.push(element);
+            contains_comment = true;
+          }
+        });
+
+        if(!contains_comment){
+          throw "No comment found for user";
+        }
+
+        return comment;
+
+      }
+      else if(animalType === "cat"){
+        let cat = await catsFunctions.getCatById(petId);
+          
+        let contains_comment = false;
+        let comment = [];
+
+        let temp = cat.comments;
+        temp.forEach(element => {
+          if(userComments.includes(element._id)){
+            comment.push(element);
+            contains_comment = true;
+          }
+        });
+
+        if(!contains_comment){
+          throw "No comment found for user (getcommentByUser)";
+        }
+
+        return comment;
+      }
     }
+
+
 }
 
 module.exports = exportedMethods;

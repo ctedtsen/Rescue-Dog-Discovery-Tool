@@ -212,6 +212,23 @@ await db.dropDatabase();
             true,
             "5"
         );
+        const shelterId = lowellHumaneMA._id.toString();
+        const catPrinceSpaghetti = await cats.addCat("PrinceSpaghetti", "09/13/2021", "0ft7in", "7lbs", "male", "May do well with another cat", "public/petImages/cat-prince-spaghetti.jpg");
+        let addCat = await shelters.addRescueCat(shelterId, catPrinceSpaghetti._id.toString());
+        const catDouglas = await cats.addCat("Douglas", "12/08/2020", "1ft2in", "8lbs", "male", "Very nervous", "public/petImages/cat-douglas.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catDouglas._id.toString());
+        const catEllie = await cats.addCat("Ellie", "10/13/2020", "1ft5in", "7lbs", "female", "Needs a home with no dogs and no kids", "public/petImages/cat-ellie.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catEllie._id.toString());
+        const catLily = await cats.addCat("Lily", "08/11/2016", "0ft8in", "7lbs", "female", "Needs thyroid medication", "public/petImages/cat-lily.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catLily._id.toString());
+        const catMoe = await cats.addCat("Moe", "10/13/2020", "1ft1in", "10lbs", "female", "", "public/petImages/cat-moe.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catMoe._id.toString());
+        const dogTiana = await dogs.addDog("Tiana", "04/13/2013", "mixed", "1ft8in", "44lbs", "female", "", "public/petImages/mixed-breed-tiana.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogTiana._id.toString());
+        const dogHarvey = await dogs.addDog("Harvey", "08/21/2019", "mixed", "1ft9in", "44lbs", "male", "", "public/petImages/mixed-breed-harvey.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogHarvey._id.toString());
+        //Only had 2 dogs :(
+
     } catch(e) {
         console.log(e);
     }
@@ -226,6 +243,28 @@ await db.dropDatabase();
             false,
             "n/a"
         );
+        const shelterId = animalHumaneNewMex._id.toString();
+        const dogNestle = await dogs.addDog("Nestle", "08/21/2021", "australian cattle dog", "2ft1in", "53lbs", "male", "", "public/petImages/australian-nestle.jpg");
+        let addDog = await shelters.addRescueDog(shelterId, dogNestle._id.toString());
+        const dogOreo = await dogs.addDog("Oreo", "07/17/2021", "australian cattle dog", "2ft1in", "42lbs", "female", "", "public/petImages/australian-oreo.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogOreo._id.toString());
+        const dogBindi = await dogs.addDog("Bindi", "08/21/2021", "american pit bull terrier", "2ft3in", "50lbs", "female", "", "public/petImages/pitbull-bindi.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogBindi._id.toString());
+        const dogHannah = await dogs.addDog("Hannah", "10/13/2022", "maltese", "0ft4in", "4lbs", "female", "", "public/petImages/maltese-hannah.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogHannah._id.toString());
+        const dogDixie = await dogs.addDog("Dixie", "03/21/2022", "chihuahua terrier", "2ft1in", "30lbs", "female", "", "public/petImages/chihuahua-dixie.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogDixie._id.toString());
+        const catFlorida = await cats.addCat("Florida", "10/28/2022", "0ft4in", "2lbs", "male", "", "public/petImages/cat-florida.jpg");
+        let addCat = await shelters.addRescueCat(shelterId, catFlorida._id.toString());
+        const catReba = await cats.addCat("Reba", "10/22/2020", "0ft8in", "9lbs", "female", "", "public/petImages/cat-reba.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catReba._id.toString());
+        const catBlueberry = await cats.addCat("Blueberry", "09/18/2020", "0ft11in", "11lbs", "female", "", "public/petImages/cat-blueberry.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catBlueberry._id.toString());
+        const catAlfonzo = await cats.addCat("Alfonzo", "07/28/2021", "0ft9in", "10lbs", "male", "", "public/petImages/cat-alfonzo.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catAlfonzo._id.toString());
+        const catSerena = await cats.addCat("Serena", "04/03/2018", "0ft4in", "12lbs", "female", "", "public/petImages/cat-serena.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catSerena._id.toString());
+
     } catch(e) {
         console.log(e);
     }
@@ -240,6 +279,24 @@ await db.dropDatabase();
             false,
             "n/a"
         );
+        
+        const shelterId = wyomingCountySPCA._id.toString();
+        const catCher = await cats.addCat("Cher", "06/03/2022", "0ft5in", "8lbs", "female", "", "public/petImages/cat-cher.jpg");
+        let addCat = await shelters.addRescueCat(shelterId, catCher._id.toString());
+        const catHobbs = await cats.addCat("Hobbs", "09/11/2014", "0ft8in", "11lbs", "male", "Housebroken", "public/petImages/cat-hobbs.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catHobbs._id.toString());
+        const catMantis = await cats.addCat("Mantis", "05/04/2022", "0ft8in", "10lbs", "male", "", "public/petImages/cat-mantis.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catMantis._id.toString());
+        const catPop = await cats.addCat("Pop", "04/17/2022", "0ft6in", "8lbs", "male", "Very shy", "public/petImages/cat-po.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catPop._id.toString());
+        const catScarlet = await cats.addCat("Scarlet", "06/15/2022", "0ft5in", "8lbs", "female", "", "public/petImages/cat-scarlet.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catScarlet._id.toString());
+        const dogIvory = await dogs.addDog("Ivory", "07/15/2018", "pit bull terrier", "1ft2in", "44lbs", "female", "", "public/petImages/pitbull-ivory.jpg");
+        let addDog = await shelters.addRescueDog(shelterId, dogIvory._id.toString());
+        const dogZoey = await dogs.addDog("Zoey", "05/09/2019", "belgian shepherd", "1ft3in", "43lbs", "female", "", "public/petImages/belgian-zoey.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogZoey._id.toString());
+        //Only had 2 dogs :(
+
     } catch(e) {
         console.log(e);
     }
@@ -254,6 +311,29 @@ await db.dropDatabase();
             true,
             "2"
         );
+        
+        const shelterId = heartMontana._id.toString();
+        const dogEllie = await dogs.addDog("Ellie", "07/11/2015", "mixed", "1ft3in", "44lbs", "female", "", "public/petImages/mixed-ellie.jpg");
+        let addDog = await shelters.addRescueDog(shelterId, dogEllie._id.toString());
+        const dogBrody = await dogs.addDog("Brody", "09/15/2014", "mixed", "1ft6in", "44lbs", "male", "", "public/petImages/mixed-brody.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogBrody._id.toString());
+        const dogPogo = await dogs.addDog("Pogo", "09/20/2016", "mixed", "1ft6in", "45lbs", "male", "", "public/petImages/mixed-pogo.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogPogo._id.toString());
+        const dogGrout = await dogs.addDog("Grout", "12/06/2020", "mixed", "1ft6in", "47lbs", "male", "", "public/petImages/mixed-grout.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogGrout._id.toString());
+        const dogCookie = await dogs.addDog("Cookie", "09/22/2018", "mixed", "1ft7in", "49lbs", "male", "", "public/petImages/mixed-cookie.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogCookie._id.toString());
+        const catLuna = await cats.addCat("Luna", "12/03/2016", "0ft5in", "8lbs", "female", "", "public/petImages/cat-luna-2.jpg");
+        let addCat = await shelters.addRescueCat(shelterId, catLuna._id.toString());
+        const catWyatt = await cats.addCat("Wyatt", "07/17/2014", "0ft8in", "10lbs", "male", "", "public/petImages/cat-wyatt.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catWyatt._id.toString());
+        const catNala = await cats.addCat("Nala", "06/07/2021", "0ft7in", "7lbs", "female", "", "public/petImages/cat-nala.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catNala._id.toString());
+        const catFrida = await cats.addCat("Frida", "12/11/2008", "0ft8in", "12lbs", "female", "", "public/petImages/cat-frida.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catFrida._id.toString());
+        const catPookie = await cats.addCat("Pookie", "12/01/2016", "0ft7in", "8lbs", "female", "", "public/petImages/cat-pookie.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catPookie._id.toString());
+
     } catch(e) {
         console.log(e);
     }
@@ -268,6 +348,29 @@ await db.dropDatabase();
             false,
             "n/a"
         );
+        
+        const shelterId = helpPawsIl._id.toString();
+        const dogFinn = await dogs.addDog("Finn", "09/13/2020", "retriever", "1ft4in", "40lbs", "male", "", "public/petImages/retriever-finn.jpg");
+        let addDog = await shelters.addRescueDog(shelterId, dogFinn._id.toString());
+        const dogCoach = await dogs.addDog("Coach", "11/25/2021", "australian cattle dog", "1ft4in", "40lbs", "male", "", "public/petImages/australian-coach.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogCoach._id.toString());
+        const dogSolomon = await dogs.addDog("Solomon", "05/13/2022", "hound", "0ft11in", "23lbs", "male", "", "public/petImages/hound-solomon.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogSolomon._id.toString());
+        const dogBonnie = await dogs.addDog("Bonnie", "08/11/2019", "chihuahua", "0ft5in", "11lbs", "female", "", "public/petImages/chihuahua-bonnie.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogBonnie._id.toString());
+        const dogGracelynn = await dogs.addDog("Gracelynn", "07/13/2022", "mixed", "0ft9in", "18lbs", "female", "", "public/petImages/mixed-gracelynn.jpg");
+        addDog = await shelters.addRescueDog(shelterId, dogGracelynn._id.toString());
+        const catArtemis = await cats.addCat("Artemis", "04/09/2022", "0ft7in", "8lbs", "female", "very shy", "public/petImages/cat-artemis.jpg");
+        let addCat = await shelters.addRescueCat(shelterId, catArtemis._id.toString());
+        const catAdonis = await cats.addCat("Adonis", "04/09/2022", "0ft7in", "8lbs", "male", "", "public/petImages/cat-adonis.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catAdonis._id.toString());
+        const catAthena = await cats.addCat("Athena", "04/09/2022", "0ft9in", "10lbs", "female", "very shy", "public/petImages/cat-athena.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catAthena._id.toString());
+        const catPorsche = await cats.addCat("Porsche", "08/21/2021", "0ft8in", "8lbs", "female", "", "public/petImages/cat-porsche.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catPorsche._id.toString());
+        const catCoolatta = await cats.addCat("Coolatta", "10/22/2022", "0ft4in", "3lbs", "female", "", "public/petImages/cat-coolatta.jpg");
+        addCat = await shelters.addRescueCat(shelterId, catCoolatta._id.toString());
+
     } catch(e) {
         console.log(e);
     }
