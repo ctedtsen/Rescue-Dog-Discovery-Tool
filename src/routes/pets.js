@@ -8,7 +8,6 @@ const commentsData = data.comments;
 const sheltersData = data.shelters;
 const helpers = require('../helpers')
 const xss = require('xss');
-const { comments } = require('../data');
 
 router.post('/:petid', async function (request, response){
     let petId =request.params.petid;
@@ -71,15 +70,15 @@ router.post('/:petid', async function (request, response){
         }
         } else{
     
-        try{
-            await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
-        } catch(e) {
-            response.render('pet/index', {title: "Pet error", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin})
-            return;
+            try{
+                await commentsData.createComment(xss(request.body.commenterName), xss(request.body.comment), petId, petType, loggedIn);
+            } catch(e) {
+                response.render('pet/index', {title: "Pet error", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin})
+                return;
+            }
+        
+            response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
         }
-    
-        response.render('pet/index', {title: "Pet", pet: pet, petType: petType, loggedIn: loggedIn, isAdmin: isAdmin});
-    }
 });
 
 router.get('/:petid', async (req, res) => {
@@ -209,7 +208,6 @@ router.get('/:petid/delete_comment', async(req, res) => {
       comments = await commentsData.getCommentsByUser(petId,petType,loggedIn);
       return res.status(200).render('pet/deletecomment', {title: "Remove Comment", loggedIn: loggedIn, comments: comments, isAdmin: isAdmin});
     }catch(e) {
-        console.log(e);
         return res.render('pet/deletecomment', {title: "Remove Comment", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
     }
 });
@@ -249,8 +247,7 @@ router.post('/:petid/delete_comment', async(req, res) => {
         res.render('pet/deletecomment', {title: "Remove Comment", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
     return;
     }
-
-    //res.render('pet/deletecomment', {title: "Remove Comment", loggedIn: loggedIn, isAdmin: isAdmin});
+    
     res.redirect(301,`/petdetails/${petId}`);
 });
 
@@ -262,7 +259,6 @@ router.get('/:petid/edit_comment', async (req, res) => {
   try {
       petId = helpers.checkId(petId, "petid");
   }catch(e) {
-      console.log(e);
       return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, isAdmin: isAdmin});
   }
   let pet;
@@ -286,7 +282,6 @@ router.get('/:petid/edit_comment', async (req, res) => {
     comments = await commentsData.getCommentsByUser(petId,petType,loggedIn);
     return res.status(200).render('pet/editcomment', {title: "Edit Comment", loggedIn: loggedIn, comments: comments, isAdmin: isAdmin, pet: pet});
   }catch(e) {
-      console.log(e);
       return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, isAdmin: isAdmin, pet: pet});
   }
 });
@@ -300,7 +295,6 @@ router.post('/:petid/edit_comment', async (req, res) => {
   try {
       petId = helpers.checkId(petId, "petid");
   }catch(e) {
-      //console.log(e);
       res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments, pet: pet});
   }
   let pet;
@@ -324,7 +318,6 @@ router.post('/:petid/edit_comment', async (req, res) => {
     result = await commentsData.updateComment(xss(req.body.commentId),petType,petId,xss(req.body.name),xss(req.body.comment),loggedIn);
     return res.redirect(301,`/petdetails/${petId}`);
   }catch(e) {
-      console.log(e);
       comments = await commentsData.getCommentsByUser(petId,petType,loggedIn);
       return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments, isAdmin: isAdmin, pet: pet});
   }

@@ -77,7 +77,7 @@ const exportedMethods = {
         );
 
         if(updatedUsers.modifiedCount === 0){
-            throw "Error: not able to update user (add review) successfully"
+            throw "Error: not able to update user successfully"
         }
 
         return this.getComment(id, animalType);
@@ -182,7 +182,7 @@ const exportedMethods = {
         );
 
         if(updatedUsers.modifiedCount === 0){
-            throw "Error: not able to update user successfully (deletReview)"
+            throw "Error: not able to update user successfully"
         }
 
         
@@ -305,7 +305,6 @@ const exportedMethods = {
 
       let user = await usersFunctions.findByUsername(username);
 
-      //console.log(user.comments);
 
       let userComments = [];
       for(let x in user.comments){
@@ -315,14 +314,12 @@ const exportedMethods = {
       if(animalType === "dog"){
         let dog = await dogsFunctions.getDogById(petId);
 
-        //console.log(dog.comments);
         let contains_comment = false;
         let comment = [];
 
         let temp = dog.comments;
         temp.forEach(element => {
-          //console.log(userComments);
-          //console.log(element);
+         
           if(userComments.includes(element._id)){
             comment.push(element);
             contains_comment = true;
@@ -330,7 +327,7 @@ const exportedMethods = {
         });
 
         if(!contains_comment){
-          throw "No comment found for user (getcommentByUser)";
+          throw "No comment found for user";
         }
 
         return comment;
@@ -338,15 +335,12 @@ const exportedMethods = {
       }
       else if(animalType === "cat"){
         let cat = await catsFunctions.getCatById(petId);
-
-        //console.log(cat.comments);
+          
         let contains_comment = false;
         let comment = [];
 
         let temp = cat.comments;
         temp.forEach(element => {
-          //console.log(userComments);
-          //console.log(element);
           if(userComments.includes(element._id)){
             comment.push(element);
             contains_comment = true;
