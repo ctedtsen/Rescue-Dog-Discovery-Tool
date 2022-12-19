@@ -14,6 +14,7 @@ if(searchShelterForm){
         try{
             city = cityElement.value;
             city = checkWord(city, "shelter city");
+            city = checkCity(city, "city");
         } catch(e){
             errorDiv.innerHTML = "";
             errorFound(e, cityElement, cityLabel, errorDiv);

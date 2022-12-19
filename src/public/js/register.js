@@ -28,6 +28,7 @@ let stateLabelR = document.getElementById("stateLabel");
         }
         try{
             checkString(cityInputR.value, "city input");
+            checkCity(cityInputR.value, "city input")
         }catch(e){
             errorDiv.innerHTML = "";
             errorFound(e, cityInputR, cityLabelR, errorDiv);

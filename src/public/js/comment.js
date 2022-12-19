@@ -41,6 +41,7 @@
         var newComment = newCommentInput.val();
         try{
             newComment = checkWord(newComment, "comment");
+            newComment = checkComment(newComment, "comment");
         } catch(e) {
             $("#diverror").html(e);
             return;

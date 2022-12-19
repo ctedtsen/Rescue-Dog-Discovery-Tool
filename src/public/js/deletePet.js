@@ -14,7 +14,7 @@ if(deletePetForm){
       
       try{
         id = idElement.value;
-        id = checkId(id, "reviewId");
+        id = checkId(id, "pet id");
       } catch(e){
         errorDiv.innerHTML = "";
         errorFound(e, idElement, idLabel, errorDiv);
