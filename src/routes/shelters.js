@@ -225,6 +225,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+
 router.post('/:id/delete_review', async(req, res) => {
     let shelterId = req.params.id;
     let reviewId = req.body.reviewID;
@@ -240,7 +241,6 @@ router.post('/:id/delete_review', async(req, res) => {
         review = await reviewsData.getReviewByUser(shelterId,loggedIn);
 
     } catch(e) {
-        //console.log(e);
         res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
@@ -248,22 +248,10 @@ router.post('/:id/delete_review', async(req, res) => {
         await reviewsData.deleteReview(reviewId,shelterId,loggedIn);
         return res.redirect(302, `/shelters/${shelterId}`);
     } catch(e) {
-      console.log(e);
         res.render('shelter/deletereview', {title: "Delete Review", error: e, review: review, loggedIn: loggedIn, isAdmin: isAdmin});
         return;
     }
     
-});
-
-router.get('/:id/delete_review', async(req, res) => {
-    let loggedIn = req.session.user;
-    let isAdmin = req.session.admin;
-    if(loggedIn){
-        return res.render('shelter/deletereview', {title: "Delete Review", error: "", review: "", loggedIn: loggedIn, isAdmin: isAdmin});
-    } else {
-        const shelters = await sheltersData.getAllShelters();
-        return res.status(400).render('shelter/index', {title: "Shelters", shelters: shelters, loggedIn: loggedIn, isAdmin: isAdmin});
-    }
 });
 
 router.get('/:id/delete_review', async(req, res) => {
@@ -283,7 +271,7 @@ router.get('/:id/delete_review', async(req, res) => {
     }
     res.render('shelter/deletereview', {title: "Delete Review", review: review, loggedIn: loggedIn, isAdmin: isAdmin});
     return;
-});
+
 
 router.get('/:id/edit_review', async (req, res) => {
   let shelterId = req.params.id;
