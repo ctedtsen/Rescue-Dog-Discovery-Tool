@@ -131,6 +131,44 @@ router.post('/remove', async(req, res) => {
 });
 
 
+router.get('/:id/delete_pet', async function(req, res){
+    return res.render('pet/deletePet', {title: "Delete Pet", error: "", loggedIn: req.session.user});
+});
+
+router.post('/:id/delete_pet', async function(req, res){
+    let shelteId = req.params.id;
+    let petId = req.body.petID;
+    let type = req.body.petType;
+    let errors = [];
+
+    try{
+        helpers.checkId(petId);
+    } catch(e){
+        errors.push(e);
+    }
+    try{
+        helpers.checkAnimalType(type);
+    } catch(e) {
+        errors.push(e);
+    }
+    if(errors.length > 0){
+        return res.render('pet/deletePet', {title: "Delete Pet", error: errors, loggedIn: req.session.user});  
+    }
+    try{
+        if(type === 'dog'){
+            await dogsData.removeDog(petId);
+            await sheltersData.removeRescuePet(shelteId, petId);
+        } else{
+            await catsData.removeCat(petId);
+            await sheltersData.removeRescuePet(shelteId, petId);
+        }
+    } catch(e){
+        return res.render('pet/deletePet', {title: "Delete Pet", error: e, loggedIn: req.session.user}); 
+    }
+    return res.render('pet/deletePet', {title: "Delete Pet", error: "Pet deleted successfully", loggedIn: req.session.user});
+});
+
+
 router.get('/', async (req, res) => {
     const shelters = await sheltersData.getAllShelters();
     let loggedIn = req.session.user;

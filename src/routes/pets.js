@@ -5,7 +5,6 @@ const dogData = data.dogs;
 const catData = data.cats;
 const usersData = data.users;
 const commentsData = data.comments;
-const sheltersData = data.shelters;
 const helpers = require('../helpers')
 const xss = require('xss');
 
@@ -321,10 +320,7 @@ router.post('/:petid/edit_comment', async (req, res) => {
       comments = await commentsData.getCommentsByUser(petId,petType,loggedIn);
       return res.render('pet/editcomment', {title: "Edit Comment", error: e, loggedIn: loggedIn, comments: comments, isAdmin: isAdmin, pet: pet});
   }
-  res.redirect(301,`/petdetails/${petId}`);
-  return;
+  
 });
-
-
 
 module.exports = router;
